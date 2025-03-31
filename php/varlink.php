@@ -60,7 +60,7 @@
 
 	$arr = [1, 2, 3, 4, 5];
 	
-	function func3($arr)
+	function func3(&$arr)
 	{
 		$arr[0] = '!';
 	}
