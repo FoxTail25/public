@@ -47,9 +47,13 @@
 	<div class="text-left ms-4 mb-4">
 		<?php //include './php/practice.php'; ?>
 	</div>  -->
-	<h3 class="text-left redT m-2">function</h3>
+	<!-- <h3 class="text-left redT m-2">function</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/function.php'; ?>
+		<?php //include './php/function.php'; ?>
+	</div>  -->
+	<h3 class="text-left redT m-2">variable link</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/varlink.php'; ?>
 	</div> 
 
 	<script src="./js.js"></script>
