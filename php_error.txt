@@ -1,0 +1,18 @@
+ppPmRcInr 176 of 402 
+https://code.mu/ru/php/book/prime/functions/recursion/intro/
+
+	$i = 1;
+	
+	function func(){
+		echo $i;
+		$i++;
+		
+		if ($i <= 10){
+			func(); // здесь функция вызывает сама себя
+		}
+	}
+	func();
+
+	В примере не хватает строки global $i;
+_________________________________________________________________________
+
