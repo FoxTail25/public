@@ -71,6 +71,42 @@ function summElinMiltiArr($arr){
 
 echo summElinMiltiArr($arr);
 
+// Дан многомерный массив произвольного уровня вложенности, содержащий внутри себя строки, например, такой: С помощью рекурсии слейте элементы этого массива в одну строку: 'abcdefgjk'
+$arr = ['a', ['b', 'c', 'd'], ['e', 'f', ['g', ['j', 'k']]]];
 
+function getStrFromArrEl($arr){
+	$str = '';
+	foreach($arr as $el){
+		if(is_array($el)){
+			$str .= getStrFromArrEl($el);
+		} else {
+			$str .= $el;
+		}
+	}
+	return $str;
+}
+echo getStrFromArrEl($arr);
+
+// Дан многомерный массив произвольного уровня вложенности, например, такой: Возведите все элементы-числа этого массива в квадрат.
+$arr = [1, [2, 7, 8], [3, 4], [5, [6, 7]]];
+// global $newArr;
+$newArr = [];
+
+function getPowArrElem($arr){
+	global $newArr;
+	$arrLength = count($arr);
+	for($i = 0; $i < $arrLength; $i++){
+		if(is_array($arr[$i])){
+			// $arr[$i] = getPowArrElem($arr[$i]);
+			getPowArrElem($arr[$i]);
+		}else {
+			// $arr[$i] *= $arr[$i];
+			$newArr[] = pow($arr[$i],2);
+		}
+	}
+	return $arr;
+}
+getPowArrElem($arr);
+print_r($newArr)
 
 ?>
