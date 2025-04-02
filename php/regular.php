@@ -119,7 +119,7 @@ addBr(rB('Фигурные скобки в регулярных выражени
 addBr("Операторы +, *, ? хороши, однако, с их помощью нельзя указать конкретное число повторений. В этом случае вам на помощь придет оператор {}.
 <br/>
 <br/>
- ". rB('Работает он следующим образом:')." {5} - пять повторений, {2,5} - повторяется от двух до пяти (оба включительно), {2,} - повторяется два и более раз.");
+". rB('Работает он следующим образом:')." {5} - пять повторений, {2,5} - повторяется от двух до пяти (оба включительно), {2,} - повторяется два и более раз.");
 addBr(aC("	" . '$str' . " = 'xx xax xaax xaaax';<br/>
 " . '$res' . " = preg_replace('#xa{1,2}x#', '!', " . '$str' . ");"));
 addBr(aC('echo $res') . ' = ' . preg_replace('#xa{1,2}x#', '!', 'xx xax xaax xaaax'));
@@ -128,4 +128,20 @@ addBr('');
 addBr(rB('Задачи'));
 addBr("Дана строка:	" . '$str' . " = 'aa aba abba abbba abbbba abbbbba'; " . "Напишите регулярку, которая найдет строки 'abba', 'abbba', 'abbbba' и только их.");
 addBr(aC("preg_replace('#a\.a#', '!', 'a.a aba aea');") . ' = ' . preg_replace('#a\.a#', '!', 'a.a aba aea'));
+addBr(aC("preg_replace('#ab{2,4}a#', 'туть ', ''aa aba abba abbba abbbba abbbbba'');") . ' = ' . preg_replace('#ab{2,4}a#', 'туть ', 'aa aba abba abbba abbbba abbbbba'));
+
+addBr('');
+addBr("Дана строка:	" . '$str' . " = 'aa aba abba abbba abbbba abbbbba'; " . "Напишите регулярку, которая найдет строки вида 'aba', в которых 'b' встречается менее трех раз (включительно).");
+addBr(aC("preg_replace('#a\.a#', '!', 'a.a aba aea');") . ' = ' . preg_replace('#a\.a#', '!', 'a.a aba aea'));
+addBr(aC("preg_replace('#ab{0,3}a#', 'туть ', ''aa aba abba abbba abbbba abbbbba'');") . ' = ' . preg_replace('#ab{0,3}a#', 'туть ', 'aa aba abba abbba abbbba abbbbba'));
+
+addBr('');
+addBr("Дана строка:	" . '$str' . " = 'aa aba abba abbba abbbba abbbbba'; " . "Напишите регулярку, которая найдет строки вида 'aba', в которых 'b' встречается более четырех раз (включительно).");
+addBr(aC("preg_replace('#a\.a#', '!', 'a.a aba aea');") . ' = ' . preg_replace('#a\.a#', '!', 'a.a aba aea'));
+addBr(aC("preg_replace('#ab{4,}a#', 'туть ', ''aa aba abba abbba abbbba abbbbba'');") . ' = ' . preg_replace('#ab{4,}a#', rB('туть '), 'aa aba abba abbba abbbba abbbbba'));
+hr();
+
+
+addBr(rB('Ограничение жадности в регулярках в PHP'));
+addBr("Регулярные выражения по умолчанию жадные. Это значит, что они захватывают максимальное возможное количество символов.");
 ?>
