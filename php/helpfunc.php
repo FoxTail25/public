@@ -19,6 +19,10 @@ function rB($str)
 {
 	return '<b>' . $str . '</b>';
 };
+function rI($str)
+{
+	return '<i>' . $str . '</i>';
+};
 function hr()
 {
 	echo '<hr/>';
