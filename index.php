@@ -59,9 +59,13 @@
 	<div class="text-left ms-4 mb-4">
 		<?php // include './php/recurs.php'; ?>
 	</div>  -->
-	<h3 class="text-left redT m-2">Regular</h3>
+	<!-- <h3 class="text-left redT m-2">Regular</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/regular.php'; ?>
+		<?php //include './php/regular.php'; ?>
+	</div>  -->
+	<h3 class="text-center redT m-2">Формирование строк</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/inc_var_in_str.php'; ?>
 	</div> 
 
 	<script src="./js.js"></script>
