@@ -282,13 +282,13 @@ foreach ($arr as $key => $elem) {
 <code>
 	<pre>
 $users = [
-	   [
+	[
 	    'name' => 'user1',
 	    'age'  => 30,
-	   ],
-	   [
-	    'name' => 'user2',
-	    'age'  => 31,
+		],
+		[
+			'name' => 'user2',
+			'age'  => 31,
 	   ],
  	   [
 	    'name' => 'user3',
@@ -302,9 +302,9 @@ $users = [
 </p>
 <code>
 	<pre>
-	foreach ($users as $user) {
-		echo $user['name'] . ': ' . $user['age'] . '&ltbr>';
-	}
+		foreach ($users as $user) {
+			echo $user['name'] . ': ' . $user['age'] . '&ltbr>';
+		}
 	</pre>
 </code>
 <p class="m-1">
@@ -312,9 +312,9 @@ $users = [
 </p>
 <code>
 	<pre>
-	foreach ($users as $user) {
-		echo "{$user['name']}: {$user['age']}&ltbr>";
-	}
+		foreach ($users as $user) {
+			echo "{$user['name']}: {$user['age']}&ltbr>";
+		}
 	</pre>
 </code>
 <p class="m-1">
@@ -322,9 +322,9 @@ $users = [
 </p>
 <code>
 	<pre>
-	foreach ($users as $user) {
-		echo "$user[name]: $user[age]&ltbr>";
-	}
+		foreach ($users as $user) {
+			echo "$user[name]: $user[age]&ltbr>";
+		}
 	</pre>
 </code>
 <?php
@@ -354,9 +354,9 @@ foreach ($users as $user) {
 </p>
 <code>
 	<pre>
-	$products = [
-		[
-			'name'   => 'product1',
+		$products = [
+			[
+				'name'   => 'product1',
 			'price'  => 100,
 			'amount' => 5,
 		],
@@ -364,14 +364,14 @@ foreach ($users as $user) {
 			'name'   => 'product2',
 			'price'  => 200,
 			'amount' => 6,
-		],
+			],
 		[
 			'name'   => 'product3',
 			'price'  => 300,
 			'amount' => 7,
 		],
 	];
-	</pre>
+</pre>
 </code>
 <p class="m-2">
 	Выведите с помощью этого массива столбец продуктов в каком-нибудь придуманном вами формате.
@@ -384,7 +384,7 @@ foreach ($users as $user) {
 	foreach ($products as $elem) {
 		echo "$elem[name]: $elem[amount] $elem[price]&ltbr>";
 	}
-	</pre>
+</pre>
 </code>
 <p class="m-2 fw-bold">
 	Результат:
@@ -411,3 +411,93 @@ foreach ($products as $elem) {
 	echo "$elem[name]: $elem[amount] $elem[price]<br>";
 }
 ?>
+
+<h3 class="mt-4 text-center">
+	Генерация тегов в PHP
+</h3>
+<p class="m-1">
+	Давайте теперь научимся формировать теги с использованием переменных. Пусть, к примеру, у нас есть следующая 	переменная:	
+</p>
+<code>
+	<pre>
+	$text = 'aaa';
+	</pre>
+</code>
+<p class="m-2">
+	Выведем текст этой переменной в абзаце:
+</p>
+<code>
+	<pre>
+		$text = 'aaa';
+		echo '&ltp>' . $text . '&lt/p>';
+	</pre>
+</code>
+<p class="m-2">
+	Упростим код, используя вставку переменной:
+</p>
+<code>
+	<pre>
+		$text = 'aaa';
+		echo "&ltp>$text&lt/p>";
+	</pre>
+</code>
+<p class="m-2 mt-4 fw-bold">
+	Задача
+</p>
+<p class="m-2">
+Даны три переменные:
+</p>
+<code>
+	<pre>
+		$text1 = 'aaa';
+		$text2 = 'bbb';
+		$text3 = 'ccc';</pre>
+</code>
+<p class="m-2">
+Выведите каждую из этих переменных в отдельном абзаце.
+</p>
+<p class="m-2 fw-bold">
+	Решение:
+</p>
+<code>
+	<pre>
+	echo "&ltp>$text1&lt/p>";
+	echo "&ltp>$text2&lt/p>";
+	echo "&ltp>$text3&lt/p>";</pre>
+</code>
+<p class="m-2 fw-bold">
+	Результат:
+</p>
+<?php
+$text1 = 'aaa';
+$text2 = 'bbb';
+$text3 = 'ccc';
+
+echo "<p>$text1</p>";
+echo "<p>$text2</p>";
+echo "<p>$text3</p>";
+?>
+<h3 class="mt-4 text-center">
+Генерация тегов с атрибутами в PHP
+</h3>
+<p class="m-1">
+Давайте теперь научимся формировать теги с атрибутами. Пусть для примера мы хотим сделать ссылку. При этом текст и адрес ссылки будут хранится в соответствующих переменных:
+</p>
+<code>
+	<pre>
+	$text = 'link';
+	$href = 'index.html';</pre>
+</code>
+<p>Давайте сформируем наш тег путем конкатенации переменных:</p>
+<code>
+	<pre>
+	echo '&lta href="' . $href . '">' . $text . '&lt/a>'; 
+	</pre>
+</code>
+<p>Давайте теперь сформируем наш тег путем вставки переменных. В этом случае, однако, нас ждет проблема. Дело в том, что для вставки переменных мы должны сделать кавычки строки двойными. Но кавычки от атрибутов тегов тоже двойные и нас ждет конфликт:</p>
+<code>
+	<pre>
+	echo "&lta href="$href">$text</a>"; 
+	// не будет работать 
+	</pre>
+</code>
