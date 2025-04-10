@@ -1336,14 +1336,28 @@ $arr = ['a' => 1, 'b' => 2, 'c' => 3];
 &lt/div>
 Выведите приведенный HTML код, если переменная show равна true.</pre>
 </code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+<?php $show = true ?>
+
+<?php if($show) {?>
+	<div>show</div>
+<?php } ?>
+	
+<?php if($show):?>
+	<div>show2</div>
+<?php endif ?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 
 <?php $show = true ?>
 
 <?php if($show) {?>
 	<div>show</div>
-	<?php } ?>
+<?php } ?>
 	
 <?php if($show):?>
 	<div>show2</div>
-	<?php endif ?>
+<?php endif ?>
