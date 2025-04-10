@@ -1323,7 +1323,7 @@ $arr = ['a' => 1, 'b' => 2, 'c' => 3];
 </code>
 <p class="fw-bold">Задача</p>
 <code>
-<pre>Дана переменная:
+	<pre>Дана переменная:
 &lt?php
 	$show = true;
 ?>
@@ -1339,25 +1339,474 @@ $arr = ['a' => 1, 'b' => 2, 'c' => 3];
 <p class="fw-bold">Решение:</p>
 <code>
 	<pre>
-<?php $show = true ?>
+&lt?php $show = true ?>
 
-<?php if($show) {?>
-	<div>show</div>
-<?php } ?>
+&lt?php if($show) {?>
+	&ltdiv>show&lt/div>
+&lt?php } ?>
 	
-<?php if($show):?>
-	<div>show2</div>
-<?php endif ?>
+&lt?php if($show):?>
+	&ltdiv>show2&lt/div>
+&lt?php endif ?>
 	</pre>
 </code>
 <p class="fw-bold">Результат:</p>
 
 <?php $show = true ?>
 
-<?php if($show) {?>
+<?php if ($show) { ?>
 	<div>show</div>
 <?php } ?>
-	
-<?php if($show):?>
+
+<?php if ($show): ?>
 	<div>show2</div>
 <?php endif ?>
+
+<h3 class="mt-5 text-left">
+	Блок else в условиях для разрыва PHP кода
+</h3>
+<p class="m-1">
+	Пусть теперь у нас также есть и блок else:
+</p>
+<code>
+	<pre>
+	&lt?php if ($test) { ?>
+		&ltp>+++&lt/p>
+	&lt?php } else { ?>
+		&ltp>---&lt/p>
+	&lt?php } ?>
+	</pre>
+</code>
+<p class="m-1">
+	Можем и его переписать через альтернативный синтаксис:
+</p>
+<code>
+	<pre>
+	&lt?php if ($test): ?>
+		&ltp>+++&lt/p>
+	&lt?php else: ?>
+		&ltp>---&lt/p>
+	&lt?php endif ?>
+	</pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>
+	Дана переменная:
+	&lt?php
+	$show = true;
+	?>
+	Дан код:
+	&ltdiv>
+		&ltp>text+&lt/p>
+		&ltp>text+&lt/p>
+		&ltp>text+&lt/p>
+	&lt/div>
+	&ltdiv>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+	&lt/div>
+	Выведите первый див, если переменная show равна true, и второй див, если переменная равна false.
+	</pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$show = true;
+	?>
+	&lt?php if ($show) { ?>
+		&ltdiv>
+			&ltp>text+&lt/p>
+			&ltp>text+&lt/p>
+			&ltp>text+&lt/p>
+		&lt/div>
+	&lt?php } else { ?>
+		&ltdiv>
+			&ltp>text-&lt/p>
+			&ltp>text-&lt/p>
+			&ltp>text-&lt/p>
+		&lt/div>
+	&lt?php } ?>
+	&ltbr/>
+	&lt?php if (!$show): ?>
+		&ltdiv>
+			&ltp>text+&lt/p>
+			&ltp>text+&lt/p>
+			&ltp>text+&lt/p>
+		&lt/div>
+	&lt?php else: ?>
+		&ltdiv>
+			&ltp>text-&lt/p>
+			&ltp>text-&lt/p>
+			&ltp>text-&lt/p>
+		&lt/div>
+	&lt?php endif ?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$show = true;
+?>
+<?php if ($show) { ?>
+	<div>
+		<p>text+</p>
+		<p>text+</p>
+		<p>text+</p>
+	</div>
+<?php } else { ?>
+	<div>
+		<p>text-</p>
+		<p>text-</p>
+		<p>text-</p>
+	</div>
+<?php } ?>
+<br />
+<?php if (!$show): ?>
+	<div>
+		<p>text+</p>
+		<p>text+</p>
+		<p>text+</p>
+	</div>
+<?php else: ?>
+	<div>
+		<p>text-</p>
+		<p>text-</p>
+		<p>text-</p>
+	</div>
+<?php endif ?>
+
+<h3 class="mt-5 text-left">
+	Блок elseif в условиях для разрыва PHP кода
+</h3>
+<p class="m-1">
+	Можно также сделать несколько условий с помощью elseif:
+</p>
+<code>
+	<pre>&lt?php if ($test === 1) { ?>
+	&ltp>1&lt/p>
+&lt?php } elseif ($test === 2) { ?>
+	&ltp>2&lt/p>
+&lt?php } else { ?>
+	&ltp>?&lt/p>
+&lt?php } ?></pre>
+</code>
+<p class="m-1">
+	Перепишем через альтернативный синтаксис
+</p>
+<code>
+	<pre>&lt?php if ($test === 1): ?>
+	&ltp>1&lt/p>
+&lt?php elseif ($test === 2): ?>
+	&ltp>2&lt/p>
+&lt?php else: ?>
+	&ltp>?&lt/p>
+&lt?php endif; ?></pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>Даны дивы:
+
+	&ltdiv>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+	&lt/div>
+	&ltdiv>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+	&lt/div>
+	&ltdiv>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+	&lt/div>
+Сделайте условие, которое будет показывать один из дивов.</pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php $num = 1; ?>
+&lt?php if ($num == 1) { ?>
+	&ltdiv>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+	&lt/div>
+&lt?php } elseif ($num == 2) { ?>
+	&ltdiv>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+	&lt/div>
+&lt?php } else { ?>
+	&ltdiv>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+	&lt/div>
+&lt?php } ?>
+&ltbr /> &lt!--  альтернативный синтаксис -->
+&lt?php if ($num !== 1): ?>
+	&ltdiv>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+		&ltp>text1&lt/p>
+	&lt/div>
+&lt?php elseif ($num !== 2): ?>
+	&ltdiv>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+		&ltp>text2&lt/p>
+	&lt/div>
+&lt?php else: ?>
+	&ltdiv>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+		&ltp>text-&lt/p>
+	&lt/div>
+&lt?php endif ?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php $num = 1; ?>
+<?php if ($num == 1) { ?>
+	<div>
+		<p>text1</p>
+		<p>text1</p>
+		<p>text1</p>
+	</div>
+<?php } elseif ($num == 2) { ?>
+	<div>
+		<p>text2</p>
+		<p>text2</p>
+		<p>text2</p>
+	</div>
+<?php } else { ?>
+	<div>
+		<p>text-</p>
+		<p>text-</p>
+		<p>text-</p>
+	</div>
+<?php } ?>
+<br /> <!--  альтернативный синтаксис -->
+<?php if ($num !== 1): ?>
+	<div>
+		<p>text1</p>
+		<p>text1</p>
+		<p>text1</p>
+	</div>
+<?php elseif ($num !== 2): ?>
+	<div>
+		<p>text2</p>
+		<p>text2</p>
+		<p>text2</p>
+	</div>
+<?php else: ?>
+	<div>
+		<p>text-</p>
+		<p>text-</p>
+		<p>text-</p>
+	</div>
+<?php endif ?>
+
+<h3 class="mt-5 text-left">
+	Циклы и разрыв PHP кода
+</h3>
+<p class="m-1">
+	Давайте сформируем в цикле несколько абзацев:
+</p>
+<code>
+	<pre>	&lt?php for ($i = 1; $i &lt= 9; $i++) {
+		echo '&ltp>' . $i . '&lt/p>';
+	} ?></pre>
+</code>
+<p class="m-1">
+	Можно переписать код с разрывом PHP:
+</p>
+<code>
+	<pre>	&lt?php for ($i = 1; $i &lt= 9; $i++) { ?>
+		&ltp>&lt?= $i ?>&lt/p>
+	&lt?php } ?></pre>
+</code>
+<p class="m-1">
+	Для простоты можно воспользоваться альтернативным синтаксисом:
+</p>
+<code>
+	<pre>	&lt?php for ($i = 1; $i &lt= 9; $i++): ?>
+		&ltp>&lt?= $i ?>&lt/p>
+	&lt?php endfor; ?></pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>Сформируйте с помощью цикла следующий HTML код:
+&ltul>
+	&ltli>1&lt/li>
+	&ltli>2&lt/li>
+	&ltli>3&lt/li>
+	&ltli>4&lt/li>
+	&ltli>5&lt/li>
+&lt/ul></pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>&ltul>
+	&lt?php for ($i = 1; $i &lt 6; $i++): ?>
+		&ltli>&lt?= $i ?>&lt/li>
+	&lt?php endfor ?>
+&lt/ul></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<ul>
+	<?php for ($i = 1; $i < 6; $i++): ?>
+		<li><?= $i ?></li>
+	<?php endfor ?>
+</ul>
+
+
+<h3 class="mt-5 text-left">Циклы и вставка элементов массива в разрыв PHP кода</h3>
+<p class="m-1">Пусть у нас дан массив:</p>
+<code>
+	<pre>$arr = [1, 2, 3, 4, 5];</pre>
+</code>
+<p class="m-1">Давайте выведем каждый элемент этого массива в своем абзаце:</p>
+<code>
+	<pre>	foreach ($arr as $elem) {
+		echo '&ltp>' . $elem . '&lt/p>';
+	}</pre>
+</code>
+<p class="m-1">Можно переписать код с разрывом PHP:</p>
+<code>
+	<pre>	foreach ($arr as $elem) { ?>
+	&ltp>&lt?= $elem ?>&lt/p>
+	}</pre>
+</code>
+<p class="m-1">Для простоты можно воспользоваться альтернативным синтаксисом:</p>
+<code>
+	<pre>	&lt?php foreach ($arr as $elem): ?>
+		&ltp>&lt?= $elem ?>&lt/p>
+	&lt?php endforeach; ?></pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>Дан массив:
+
+	&lt?php
+	$arr = ['user1', 'user2', 'user3'];
+	?>
+	С помощью этого массива и цикла сформируйте следующий HTML код:
+
+	&ltdiv>
+		&lth2>user1&lt/h2>
+		&ltp>text&lt/p>
+	&lt/div>
+	&ltdiv>
+		&lth2>user2&lt/h2>
+		&ltp>text&lt/p>
+	&lt/div>
+	&ltdiv>
+		&lth2>user3&lt/h2>
+		&ltp>text&lt/p>
+	&lt/div></pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>	&lt?php $arr = ['user1', 'user2', 'user3'];?>
+	&lt?php foreach ($arr as $elem): ?>
+		&ltdiv>
+			&lth2>&lt?= $elem ?>&lt/h2>
+			&ltp>text&lt/p>
+		&lt/div>
+	&lt?php endforeach ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$arr = ['user1', 'user2', 'user3'];
+?>
+<?php foreach ($arr as $elem): ?>
+	<div>
+		<h2><?= $elem ?></h2>
+		<p>text</p>
+	</div>
+<?php endforeach ?>
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>
+	Дан массив:
+
+	&lt?php
+		$arr = [
+			[
+				'name' => 'user1',
+				'age'  => 30,
+			],
+			[
+				'name' => 'user2',
+				'age'  => 31,
+			],
+			[
+				'name' => 'user3',
+				'age'  => 32,
+			],
+		];
+	?>
+	С помощью этого массива и цикла сформируйте следующий HTML код:
+
+	&ltdiv>
+		&ltp>name: user1&lt/p>
+		&ltp>age: 30&lt/p>
+	&lt/div>
+	&ltdiv>
+		&ltp>name: user2&lt/p>
+		&ltp>age: 31&lt/p>
+	&lt/div>
+	&ltdiv>
+		&ltp>name: user3&lt/p>
+		&ltp>age: 32&lt/p>
+	&lt/div></pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php $arr = [
+		[
+			'name' => 'user1',
+			'age'  => 30,
+		],
+		[
+			'name' => 'user2',
+			'age'  => 31,
+		],
+		[
+			'name' => 'user3',
+			'age'  => 32,
+		],
+	]; ?>
+
+	&lt?php foreach ($arr as $elem): ?>
+		&ltp>name: &lt?= $elem['name'] ?>&lt/p>
+		&ltp>age: &lt?= $elem['age'] ?>&lt/p>
+	&lt?php endforeach ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php $arr = [
+	[
+		'name' => 'user1',
+		'age'  => 30,
+	],
+	[
+		'name' => 'user2',
+		'age'  => 31,
+	],
+	[
+		'name' => 'user3',
+		'age'  => 32,
+	],
+]; ?>
+
+<?php foreach ($arr as $elem): ?>
+	<p>name: <?= $elem['name'] ?></p>
+	<p>age: <?= $elem['age'] ?></p>
+<?php endforeach ?>

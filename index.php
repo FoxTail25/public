@@ -70,9 +70,13 @@
 	<div class="text-left ms-4 mb-4">
 		<?php //include './php/regular.php'; ?>
 	</div>  -->
-	<h3 class="text-center redT m-2">Формирование строк</h3>
+	<!-- <h3 class="text-center redT m-2">Формирование строк</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/inc_var_in_str.php'; ?>
+		<?php //include './php/inc_var_in_str.php'; ?>
+	</div>  -->
+	<h3 class="text-center redT m-2">Основы работы с формами PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/form.php'; ?>
 	</div> 
 
 	<script src="./js.js"></script>
