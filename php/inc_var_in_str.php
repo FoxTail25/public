@@ -1261,22 +1261,22 @@ $str3 = 'text3';
 <p class="fw-bold">Задача</p>
 <code>
 	<pre>
-	Дан массив:
+		Дан массив:
 	$arr = ['a' => 1, 'b' => 2, 'c' => 3];
 	Также даны три абзаца:
 	&ltp>&lt/p>
 	&ltp>&lt/p>
 	&ltp>&lt/p>
 	Выполните вставку элементов массива в соответствующие абзацы.
-	</pre>
+</pre>
 </code>
 <p class="fw-bold">Решение:</p>
 <code>
 	<pre>
-	$arr = ['a' => 1, 'b' => 2, 'c' => 3];
-	&ltp>&lt?=$arr['a']?>&lt/p>
-	&ltp>&lt?=$arr['b']?>&lt/p>
-	&ltp>&lt?=$arr['c']?>&lt/p>
+		$arr = ['a' => 1, 'b' => 2, 'c' => 3];
+		&ltp>&lt?=$arr['a']?>&lt/p>
+		&ltp>&lt?=$arr['b']?>&lt/p>
+		&ltp>&lt?=$arr['c']?>&lt/p>
 	</pre>
 </code>
 <p class="fw-bold">Результат:</p>
@@ -1301,11 +1301,11 @@ $arr = ['a' => 1, 'b' => 2, 'c' => 3];
 <p>Давайте выведем какой-нибудь кусочек HTML кода, если наша переменная равна true:</p>
 <code>
 	<pre>
-	&lt?php
-	if ($test) {
-		echo '&ltp>text&lt/p>';
-	}
-	?></pre>
+		&lt?php
+		if ($test) {
+			echo '&ltp>text&lt/p>';
+		}
+		?></pre>
 </code>
 <p>Можем переделать этот код на следующий, с разрывом PHP скобок:</p>
 <code>
@@ -1321,3 +1321,29 @@ $arr = ['a' => 1, 'b' => 2, 'c' => 3];
 		&ltp>text&lt/p>
 	&lt?php endif; ?></pre>
 </code>
+<p class="fw-bold">Задача</p>
+<code>
+<pre>Дана переменная:
+&lt?php
+	$show = true;
+?>
+Дан код:
+
+&ltdiv>
+	&ltp>text1&lt/p>
+	&ltp>text2&lt/p>
+	&ltp>text3&lt/p>
+&lt/div>
+Выведите приведенный HTML код, если переменная show равна true.</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+
+<?php $show = true ?>
+
+<?php if($show) {?>
+	<div>show</div>
+	<?php } ?>
+	
+<?php if($show):?>
+	<div>show2</div>
+	<?php endif ?>
