@@ -207,11 +207,51 @@
 		Пусть на странице с результатом в переменной хранится правильный пароль:
 		
 		&lt?php	$pass = '12345';?>
-		Сделайте так, чтобы после отправки формы на странице результата сравнивался пароль из переменной и пароль из формы. После сравнения сообщите пользователю, правильный он ввел пароль или нет.
+		Сделайте так, чтобы после отправки формы на странице результата сравнивался пароль из переменной и пароль из формы.
+		После сравнения сообщите пользователю, правильный он ввел пароль или нет.
+	</pre>
+</code>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		file: index.php
+	&ltform action="/pass.php" method="POST">
+	&ltlabel>введите пароль&ltbr/>&ltinput type="password" name="pass">&lt/label>
+		&ltinput type="submit">
+	&lt/form>
+		
+		file: pass.php
+	&lt?php $password = 12345; ?>
+	&lt?php if ($_POST):
+		$res = $_POST['pass'] == $password;
+	?>
+	&lt?php if ($res): ?>
+		&ltp class="green">Пароль верный&lt/p>
+	&lt?php else: ?>
+		&ltp class="red">Неправильный пароль&lt/p>
+
+		&lt?php endif ?>
+	&lt?php endif ?>
 	</pre>
 </code>
 <p class="fw-bold">Результат:</p>
 <form action="/pass.php" method="POST">
-	<input type="password" name="pass">
+	<label>введите пароль<br/><input type="password" name="pass"></label>
+	<input type="submit">
+</form>
+
+<p class="fw-bold">Задача:</p>
+<code>
+	<pre>
+		С помощью трех инпутов спросите у пользователя год, месяц и день рождения пользователя. 
+		После отправки формы определите день недели, в который родился пользователь.
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<form action="birth_date.php" method="post">
+	<p>Введите дату рождения	</p>
+	<label>Год:<br/><input type="number" min="1900" max="2025" name="year"/></label>
+	<label>Месяц:<br/><input type="number" min="1" max="12" name="month"/></label>
+	<label>День:<br/><input type="number" min="1" max="31" name="day"/></label>
 	<input type="submit">
 </form>
