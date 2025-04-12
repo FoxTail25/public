@@ -8,11 +8,14 @@
 	<link rel="stylesheet" href="./style.css">
 	<title>Изучение PHP</title>
 	<style>
-		p, pre, code {
+		p,
+		pre,
+		code {
 			margin: 0;
 			padding: 0;
-		};
-		
+		}
+
+		;
 	</style>
 </head>
 
@@ -44,40 +47,53 @@
 
 	<!-- <h3 class="text-left redT m-2">Array function</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/arrFunc.php'; ?>
+		<?php //include './php/arrFunc.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-left redT m-2">Time function</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/timeFunc.php'; ?>
+		<?php //include './php/timeFunc.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-left redT m-2">Practice</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/practice.php'; ?>
+		<?php //include './php/practice.php'; 
+		?>
 	</div>  -->
 	<!-- <h3 class="text-left redT m-2">function</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/function.php'; ?>
+		<?php //include './php/function.php'; 
+		?>
 	</div>  -->
 	<!-- <h3 class="text-left redT m-2">variable link</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/varlink.php'; ?>
+		<?php //include './php/varlink.php'; 
+		?>
 	</div>  -->
 	<!-- <h3 class="text-left redT m-2">Recursion</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php // include './php/recurs.php'; ?>
+		<?php // include './php/recurs.php'; 
+		?>
 	</div>  -->
 	<!-- <h3 class="text-left redT m-2">Regular</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/regular.php'; ?>
+		<?php //include './php/regular.php'; 
+		?>
 	</div>  -->
 	<!-- <h3 class="text-center redT m-2">Формирование строк</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/inc_var_in_str.php'; ?>
+		<?php //include './php/inc_var_in_str.php'; 
+		?>
 	</div>  -->
-	<h3 class="text-center redT m-2">Основы работы с формами PHP</h3>
+	<!-- <h3 class="text-center redT m-2">Основы работы с формами PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/form.php'; ?>
-	</div> 
+		<?php //include './php/form.php'; 
+		?>
+	</div>  -->
+	<h3 class="text-center redT m-2">GET запросы в PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/get_rec.php'; ?>
+	</div>
 
 	<script src="./js.js"></script>
 </body>
