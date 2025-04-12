@@ -743,18 +743,18 @@ if (isset($_GET['f8_text'])) {
 		&ltinput name="text">
 		&ltinput type="submit">
 		&lt/form></pre>
-	</code>
-	<p>После отправки формы в $_GET флажка будет содержаться строка 'on', если флажок был отмечен и null, если нет:</p>
-	<code>
-		<pre>
+</code>
+<p>После отправки формы в $_GET флажка будет содержаться строка 'on', если флажок был отмечен и null, если нет:</p>
+<code>
+	<pre>
 			&lt?php
 			var_dump($_GET['flag']); // 'on' или null
 			?>
 		</pre>
-	</code>
-	<p>Давайте выведем что-нибудь на экран в зависимости от того, был отмечен флажок или нет:</p>
-	<code>
-		<pre>
+</code>
+<p>Давайте выведем что-нибудь на экран в зависимости от того, был отмечен флажок или нет:</p>
+<code>
+	<pre>
 			&lt?php
 			if (!empty($_GET)) { // если форма была отправлена
 				if (isset($_GET['flag'])) { // если флажок отмечен
@@ -765,25 +765,52 @@ if (isset($_GET['f8_text'])) {
 			}
 			?>
 		</pre>
-	</code>
-	
+</code>
+
 <p class="fw-bold">Задача:</p>
 <p>Сделайте форму с инпутом и флажком. С помощью инпута спросите у пользователя имя. После отправки формы, если флажок был отмечен, поприветствуйте пользователя, а если не был отмечен - попрощайтесь.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltform action="">
+		&ltinput type="checkbox" name="f9_flag"
+			&lt?= isset($_GET['f9_flag']) ? "checked" : '' ?>>
+		&ltlabel>
+			Имя:&ltbr />
+			&ltinput name="f9_name"
+				value="&lt?= $_GET['f9_name'] ?? '' ?>">
+		&lt/label>
+		&ltinput type="submit">
+	&lt/form>
+	&lt?php
+	if (isset($_GET['f9_name']) and mb_strlen($_GET['f9_name']) > 0) {
+		if (isset($_GET['f9_flag'])) {
+			echo "flag: " . mb_strlen($_GET['f9_name']) . "&lt/p>&ltbr/>";
+			echo "flag: $_GET[f9_flag]&lt/p>&ltbr/>";
+			echo "&ltp>Здравствуйте $_GET[f9_name]&lt/p>";
+		} else {
+			echo "flag: null&lt/p>&ltbr/>";
+			echo "&ltp>Досвидания $_GET[f9_name]&lt/p>";
+		}
+	}
+?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <form action="">
 	<input type="checkbox" name="f9_flag"
-	>
+		<?= isset($_GET['f9_flag']) ? "checked" : '' ?>>
 	<label>
-		Имя:<br/>
-		<input name="f9_name" 
-		value= "<?= $_GET['f9_name'] ?? ''?>"
-		>
+		Имя:<br />
+		<input name="f9_name"
+			value="<?= $_GET['f9_name'] ?? '' ?>">
 	</label>
 	<input type="submit">
 </form>
 <?php
-if (isset($_GET['f9_name'])) {
-	if(isset($_GET['f9_flag']) and $_GET['f9_flag'] == 'on'){
+if (isset($_GET['f9_name']) and mb_strlen($_GET['f9_name']) > 0) {
+	if (isset($_GET['f9_flag'])) {
+		echo "flag: " . mb_strlen($_GET['f9_name']) . "</p><br/>";
 		echo "flag: $_GET[f9_flag]</p><br/>";
 		echo "<p>Здравствуйте $_GET[f9_name]</p>";
 	} else {
@@ -792,3 +819,416 @@ if (isset($_GET['f9_name'])) {
 	}
 }
 ?>
+
+<h3 class="fw-bold mt-5">Нюансы использования чекбоксов в PHP</h3>
+<p>Пусть в нашей форме есть только чекбокс:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="checkbox" name="flag">
+		&ltinput type="submit">
+	&lt/form></pre>
+</code>
+<p>Пусть код обработки нашей формы выглядит вот так:</p>
+<code>
+	<pre>
+		&lt?php
+		if (!empty($_GET)) { // если форма была отправлена
+			if (isset($_GET['flag'])) { // если флажок отмечен
+				echo 'отмечен';
+			} else {
+				echo 'не отмечен';
+			}
+		}
+		?></pre>
+</code>
+<p>Нас ждет проблема - если флажок не отмечен, то, так как в форме кроме чекбокса нет других элементов, в $_GET будет лежать пустой массив. Это значит, что в коде обработки формы мы не попадем в первый if, проверяющий отправку формы.<br />
+	Для решения проблемы используют специальный прием: создают скрытый инпут с таким же именем, как и у нашего чекбокса. При этом значением скрытого инпута ставят ноль, а чебокса - единицу:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="hidden" name="flag" value="0">
+		&ltinput type="checkbox" name="flag" value="1">
+		&ltinput type="submit">
+	&lt/form></pre>
+</code>
+<p>В таком случае получится следующее. Если чекбокс не отмечен, то на сервер отправится только значение скрытого инпута. Если же чекбокс отмечен, то на сервер отправятся оба значения с одним именем. Но, так как значение чекбокса будет вторым, то оно просто затрет первое.<br />Итак, теперь наша чекбокс будет отправлять на сервер или ноль, или один:</p>
+<code>
+	<pre>
+		&lt?php
+		var_dump($_GET['flag']); // '0' или '1'
+		?>
+	</pre>
+</code>
+<p>Используем это в нашей проверке:</p>
+<code>
+	<pre>
+		&lt?php
+		if (!empty($_GET)) {
+			if ($_GET['flag'] === '1') {
+				echo 'отмечен';
+			} else {
+				echo 'не отмечен';
+			}
+		}
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<p>С помощью флажка спросите у пользователя, есть ему уже 18 лет или нет. Если есть, разрешите ему доступ на сайт, а если нет - не разрешите.</p>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<p>Вам уже есть 18?
+		<input type="hidden" name="f10_check" value="0">
+		<label>
+			Да <input type="checkbox" name="f10_check" value="1"
+				<?= (isset($_GET['f10_check']) and $_GET['f10_check'] == 1) ? 'checked' : '' ?>>
+		</label>
+	</p>
+	<br />
+	<input type="submit">
+</form>
+<?php
+if (isset($_GET['f10_check'])) {
+
+	if ($_GET['f10_check'] == 1) {
+		echo "Доступ на сайт разрешен";
+	} else {
+		echo "Доступ на сайт НЕ разрешен";
+	}
+}
+?>
+
+<h3 class="fw-bold mt-5">Сохранение выбранного значения в чекбоксе после отправки в PHP</h3>
+<p>Давайте теперь сделаем так, чтобы значение чекбокса сохранялось после отправки. Для этого проверим, что $_GET['flag'] существует (то есть была отправка формы) и равен единице (то есть флажок отмечен).<br />Если эти два условия выполняются, то выведем в чекбоксе атрибут checked:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="hidden" name="flag" value="0">
+		&ltinput
+			type="checkbox"
+			name="flag" &lt?php
+				if (isset($_GET['flag']) and $_GET['flag'] === '1')
+					echo 'checked';
+				?>
+			>
+		&ltinput type="submit">
+	&lt/form></pre>
+</code>
+<p>Проверку можно упростить, если мы точно знаем, что скрытый инпут передает 0. В таком случае, если чекбокс не отмечен, то в $_GET['flag'] будет лежать '0', а если отправки формы еще не было, то будет лежать null.<br />В обоих этих случаях мы не должны выводить checked. И оба этих случая мы можем поймать функцией empty. Таким образом мы можем проверить, что $_GET['flag'] не пуст, и только в этом случае вывести checked:</p>
+<code>
+	<pre>
+		&ltform action="" method="GET">
+	&ltinput type="hidden" name="flag" value="0">
+	&ltinput
+		type="checkbox"
+		name="flag"
+		value="1"
+		&lt?php if (!empty($_GET['flag'])) echo 'checked' ?>
+	>
+	&ltinput type="submit">
+&lt/form></pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<p>Сделайте три чекбокса, которые будут сохранять свое значение после отправки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&ltform action="">
+	&ltlabel for="">Чекбокс_1 &ltinput
+			type="checkbox"
+			name="f11_ch_1"
+			&lt?= isset($_GET['f11_ch_1']) ? "checked" : '' ?>
+			>
+	&lt/label>
+	&ltlabel for="">Чекбокс_2 &ltinput
+			type="checkbox"
+			name="f11_ch_2"
+			&lt?= isset($_GET['f11_ch_2']) ? 'checked' : '' ?>
+			>
+	&lt/label>
+	&ltlabel for="">Чекбокс_3 &ltinput
+			type="checkbox"
+			name="f11_ch_3"
+			&lt?= isset($_GET['f11_ch_3']) ? 'checked' : '' ?>
+			>
+	&lt/label>
+	&ltinput type="submit">
+&lt/form>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<label for="">Чекбокс_1 <input
+			type="checkbox"
+			name="f11_ch_1"
+			<?= isset($_GET['f11_ch_1']) ? "checked" : '' ?>>
+	</label>
+	<label for="">Чекбокс_2 <input
+			type="checkbox"
+			name="f11_ch_2"
+			<?= isset($_GET['f11_ch_2']) ? 'checked' : '' ?>>
+	</label>
+	<label for="">Чекбокс_3 <input
+			type="checkbox"
+			name="f11_ch_3"
+			<?= isset($_GET['f11_ch_3']) ? 'checked' : '' ?>>
+	</label>
+	<input type="submit">
+</form>
+
+<h3 class="fw-bold mt-5">Радиокнопки в PHP</h3>
+<p>Давайте теперь научимся работать с radio в PHP. Сделаем несколько переключателей в нашей форме:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="radio" name="radio" value="1">
+		&ltinput type="radio" name="radio" value="2">
+		&ltinput type="radio" name="radio" value="3">
+		&ltinput type="submit">
+	&lt/form>
+	</pre>
+</code>
+<p>После отправки формы в $_GET переключателя будет содержаться значение атрибута value отмеченного переключателя, либо null, если ничего не было отмечено:</p>
+<code>
+	<pre>
+		&lt?php
+		var_dump($_GET['radio']); // '1', '2', '3' или null
+		?>
+	</pre>
+</code>
+<p>При работе с радио возникают та же проблема, что и в чекбоксах. Для решения этой проблемы давайте добавим скрытый инпут:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="hidden" name="radio" value="0">
+		&ltinput type="radio"  name="radio" value="1">
+		&ltinput type="radio"  name="radio" value="2">
+		&ltinput type="radio"  name="radio" value="3">
+		&ltinput type="submit">
+	&lt/form></pre>
+</code>
+<p>Можно также не вводить скрытый инпут, а сделать один из переключателей отмеченным по умолчанию:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+		&ltinput type="radio" name="radio" value="1" checked>
+		&ltinput type="radio" name="radio" value="2">
+		&ltinput type="radio" name="radio" value="3">
+		&ltinput type="submit">
+	&lt/form></pre>
+</code>
+
+<p class="fw-bold">Задача:</p>
+<p>С помощью двух переключателей спросите у пользователя его пол. Выведите результат на экран.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltform action="">
+		&ltp>Какой ваш пол?&lt/p>
+		&ltlabel>
+			Мужской &ltinput type="radio" name="f12_radio" value="0">
+		&lt/label>
+		&ltlabel>
+			Женский &ltinput type="radio" name="f12_radio" value="1">
+		&lt/label>
+		&ltlabel>
+			Деревянный &ltinput type="radio" name="f12_radio" value="2" checked>
+		&lt/label>
+		&ltinput type="submit">
+	&lt/form>
+	&lt?php
+	if (isset($_GET['f12_radio'])) {
+		$arr = ['Мужской', 'Женский', 'Деревянный'];
+		echo $arr[$_GET['f12_radio']];
+	}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<p>Какой ваш пол?</p>
+	<label>
+		Мужской <input type="radio" name="f12_radio" value="0">
+	</label>
+	<label>
+		Женский <input type="radio" name="f12_radio" value="1">
+	</label>
+	<label>
+		Деревянный <input type="radio" name="f12_radio" value="2" checked>
+	</label>
+	<input type="submit">
+</form>
+<?php
+if (isset($_GET['f12_radio'])) {
+	$arr = ['Мужской', 'Женский', 'Деревянный'];
+	echo $arr[$_GET['f12_radio']];
+}
+?>
+
+<h3 class="fw-bold mt-5">Сохранение выбранного значения в радиокнопках после отправки в PHP</h3>
+<p>Давайте напишем код, который будет сохранять отмеченный переключатель после отправки формы:</p>
+<code>
+	<pre>
+	&ltform action="" method="GET">
+	&ltinput type="radio" name="radio" value="1" &lt?php
+		if (!empty($_GET['radio']) and $_GET['radio'] === '1') {
+			echo 'checked';
+		}
+		?>>
+	&ltinput type="radio" name="radio" value="2" &lt?php
+		if (!empty($_GET['radio']) and $_GET['radio'] === '2') {
+			echo 'checked';
+		}
+		?>>
+	&ltinput type="radio" name="radio" value="3" &lt?php
+		if (!empty($_GET['radio']) and $_GET['radio'] === '3') {
+			echo 'checked';
+		}
+		?>>
+	&ltinput type="submit">
+	&lt/form></pre>
+</code>
+
+<p class="fw-bold">Задача:</p>
+<p>С помощью переключателей попросите пользователя выбрать его язык. Сделайте так, чтобы выбор не пропадал после отправки формы.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltform action="">
+	&ltp>Выберите язык:&lt/p>
+	&ltlabel>
+		Русский
+		&ltinput type="radio" name="f13_language" value="ru"
+			&lt?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'ru') ? 'checked' : '' ?>>
+	&lt/label>
+	&ltbr />
+	&ltlabel>
+		Английский
+		&ltinput type="radio" name="f13_language" value="en"
+			&lt?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'en') ? 'checked' : '' ?>>
+	&lt/label>
+	&ltbr />
+	&ltlabel>
+		JavaScript
+		&ltinput type="radio" name="f13_language" value="js"
+			&lt?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'js') ? 'checked' : '' ?>>
+	&lt/label>
+	&ltbr />
+	&ltinput type="submit">
+	&lt/form>
+	&lt?php
+	if (isset($_GET['f13_language'])) {
+		$change = 'Вы выбрали:';
+		switch ($_GET['f13_language']) {
+			case 'ru':
+				echo "&ltp>$change Русский&lt/p>";
+				break;
+			case 'en':
+				echo "&ltp>$change English&lt/p>";
+				break;
+			case 'js':
+				echo "&ltp>$change JavaScript&lt/p>";
+				break;
+		}
+	}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<p>Выберите язык:</p>
+	<label>
+		Русский
+		<input type="radio" name="f13_language" value="ru"
+			<?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'ru') ? 'checked' : '' ?>>
+	</label>
+	<br />
+	<label>
+		Английский
+		<input type="radio" name="f13_language" value="en"
+			<?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'en') ? 'checked' : '' ?>>
+	</label>
+	<br />
+	<label>
+		JavaScript
+		<input type="radio" name="f13_language" value="js"
+			<?= (isset($_GET['f13_language']) and $_GET['f13_language'] == 'js') ? 'checked' : '' ?>>
+	</label>
+	<br />
+	<input type="submit">
+</form>
+<?php
+if (isset($_GET['f13_language'])) {
+	$change = 'Вы выбрали:';
+	switch ($_GET['f13_language']) {
+		case 'ru':
+			echo "<p>$change Русский</p>";
+			break;
+		case 'en':
+			echo "<p>$change English</p>";
+			break;
+		case 'js':
+			echo "<p>$change JavaScript</p>";
+			break;
+	}
+}
+?>
+
+<h3 class="fw-bold mt-5">Селекты в PHP</h3>
+<p>Давайте теперь научимся работать с тегом select в PHP. Сделаем такой выпадающий список в нашей форме:</p>
+<code>
+	<pre>
+		&ltform action="" method="GET">
+	&ltselect name="test">
+		&ltoption>item1&lt/option>
+		&ltoption>item2&lt/option>
+		&ltoption>item3&lt/option>
+	&lt/select>
+	&ltinput type="submit">
+&lt/form></pre>
+</code>
+<p>После отправки формы в $_GET селекта будет содержаться значение выбранного тега option:</p>
+<code>
+	<pre>
+		&lt?php
+		var_dump($_GET['test']); // 'item1', 'item2' или 'item3'
+		?></pre>
+</code>
+<p class="fw-bold">Задача:</p>
+<p>С помощью выпадающего списка предложите пользователю выбрать страну, в которой он живет.</p>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<p>Выберите страну в которой вы живёте:
+		<select name="f14_country" id="">
+			<option value="ru"
+				<?= (isset($_GET['f14_country']) and $_GET['f14_country'] == 'ru') ? 'selected' : '' ?>>
+				Россия</option>
+			<option value="us"
+				<?= (isset($_GET['f14_country']) and $_GET['f14_country'] == 'us') ? 'selected' : '' ?>>
+				США</option>
+			<option value="cn"
+				<?= (isset($_GET['f14_country']) and $_GET['f14_country'] == 'cn') ? 'selected' : '' ?>>
+				Китай</option>
+			<option value="pr"
+				<?= (isset($_GET['f14_country']) and $_GET['f14_country'] == 'pr') ? 'selected' : '' ?>>
+				Программирование</option>
+		</select>
+		<input type="submit">
+	</p>
+</form>
+<?php if (isset($_GET['f14_country'])) {
+	$change = 'Вы выбрали:';
+	switch ($_GET['f14_country']) {
+		case 'ru':
+			echo "<p>$change Русский</p>";
+			break;
+		case 'en':
+			echo "<p>$change English</p>";
+			break;
+		case 'cn':
+			echo "<p>$change Китай</p>";
+			break;
+		default:
+			echo "<p>$change Всё правильно ;)</p>";
+			break;
+	}
+}
