@@ -738,31 +738,57 @@ if (isset($_GET['f8_text'])) {
 <p>Давайте теперь научимся работать с флажками checkbox в PHP. Сделаем такой флажок в нашей форме:</p>
 <code>
 	<pre>
-	&ltform action="" method="GET">
+		&ltform action="" method="GET">
 		&ltinput type="checkbox" name="flag">
 		&ltinput name="text">
 		&ltinput type="submit">
-	&lt/form></pre>
-</code>
-<p>После отправки формы в $_GET флажка будет содержаться строка 'on', если флажок был отмечен и null, если нет:</p>
-<code>
-	<pre>
-	&lt?php
-	var_dump($_GET['flag']); // 'on' или null
-	?>
-	</pre>
-</code>
-<p>Давайте выведем что-нибудь на экран в зависимости от того, был отмечен флажок или нет:</p>
-<code>
-	<pre>
-		&lt?php
-		if (!empty($_GET)) { // если форма была отправлена
-			if (isset($_GET['flag'])) { // если флажок отмечен
-				echo 'отмечен';
-			} else {
-				echo 'не отмечен';
+		&lt/form></pre>
+	</code>
+	<p>После отправки формы в $_GET флажка будет содержаться строка 'on', если флажок был отмечен и null, если нет:</p>
+	<code>
+		<pre>
+			&lt?php
+			var_dump($_GET['flag']); // 'on' или null
+			?>
+		</pre>
+	</code>
+	<p>Давайте выведем что-нибудь на экран в зависимости от того, был отмечен флажок или нет:</p>
+	<code>
+		<pre>
+			&lt?php
+			if (!empty($_GET)) { // если форма была отправлена
+				if (isset($_GET['flag'])) { // если флажок отмечен
+					echo 'отмечен';
+				} else {
+					echo 'не отмечен';
+				}
 			}
-		}
-		?>
-	</pre>
-</code>
+			?>
+		</pre>
+	</code>
+	
+<p class="fw-bold">Задача:</p>
+<p>Сделайте форму с инпутом и флажком. С помощью инпута спросите у пользователя имя. После отправки формы, если флажок был отмечен, поприветствуйте пользователя, а если не был отмечен - попрощайтесь.</p>
+<p class="fw-bold">Результат:</p>
+<form action="">
+	<input type="checkbox" name="f9_flag"
+	>
+	<label>
+		Имя:<br/>
+		<input name="f9_name" 
+		value= "<?= $_GET['f9_name'] ?? ''?>"
+		>
+	</label>
+	<input type="submit">
+</form>
+<?php
+if (isset($_GET['f9_name'])) {
+	if(isset($_GET['f9_flag']) and $_GET['f9_flag'] == 'on'){
+		echo "flag: $_GET[f9_flag]</p><br/>";
+		echo "<p>Здравствуйте $_GET[f9_name]</p>";
+	} else {
+		echo "flag: null</p><br/>";
+		echo "<p>Досвидания $_GET[f9_name]</p>";
+	}
+}
+?>
