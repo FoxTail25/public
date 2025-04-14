@@ -91,9 +91,13 @@
 		<?php //include './php/form.php'; 
 		?>
 	</div>  -->
-	<h3 class="text-center redT m-2">GET запросы в PHP</h3>
+	<!-- <h3 class="text-center redT m-2">GET запросы в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/get_rec.php'; ?>
+		<?php //include './php/get_rec.php'; ?>
+	</div> -->
+	<h3 class="text-center redT m-2">Практика на формы в PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/get_rec_pract.php'; ?>
 	</div>
 
 	<script src="./js.js"></script>
