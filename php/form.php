@@ -820,8 +820,8 @@ if (isset($_GET['f9_name']) and mb_strlen($_GET['f9_name']) > 0) {
 }
 ?>
 
-<h3 class="fw-bold mt-5">Нюансы использования чекбоксов в PHP</h3>
-<p>Пусть в нашей форме есть только чекбокс:</p>
+
+
 <code>
 	<pre>
 	&ltform action="" method="GET">

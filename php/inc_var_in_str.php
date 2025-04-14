@@ -91,6 +91,7 @@ echo "xxx $arr[0] yyy";
 </code>
 <?php
 echo "aaa $arr[0] bbb $arr[1]";
+
 ?>
 <h3 class="mt-5 text-left">
 	Вставка элементов ассоциативных массивов в PHP
