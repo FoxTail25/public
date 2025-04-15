@@ -380,38 +380,203 @@ if (isset($_GET['f6_date'])) {
 <p class="fw-bold">Результат:</p>
 
 <form>
-    <textarea 
-    name="f7_ta"
-    value="<?=$_GET['f7_ta']?? ''?>"
-    ></textarea>
+    <textarea
+        name="f7_ta"><?= $_GET['f7_ta'] ?? '' ?></textarea>
     <input type="submit">
 </form>
 <?php
-if(isset($_GET['f7_ta'])){
+if (isset($_GET['f7_ta'])) {
     $message = $_GET['f7_ta'];
-    if(strlen($message) == 0){
+    if (strlen($message) == 0) {
         $wordQuantity = 0;
-    }else {
-        $wordQuantity = count(explode(' ',$message));
+    } else {
+        $wordQuantity = count(explode(' ', $message));
     }
-    $symQyantity = preg_replace('#\s#', '',$message);
-    echo $message.'<br/>';
+    $symQyantity = preg_replace('#\s#', '', $message);
+    echo $message . '<br/>';
     echo "Количество слов: $wordQuantity <br/>";
-    echo "Количество символов: ".strlen($symQyantity)." <br/>";
-}?>
+    echo "Количество символов: " . strlen($symQyantity) . " <br/>";
+} ?>
 
 <p class="fw-bold mt-5">Задача 8:</p>
 <p>Дан текстареа и кнопка. В текстареа вводится текст. По нажатию на кнопку нужно посчитать процентное содержание каждого символа в тексте.</p>
-<p class="fw-bold">Результат</p>
+<p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+    &ltform action="">
+        &ltlabel>Напишите что-нибудь:&ltbr />
+            &lttextarea 
+            name="f8_ta"
+            >&lt?= $_GET['f8_ta'] ?? '' ?>&lt/textarea>
+        &lt/label>
+        &ltinput type="submit" value="расчитать процентное соотношение каждого символа к общему кол-во символов">
+    &lt/form>
+
+    &lt?php
+    if (isset($_GET['f8_ta'])) {
+        $msg = $_GET['f8_ta'];
+        $msglen = mb_strlen($msg); // расчитываем длинну строки с учётом русских символов
+        preg_match_all('#[a-zA-Zа-яА-Я0-9\W]{1}#u', $msg, $match); // Находим все символы и кладём их в массив.
+        $res = array_unique($match[0]);
+        $result = array_fill_keys($res, 0); // Создаём ассоциативный массив в котором ключи - уникальные символы, а значения 0
+
+        foreach ($match[0] as $elem) { // Считаем реальное количество символов
+            if (in_array($elem, array_keys($result))) {
+                $result[$elem]++;
+            }
+        }
+
+        foreach ($result as $key => $value) { // Формируем ответ
+            $value = ($value / $msglen) *  100;
+            $value = round($value, 1);
+            echo "Символ '$key': $value%&ltbr/>";
+        }
+    }
+    ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
 <form action="">
-    <label>Напишите что-нибудь:
-        <textarea name="f8_ta"
-        value="<?=$_GET['f8_ta']??''?>"></textarea>
+    <label>Напишите что-нибудь:<br />
+        <textarea
+            name="f8_ta"><?= $_GET['f8_ta'] ?? '' ?></textarea>
     </label>
-    <input type="submit" value="расчитать кол-во символов">
+    <input type="submit" value="расчитать процентное соотношение каждого символа к общему кол-во символов">
 </form>
 
 <?php
-if(isset($_GET['f8_ta'])){
+if (isset($_GET['f8_ta'])) {
+    $msg = $_GET['f8_ta'];
+    $msglen = mb_strlen($msg);
+    preg_match_all('#[a-zA-Zа-яА-Я0-9\W]{1}#u', $msg, $match);
+    $res = array_unique($match[0]);
+    $result = array_fill_keys($res, 0);
 
-}?>
+    foreach ($match[0] as $elem) {
+        if (in_array($elem, array_keys($result))) {
+            $result[$elem]++;
+        }
+    }
+
+    foreach ($result as $key => $value) {
+        $value = ($value / $msglen) *  100;
+        $value = round($value, 1);
+        echo "Символ '$key': $value%<br/>";
+    }
+}
+?>
+
+<p class="fw-bold mt-5">Задача 9:</p>
+<p>Даны 3 селекта и кнопка. Первый селект - это дни от 1 до 31, второй селект - это месяцы от января до декабря, а третий - это годы от 1990 до 2025. С помощью этих селектов можно выбрать дату. По нажатию на кнопку выведите на экран день недели, соответствующий этой дате.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+&ltform>
+    &ltlabel>day :
+        &ltselect name="f9_day">
+            &lt?php for ($i = 1; $i &lt 32; $i++): ?>
+                &ltoption value="&lt?= $i ?>"
+                    &lt?= (isset($_GET['f9_day']) and $_GET['f9_day'] == $i) ? 'selected' : '' ?>>&lt?= $i ?>&lt/option>
+            &lt?php endfor ?>
+        &lt/select>
+    &lt/label>
+    &ltlabel>month :
+        &ltselect name="f9_month">
+            &lt?php for ($i = 1; $i &lt 13; $i++): ?>
+                &ltoption value="&lt?= $i ?>"
+                    &lt?= (isset($_GET['f9_day']) and $_GET['f9_month'] == $i) ? 'selected' : '' ?>>&lt?= $i ?>&lt/option>
+            &lt?php endfor ?>
+        &lt/select>
+    &lt/label>
+    &ltlabel>year :
+        &ltselect name="f9_year">
+            &lt?php for ($i = 2025; $i > 1989; $i--): ?>
+                &ltoption value="&lt?= $i ?>"
+                    &lt?= (isset($_GET['f9_day']) and $_GET['f9_year'] == $i) ? 'selected' : '' ?>>&lt?= $i ?>&lt/option>
+            &lt?php endfor ?>
+        &lt/select>
+    &lt/label>
+    &ltinput type="submit">
+&lt/form>
+&lt?php if (isset($_GET['f9_day']) and isset($_GET['f9_month']) and isset($_GET['f9_year'])) {
+    $mkdate =  mktime(0, 0, 0, $_GET['f9_month'], $_GET['f9_day'], $_GET['f9_year']);
+    $weekDayEn = date('l', $mkdate);
+    $weekDayNum = date('w', $mkdate);
+    $weekDayArr = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+    echo "&ltp> ".date("d-m-Y", $mkdate)." был: $weekDayArr[$weekDayNum] ($weekDayEn)&ltp/>";
+} ?>
+    </pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<form>
+    <label>day :
+        <select name="f9_day">
+            <?php for ($i = 1; $i < 32; $i++): ?>
+                <option value="<?= $i ?>"
+                    <?= (isset($_GET['f9_day']) and $_GET['f9_day'] == $i) ? 'selected' : '' ?>><?= $i ?></option>
+            <?php endfor ?>
+        </select>
+    </label>
+    <label>month :
+        <select name="f9_month">
+            <?php for ($i = 1; $i < 13; $i++): ?>
+                <option value="<?= $i ?>"
+                    <?= (isset($_GET['f9_day']) and $_GET['f9_month'] == $i) ? 'selected' : '' ?>><?= $i ?></option>
+            <?php endfor ?>
+        </select>
+    </label>
+    <label>year :
+        <select name="f9_year">
+            <?php for ($i = 2025; $i > 1989; $i--): ?>
+                <option value="<?= $i ?>"
+                    <?= (isset($_GET['f9_day']) and $_GET['f9_year'] == $i) ? 'selected' : '' ?>><?= $i ?></option>
+            <?php endfor ?>
+        </select>
+    </label>
+    <input type="submit">
+</form>
+<?php if (isset($_GET['f9_day']) and isset($_GET['f9_month']) and isset($_GET['f9_year'])) {
+    $mkdate =  mktime(0, 0, 0, $_GET['f9_month'], $_GET['f9_day'], $_GET['f9_year']);
+    $weekDayEn = date('l', $mkdate);
+    $weekDayNum = date('w', $mkdate);
+    $weekDayArr = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+    echo "<p> " . date("d-m-Y", $mkdate) . " был: $weekDayArr[$weekDayNum] ($weekDayEn)<p/>";
+} ?>
+
+<p class="fw-bold mt-5">Задача 10:</p>
+<p>Сделайте скрипт-гороскоп. Внутри него хранится массив гороскопов на несколько дней вперед для каждого знака зодиака. По заходу на страницу спросите у пользователя дату рождения, определите его знак зодиака и выведите предсказание для этого знака зодиака на текущий день.</p>
+<p class="fw-bold">Результат:</p>
+<p>Укажите дату своего рождения</p>
+<form>
+    <input name="f10_date"
+        type="date"
+        value="<?= $_GET['f10_date'] ?? '' ?>">
+    <input type="submit">
+</form>
+<?php
+if (isset($_GET['f10_date'])) {
+    // $date = preg_replace('#(\d{4})-(\d{2})-(\d{2})#','\3:\2:\1', $_GET['f10_date']);
+    $birthYear = preg_replace('#(\d{4})-(\d{2})-(\d{2})#', '\1', $_GET['f10_date']);
+    // echo $date;
+    // echo $birthYear;
+    $incomingDate = strtotime($_GET['f10_date']);
+    $horoscopeDates = [['21.03', '19.04', "Овен", '&#9800;'], ['20.04', '20.05', "Телец", '&#9801;'], ['21.05', '20.06', "Близнецы", '&#9802;'], ['21.06', '22.07', "Рак", '&#9803;'], ['23.07', '22.08', "Лев", '&#9804;'], ['23.08', '22.09', "Дева", '&#9805;'], ['23.09', '22.10', "Весы", '&#9806;'], ['23.10', '21.11', "Скорпион", '&#9807;'], ['22.11', '21.12', "Стрелец", '&#9808;'], ['22.12', '19.01', "Козерог", '&#9809;'], ['20.01', '18.02', "Водолей", '&#9810;'], ['19.02', '20.03', "Рыбы", '&#9811;']];
+    for ($i = 0; $i < count($horoscopeDates); $i++) {
+        // $start = $horoscopeDates[$i][0] .".".$birthYear;
+        // $s_start = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $start);
+        // echo $horoscopeDates[$i][2].'<br/>';
+        // var_dump($incomingDate > strtotime($s_start));
+        // $end = $horoscopeDates[$i][1] .".".$birthYear;
+        // $s_end = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $end);
+        // var_dump($incomingDate > strtotime($s_end));
+        // echo '<br/>';
+    }
+}
+?>
+
+
+
+
+<!-- $horoscopeDates = ["Овен" => ['21.03', '19.04', '&#9800;'], "Телец" => ['20.04', '20.05', '&#9801;'], "Близнецы" => ['21.05', '20.06', '&#9802;'], "Рак" => ['21.06', '22.07', '&#9803;'], "Лев" => ['23.07', '22.08', '&#9804;'], "Дева" => ['23.08', '22.09', '&#9805;'], "Весы" => ['23.09', '22.10', '&#9806;'], "Скорпион" => ['23.10', '21.11', '&#9807;'], "Стрелец" => ['22.11', '21.12', '&#9808;'], "Козерог" => ['22.12', '19.01', '&#9809;'], "Водолей" => ['20.01', '18.02', '&#9810;'], "Рыбы" => ['19.02', '20.03', '&#9811;']];
+for($i = 0; $i < count($horoscopeDates);$i++){
+
+    } -->
