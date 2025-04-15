@@ -353,6 +353,32 @@ if (isset($_GET['f6_date'])) {
 
 <p class="fw-bold mt-5">Задача 7:</p>
 <p>Дан текстареа и кнопка. В текстареа вводится текст. По нажатию на кнопку выведите количество слов и количество символов в тексте.</p>
+<p class="fw-bold">Решение</p>
+<code>
+    <pre>
+    &ltform>
+        &lttextarea 
+        name="f7_ta"
+        value="&lt?=$_GET['f7_ta']?? ''?>"
+        >&lt/textarea>
+        &ltinput type="submit">
+    &lt/form>
+    &lt?php
+    if(isset($_GET['f7_ta'])){
+        $message = $_GET['f7_ta'];
+        if(strlen($message) == 0){
+            $wordQuantity = 0;
+        }else {
+            $wordQuantity = count(explode(' ',$message));
+        }
+        $symQyantity = preg_replace('#\s#', '',$message);
+        echo $message.'&ltbr/>';
+        echo "Количество слов: $wordQuantity &ltbr/>";
+        echo "Количество символов: ".strlen($symQyantity)." <br/>";
+    }?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+
 <form>
     <textarea 
     name="f7_ta"
@@ -363,8 +389,29 @@ if (isset($_GET['f6_date'])) {
 <?php
 if(isset($_GET['f7_ta'])){
     $message = $_GET['f7_ta'];
-    $wordQuantity = count(explode(' ',$message));
-    if(count($message))
+    if(strlen($message) == 0){
+        $wordQuantity = 0;
+    }else {
+        $wordQuantity = count(explode(' ',$message));
+    }
+    $symQyantity = preg_replace('#\s#', '',$message);
     echo $message.'<br/>';
     echo "Количество слов: $wordQuantity <br/>";
-}
+    echo "Количество символов: ".strlen($symQyantity)." <br/>";
+}?>
+
+<p class="fw-bold mt-5">Задача 8:</p>
+<p>Дан текстареа и кнопка. В текстареа вводится текст. По нажатию на кнопку нужно посчитать процентное содержание каждого символа в тексте.</p>
+<p class="fw-bold">Результат</p>
+<form action="">
+    <label>Напишите что-нибудь:
+        <textarea name="f8_ta"
+        value="<?=$_GET['f8_ta']??''?>"></textarea>
+    </label>
+    <input type="submit" value="расчитать кол-во символов">
+</form>
+
+<?php
+if(isset($_GET['f8_ta'])){
+
+}?>
