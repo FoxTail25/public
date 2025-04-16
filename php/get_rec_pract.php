@@ -561,14 +561,14 @@ if (isset($_GET['f10_date'])) {
     $incomingDate = strtotime($_GET['f10_date']);
     $horoscopeDates = [['21.03', '19.04', "Овен", '&#9800;'], ['20.04', '20.05', "Телец", '&#9801;'], ['21.05', '20.06', "Близнецы", '&#9802;'], ['21.06', '22.07', "Рак", '&#9803;'], ['23.07', '22.08', "Лев", '&#9804;'], ['23.08', '22.09', "Дева", '&#9805;'], ['23.09', '22.10', "Весы", '&#9806;'], ['23.10', '21.11', "Скорпион", '&#9807;'], ['22.11', '21.12', "Стрелец", '&#9808;'], ['22.12', '19.01', "Козерог", '&#9809;'], ['20.01', '18.02', "Водолей", '&#9810;'], ['19.02', '20.03', "Рыбы", '&#9811;']];
     for ($i = 0; $i < count($horoscopeDates); $i++) {
-        // $start = $horoscopeDates[$i][0] .".".$birthYear;
-        // $s_start = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $start);
-        // echo $horoscopeDates[$i][2].'<br/>';
-        // var_dump($incomingDate > strtotime($s_start));
-        // $end = $horoscopeDates[$i][1] .".".$birthYear;
-        // $s_end = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $end);
-        // var_dump($incomingDate > strtotime($s_end));
-        // echo '<br/>';
+        $start = $horoscopeDates[$i][0] .".".$birthYear;
+        $s_start = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $start);
+        echo $horoscopeDates[$i][2].'<br/>';
+        var_dump($incomingDate > strtotime($s_start));
+        $end = $horoscopeDates[$i][1] .".".$birthYear;
+        $s_end = preg_replace('#(\d{2})-(\d{2})-(\d{4})#', '\3-\1-\2', $end);
+        var_dump($incomingDate < strtotime($s_end));
+        echo '<br/>';
     }
 }
 ?>
