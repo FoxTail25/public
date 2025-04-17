@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<link rel="shortcut icon" href="/favicon.ico">
 	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
-	<link rel="stylesheet" href="css/bootstrap.min.css" >
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<title>Изучение PHP</title>
 	<style>
@@ -93,13 +93,19 @@
 	</div>  -->
 	<!-- <h3 class="text-center redT m-2">GET запросы в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/get_rec.php'; ?>
+		<?php //include './php/get_rec.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Практика на формы в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php // include './php/get_rec_pract.php'; ?>
+		<?php // include './php/get_rec_pract.php'; 
+		?>
 	</div> -->
-	<h3 class="text-center redT m-2">Сессии в PHP</h3>
+	<!-- <h3 class="text-center redT m-2">Сессии в PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php //include './php/session.php'; ?>
+	</div> -->
+	<h3 class="text-center redT m-2">Введение в работу с куками в PHP (Coockies)</h3>
 	<div class="text-left ms-4 mb-4">
 		<?php include './php/session.php'; ?>
 	</div>
