@@ -103,11 +103,17 @@
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Сессии в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/session.php'; ?>
+		<?php //include './php/session.php'; 
+		?>
 	</div> -->
-	<h3 class="text-center redT m-2">Введение в работу с куками в PHP (Coockies)</h3>
+	<!-- <h3 class="text-center redT m-2">Введение в работу с куками в PHP (Coockies)</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/coockies.php'; ?>
+		<?php //include './php/coockies.php'; 
+		?>
+	</div> -->
+	<h3 class="text-center redT m-2">Работа с файлами в PHP </h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/file.php'; ?>
 	</div>
 
 	<script src="./js.js"></script>
