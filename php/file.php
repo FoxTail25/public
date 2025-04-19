@@ -4,8 +4,7 @@
 	<pre>
 		&lt?php
 		echo file_get_contents('test.txt');
-		?>
-	</pre>
+		?></pre>
 </code>
 
 <p class="fw-bold mt-5">Задача</p>
@@ -17,8 +16,7 @@
 		$num1 = file_get_contents('files/1.txt');
 		$num2 = file_get_contents('files/2.txt');
 		echo $num1 + $num2;
-		?>
-	</pre>
+		?></pre>
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
@@ -35,8 +33,7 @@ echo $num1 + $num2;
 	<pre>
 		&lt?php
 		file_put_contents('test.txt', '!');
-		?>
-	</pre>
+		?></pre>
 </code>
 
 <p class="fw-bold mt-5">Задача</p>
@@ -47,15 +44,14 @@ echo $num1 + $num2;
 		&lt?php
 		$numArr = [1, 2, 3, 4, 5];
 		file_put_contents('files/sum.txt', array_sum($numArr));
-		?>
-	</pre>
+		?></pre>
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
 $numArr = [1, 2, 3, 4, 5];
 file_put_contents('files/sum.txt', array_sum($numArr));
 ?>
-<p>/files/sum.txt</p>
+<p>'/files/sum.txt'</p>
 
 <h3 class="fw-bold">Комбинация операций чтения и записи файла в PHP</h3>
 <p>Чтение и запись файлов можно комбинировать. Давайте для примера прочитаем файл, добавим в конец его текста восклицательный знак и запишем текст обратно в этот файл:</p>
@@ -65,7 +61,7 @@ file_put_contents('files/sum.txt', array_sum($numArr));
 	file_put_contents('test.txt', $text . '!');</pre>
 </code>
 
-<p class="fw-bold mt-5">Задача</p>
+<p class="fw-bold mt-5">Задача 1</p>
 <p>Пусть у вас есть файл, в котором записано некоторое число. Откройте этот файл, возведите число в квадрат и запишите обратно в файл.</p>
 <p class="fw-bold">Решение</p>
 <code>
@@ -78,5 +74,327 @@ file_put_contents('files/sum.txt', array_sum($numArr));
 <p class="fw-bold">Результат:</p>
 <?php
 $num = file_get_contents('files/num.txt');
+if ($num > 1000000) {
+	$num = 2;
+};
 file_put_contents('files/num.txt', pow($num, 2));
 ?>
+<p>'files/num.txt'</p>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Пусть в корне вашего сайта лежит файл count.txt. Изначально в нем записано число 0. Сделайте так, чтобы при обновлении страницы наш скрипт каждый раз увеличивал это число на 1. То есть у нас получится счетчик обновления страницы в виде файла.</p>
+<p class="fw-bold">Решение</p>
+<code>
+	<pre>
+		&lt?php
+	if (file_get_contents('files/count.txt') == 0) {
+		$renewCount = 1;
+		file_put_contents('files/count.txt', $renewCount);
+	} else {
+		$renewCount = file_get_contents('files/count.txt');
+		++$renewCount;
+		file_put_contents('files/count.txt', $renewCount);
+	}
+	?>
+	&ltp>Счетчик обновления страницы = &lt?= $renewCount ?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+if (file_get_contents('files/count.txt') == 0) {
+	$renewCount = 1;
+	file_put_contents('files/count.txt', $renewCount);
+} else {
+	$renewCount = file_get_contents('files/count.txt');
+	++$renewCount;
+	file_put_contents('files/count.txt', $renewCount);
+}
+?>
+<p>Счетчик обновления страницы = <?= $renewCount ?></p>
+
+
+<p class="fw-bold mt-5">Задача 3</p>Пусть в корне вашего сайта лежат файлы 11.txt, 12.txt и 13.txt. Вручную сделайте массив с именами этих файлов. Переберите его циклом, прочитайте содержимое каждого из файлов, слейте его в одну строку и запишите в новый файл new.txt. Изначально этого файла не должно быть.</p>
+<p class="fw-bold">Решение</p>
+<code>
+	<pre>
+	&lt?php
+	$arrFileNames = ['11.txt', '12.txt', '13.txt',];
+	$result ='';
+	foreach($arrFileNames as $fileName){
+		global $result;
+		$result .= file_get_contents("files/$fileName");
+	}
+	file_put_contents('files/new.txt', $result);
+	?>
+	&ltp>Результат в файле files/new.txt = &lt?= file_get_contents('files/new.txt') ?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$arrFileNames = ['11.txt', '12.txt', '13.txt',];
+$result = '';
+foreach ($arrFileNames as $fileName) {
+	global $result;
+	$result .= file_get_contents("files/$fileName");
+}
+file_put_contents('files/new.txt', $result);
+?>
+<p>Результат в файле files/new.txt = <?= file_get_contents('files/new.txt') ?></p>
+
+<h3 class="fw-bold mt-5">Относительные пути в PHP</h3>
+<p>Как вы уже знаете, в параметр функции <b>file_get_contents</b> следует писать имя файла. Это, однако, работает только в том случае, если читаемый файл лежит в той же папке, в которой запускается наш скрипт.<br /> Если же файл лежит в другом месте, то в параметр функции нужно писать путь к этому файлу.<br /> Посмотрим на примере.
+</p>
+<p class="fw-bold">Пример 1</p>
+<p>Пусть у нас есть следующая структура файлов:</p>
+<pre>
+	index.php
+		/directory/
+		test.txt
+</pre>
+<p>Давайте прочитаем содержимое текстового файла. Для этого кроме имени файла нам понадобится указать еще и папку, в которой он лежит:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('directory/test.txt');
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Пример 2</p>
+<p>Пусть у нас есть следующая структура файлов:</p>
+<pre>
+	/script/
+		index.php
+	test.txt
+</pre>
+<p>В таком случае мы должны явно указать в пути к файлу, что этот файл нужно искать на уровень выше. Для этого перед именем файла следует написать ../. Сделаем это:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../test.txt'); 
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Пример 3</p>
+<p>Пусть у нас есть следующая структура файлов:</p>
+<pre>
+	/script/
+		index.php
+	/directory/
+		test.txt
+</pre>
+<p>В этом случае при чтении файла мы сначала выйдем на уровень выше, а затем укажем путь к нашему файлу относительно этого уровня:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../directory/test.txt');
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Пример 4</p>
+<p>Пусть у нас есть следующая структура файлов:</p>
+<pre>
+	/script/
+		/test/
+			index.php
+	/directory/
+		test.txt
+</pre>
+<p>В этом случае нам потребуется выйти наверх два раза:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../../directory/test.txt');
+		?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+	index.php
+	/dir1/
+		/dir2/
+			test.txt
+</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('dir1/dir2/test.txt');
+		?>
+	</pre>
+</code>
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+/script/
+	index.php
+/dir1/
+	/dir2/
+		test.txt
+</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../dir1/dir2/test.txt');
+		?>
+	</pre>
+</code>
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+	/script1/
+		/script2/
+			index.php
+	/dir/
+		test.txt
+</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../../dir/test.txt');
+		?>
+	</pre>
+</code>
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+	/script1/
+		/script2/
+			/script3/
+				index.php
+	/dir1/
+		/dir2/
+			/dir3/
+				test.txt
+</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../../../dir1/dir2/dir3/test.txt');
+		?>
+	</pre>
+</code>
+
+<h3 class="fw-bold mt-5">Абсолютные пути в PHP</h3>
+<p>Давайте прочитаем текстовый файл, находящийся в папке с нашим скриптом:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('test.txt');
+		?>
+	</pre>
+</code>
+<p>Давайте теперь в начале пути поставим слеш:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('/test.txt');
+		?>
+	</pre>
+</code>
+<p>В этом случае путь станет не относительным, а абсолютным. При этом наш файл будет искаться от корня операционной системы. Конечно же, файла по такому пути не найдется, так как он расположен в папке с нашем сайтом.<br />Мы можем получить путь от корня операционной системы до папки с нашим сайтом:</p>
+<code>
+	<pre>
+		&lt?php
+		echo $_SERVER['DOCUMENT_ROOT'];
+		?>
+	</pre>
+</code>
+<p>Можем добавить полученный путь к имени искомого файла - и получим правильный абсолютный путь к нашему файлу:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt');
+		?>
+	</pre>
+</code>
+
+<h3 class="fw-bold mt-5">Преимущества абсолютного пути в PHP</h3>
+<p>Использование абсолютного пути удобно, когда файл с нашим скриптом и прочитываемый файл находятся в подпапках нашего сайта.<br />
+	Давайте посмотрим на примере. Пусть у нас есть следующая структура файлов:</p>
+<pre>
+	/script/
+		index.php
+	/directory/
+		test.txt
+</pre>
+<p>Прочитаем наш файл, используя относительный путь:</p>
+<code>
+	<pre>
+		&lt?php
+		echo file_get_contents('../directory/test.txt');
+		?>
+	</pre>
+</code>
+<p>А теперь прочитаем наш файл, используя абсолютный путь:</p>
+<code>
+	<pre>
+		&lt?php
+		$root = $_SERVER['DOCUMENT_ROOT'];
+		echo file_get_contents($root . '/directory/test.txt');
+		?>
+	</pre>
+</code>
+<p>Во втором случае, даже если мы переместим файл со скриптом в другое место, <b>путь к файлу не придется менять</b>, ведь он задается от корня сайта.</p>
+
+<h3 class="fw-bold mt-5">Абсолютные пути к папке и файлу скрипта в PHP</h3>
+<p>Иногда нам нужно получить не путь к корню сайта, а путь к папке со скриптом.<br />
+	Это будут разные пути в том случае, если запускаемый скрипт находится не в корне сайта, а в подпапке, например, так:</p>
+<pre>
+	/script/
+		index.php
+</pre>
+<p>В этом случае путь к папке со скриптом находится в константе __DIR__:</p>
+<code>
+	<pre>
+		&lt?php
+			echo __DIR__;
+		?></pre>
+</code>
+<p><i>Результат будет вот таким: <?= __DIR__ ?></i></p>
+<p class="mt-2">Можно также получить путь к самому файлу скрипта с помощью константы __FILE__:</p>
+<code>
+	<pre>
+		&lt?php
+			echo __FILE__;
+		?></pre>
+</code>
+<p><i>Результат будет вот таким: <?= __FILE__ ?></i></p>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+	/script1/
+		/script2/
+			index.php
+	/dir/
+		test.txt</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$root = $_SERVER['DOCUMENT_ROOT'];
+		echo file_get_contents($root . '/dir/test.txt');
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Напишите код, который прочитает содержимое текстового файла:</p>
+<pre>
+	/script1/
+		/script2/
+			/script3/
+				index.php
+	/dir1/
+		/dir2/
+			/dir3/
+				test.txt</pre>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$root = $_SERVER['DOCUMENT_ROOT'];
+		echo file_get_contents($root . '/dir1/dir2/dir3/test.txt');
+		?></pre>
+</code>
