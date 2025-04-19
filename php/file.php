@@ -397,4 +397,150 @@ file_put_contents('files/new.txt', $result);
 		$root = $_SERVER['DOCUMENT_ROOT'];
 		echo file_get_contents($root . '/dir1/dir2/dir3/test.txt');
 		?></pre>
+	</code>
+
+<h3 class="fw-bold mt-5">Переименовывание файлов в PHP</h3>
+<p>Функция rename позволяет переименовывать файлы. Первым параметром указываем старое имя файла, вторым - новое имя файла:</p>
+<code>
+	<pre>
+		&lt?php
+		rename('test.txt', 'new.txt');
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в корне вашего сайта лежит файл old.txt. Переименуйте его на new.txt.</p>
+<p class="fw-bold">Решение</p>
+<code>
+	<pre>
+		rename('files/old.txt', 'files/new.txt');		
+	</pre>
+</code>
+<?php
+// rename('files/old.txt', 'files/new.txt');
+?>
+
+<h3 class="fw-bold mt-5">Перемещение файлов в PHP</h3>
+<p>Функция rename позволяет также перемещать файлы. Для этого вторым параметром функции нужно указать новый путь к файлу. Давайте для примера перенесем наш файл в папку dir, одновременно переименовав его на new.txt:</p>
+<code>
+	<pre>
+	&lt?php
+		rename('test.txt', 'dir/new.txt');
+	?></pre>
+</code>
+<p>Можно сделать только перемещение, а сам файл не переименовывать:</p>
+<code>
+	<pre>
+	&lt?php
+		rename('test.txt', 'dir/test.txt');
+	?></pre>
+</code>
+
+<h3 class="fw-bold mt-5">Копирование файлов в PHP</h3>
+<p>Функция copy позволяет копировать файл. Первым параметром она принимает путь к файлу, который хотим копировать, вторым - новый путь файла, куда хотим положить копию. Мы можем сделать копию и положить ее рядом, или положить ее в другую папку. Сделаем просто копию:</p>
+<p>Давайте для примера сделаем копию файла, разместив ее в папке с исходным файлом:</p>
+<code>
+	<pre>
+	&lt?php
+		copy('test.txt', 'copy.txt');
+	?></pre>
+</code>
+<p>А теперь давайте поместим нашу копию в папку dir:</p>
+<code>
+	<pre>
+	&lt?php
+		copy('test.txt', 'dir/copy.txt');
+	?></pre>
+</code>
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в корне вашего сайта лежит файл. С помощью цикла положите в папку copy пять копий этого файла. Именем файлов копий пусть будут их порядковые номера.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	if(!file_exists('files/copy')){
+		mkdir('files/copy');
+	}
+	for($i = 1; $i<=5; $i++){
+		copy('files/new.txt', "files/copy/$i.txt");
+	}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+if(!file_exists('files/copy')){
+	mkdir('files/copy');
+}
+for($i = 1; $i<=5; $i++){
+	copy('files/new.txt', "files/copy/$i.txt");
+}
+?>
+
+<h3 class="fw-bold mt-5">Удаление файлов в PHP</h3>
+<p>Для удаления файлов используется функция unlink. Параметром она принимает путь к удаляемому файлу:</p>
+<code>
+<pre>
+	&lt?php
+	unlink('test.txt');
+	?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача:</p>
+<p>Пусть в корне вашего сайта лежат файлы 1.txt, 2.txt и 3.txt. Вручную сделайте массив с именами этих файлов. Переберите его циклом и удалите все эти файлы.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>
+	&lt?php
+	$arrFileName = ['1.txt', '2.txt', '3.txt'];
+	foreach ($arrFileName as $value) {
+		unlink("files/copy/$value");
+	}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$arrFileName = ['1.txt', '2.txt', '3.txt'];
+foreach ($arrFileName as $value) {
+	unlink("files/copy/$value");
+}
+?>
+<h3 class="fw-bold mt-5">Определение размера файлов в PHP</h3>
+<p>Функция filesize позволяет находить размеры файла в байтах. Пример:</p>
+<code>
+	<pre>
+	&lt?php
+	echo filesize('test.txt');
+	?></pre>
+</code>
+<P>Размер в байтах легко можно перевести в килобайты:</P>
+<code>
+	<pre>
+	&lt?php
+	echo filesize('test.txt') / 1024;
+	?></pre>
+</code>
+<P>А теперь давайте переведем в мегабайты:</P>
+<code>
+	<pre>
+	&lt?php
+	echo filesize('test.txt') / (1024 * 1024);
+	?></pre>
+</code>
+<h3 class="fw-bold mt-5">Проверка существования файлов в PHP</h3>
+<p>Функция file_exists проверяет существует ли файл, путь к которому передан параметром. Пример:</p>
+<code>
+	<pre>
+	&lt?php
+	var_dump(file_exists('test.txt')); // true или false
+	?></pre>
+</code>
+<P>Как правило, эта функция используется для того, чтобы проверить наличие файла перед выполнением операции над ним. Например, так:</P>
+<code>
+	<pre>
+	&lt?php
+	if (file_exists('test.txt')) {
+		echo filesize('test.txt');
+	} else {
+		echo 'файла не существует';
+	}
+	?></pre>
 </code>
