@@ -55,3 +55,28 @@ echo $num1 + $num2;
 $numArr = [1, 2, 3, 4, 5];
 file_put_contents('files/sum.txt', array_sum($numArr));
 ?>
+<p>/files/sum.txt</p>
+
+<h3 class="fw-bold">Комбинация операций чтения и записи файла в PHP</h3>
+<p>Чтение и запись файлов можно комбинировать. Давайте для примера прочитаем файл, добавим в конец его текста восклицательный знак и запишем текст обратно в этот файл:</p>
+<code>
+	<pre>
+	$text = file_get_contents('test.txt');
+	file_put_contents('test.txt', $text . '!');</pre>
+</code>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Пусть у вас есть файл, в котором записано некоторое число. Откройте этот файл, возведите число в квадрат и запишите обратно в файл.</p>
+<p class="fw-bold">Решение</p>
+<code>
+	<pre>
+	&lt?php
+	$num = file_get_contents('files/num.txt');
+	file_put_contents('files/num.txt', pow($num, 2));
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$num = file_get_contents('files/num.txt');
+file_put_contents('files/num.txt', pow($num, 2));
+?>
