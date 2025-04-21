@@ -637,3 +637,60 @@ if(file_exists("$dir/$filename")):?>
 	?>
 	</pre>
 </code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Создайте в корне вашего сайта папку с названием dir.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+		if(!file_exists('files/dir')){
+			mkdir('files/dir');
+		}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+if(!file_exists('files/dir')){
+	mkdir('files/dir');
+}
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Дан массив со строками. Создайте в корне вашего сайта папки, названиями которых служат элементы этого массива</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$arrNames = ['dir1','dir2','dir3'];
+	foreach ($arrNames as $value) {
+		if(!file_exists("files/$value")){
+			mkdir("files/$value");
+		}
+	}
+	?>		
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$arrNames = ['dir1','dir2','dir3'];
+foreach ($arrNames as $value) {
+	if(!file_exists("files/$value")){
+		mkdir("files/$value");
+	}
+}
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Создайте в корне вашего сайта папку с названием test. Затем создайте в этой папке три файла: 1.txt, 2.txt, 3.txt.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
+<?php
+
+?>
+
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Создайте в корне вашего сайта папку с названием dir.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
