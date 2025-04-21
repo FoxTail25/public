@@ -397,7 +397,7 @@ file_put_contents('files/new.txt', $result);
 		$root = $_SERVER['DOCUMENT_ROOT'];
 		echo file_get_contents($root . '/dir1/dir2/dir3/test.txt');
 		?></pre>
-	</code>
+</code>
 
 <h3 class="fw-bold mt-5">Переименовывание файлов в PHP</h3>
 <p>Функция rename позволяет переименовывать файлы. Первым параметром указываем старое имя файла, вторым - новое имя файла:</p>
@@ -467,10 +467,10 @@ file_put_contents('files/new.txt', $result);
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
-if(!file_exists('files/copy')){
+if (!file_exists('files/copy')) {
 	mkdir('files/copy');
 }
-for($i = 1; $i<=5; $i++){
+for ($i = 1; $i <= 5; $i++) {
 	copy('files/new.txt', "files/copy/$i.txt");
 }
 ?>
@@ -478,7 +478,7 @@ for($i = 1; $i<=5; $i++){
 <h3 class="fw-bold mt-5">Удаление файлов в PHP</h3>
 <p>Для удаления файлов используется функция unlink. Параметром она принимает путь к удаляемому файлу:</p>
 <code>
-<pre>
+	<pre>
 	&lt?php
 	unlink('test.txt');
 	?></pre>
@@ -488,7 +488,7 @@ for($i = 1; $i<=5; $i++){
 <p>Пусть в корне вашего сайта лежат файлы 1.txt, 2.txt и 3.txt. Вручную сделайте массив с именами этих файлов. Переберите его циклом и удалите все эти файлы.</p>
 <p class="fw-bold">Решение:</p>
 <code>
-<pre>
+	<pre>
 	&lt?php
 	$arrFileName = ['1.txt', '2.txt', '3.txt'];
 	foreach ($arrFileName as $value) {
@@ -564,12 +564,12 @@ foreach ($arrFileName as $value) {
 <?php
 $filename = 'file.txt';
 $dir = 'files';
-if(file_exists("$dir/$filename")):?>
-<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
-<?php else :?>
-<p>Файла <?=$filename?> нет в директории <?=$dir?></p>
+if (file_exists("$dir/$filename")): ?>
+	<p>Файл <?= $filename ?> есть в директории <?= $dir ?></p>
+<?php else : ?>
+	<p>Файла <?= $filename ?> нет в директории <?= $dir ?></p>
 <?php endif ?>
-	
+
 
 <p class="fw-bold mt-5">Задача 2</p>
 <p>Проверьте, лежит ли в корне вашего сайта файл file.txt. Если нет - создайте его и запишите в него текст '!'.</p>
@@ -594,15 +594,15 @@ if(file_exists("$dir/$filename")):?>
 <?php
 $filename = 'file.txt';
 $dir = 'files';
-if(file_exists("$dir/$filename")):?>
-<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
-<p>Вот его содержимое: <?= file_get_contents("$dir/$filename")?></p>
-<?php else :?>
-<p>Файла <?=$filename?> нет в директории <?=$dir?></p>
-<?php
-file_put_contents("$dir/$filename", '!');
-?>
-<p>Файла <?=$filename?> создан в директории <?=$dir?></p>
+if (file_exists("$dir/$filename")): ?>
+	<p>Файл <?= $filename ?> есть в директории <?= $dir ?></p>
+	<p>Вот его содержимое: <?= file_get_contents("$dir/$filename") ?></p>
+<?php else : ?>
+	<p>Файла <?= $filename ?> нет в директории <?= $dir ?></p>
+	<?php
+	file_put_contents("$dir/$filename", '!');
+	?>
+	<p>Файла <?= $filename ?> создан в директории <?= $dir ?></p>
 <?php endif ?>
 
 
@@ -623,13 +623,13 @@ file_put_contents("$dir/$filename", '!');
 <?php
 $filename = 'message.txt';
 $dir = 'files';
-if(file_exists("$dir/$filename")):?>
-<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
-<p>Вот его содержимое: <?= file_get_contents("$dir/$filename")?></p>
+if (file_exists("$dir/$filename")): ?>
+	<p>Файл <?= $filename ?> есть в директории <?= $dir ?></p>
+	<p>Вот его содержимое: <?= file_get_contents("$dir/$filename") ?></p>
 <?php endif ?>
 
 <h3 class="fw-bold mt-5">Создание папок в PHP</h3>
-<p>Функция mkdir позволяет создать папку. Параметром принимает путь к папке. Пример:</p>
+<p>Функция <b>mkdir</b> позволяет создать папку. Параметром принимает путь к папке. Пример:</p>
 <code>
 	<pre>
 	&lt?php
@@ -651,7 +651,7 @@ if(file_exists("$dir/$filename")):?>
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
-if(!file_exists('files/dir')){
+if (!file_exists('files/dir')) {
 	mkdir('files/dir');
 }
 ?>
@@ -673,9 +673,9 @@ if(!file_exists('files/dir')){
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
-$arrNames = ['dir1','dir2','dir3'];
+$arrNames = ['dir1', 'dir2', 'dir3'];
 foreach ($arrNames as $value) {
-	if(!file_exists("files/$value")){
+	if (!file_exists("files/$value")) {
 		mkdir("files/$value");
 	}
 }
@@ -684,13 +684,555 @@ foreach ($arrNames as $value) {
 <p class="fw-bold mt-5">Задача 3</p>
 <p>Создайте в корне вашего сайта папку с названием test. Затем создайте в этой папке три файла: 1.txt, 2.txt, 3.txt.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$dir = 'files';
+		$arrFileNames = ['1.txt', '2.txt', '3.txt'];
+		if (!file_exists("$dir/test")) {
+			mkdir("$dir/test");
+			foreach ($arrFileNames as $elem) {
+				file_put_contents("$dir/test/$elem", '');
+			}
+		}
+		?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <?php
-
+$dir = 'files';
+$arrFileNames = ['1.txt', '2.txt', '3.txt'];
+if (!file_exists("$dir/test")) {
+	mkdir("$dir/test");
+	foreach ($arrFileNames as $elem) {
+		file_put_contents("$dir/test/$elem", '');
+	}
+}
 ?>
 
 
-<p class="fw-bold mt-5">Задача 2</p>
-<p>Создайте в корне вашего сайта папку с названием dir.</p>
+<h3 class="fw-bold mt-5">Удаление папок в PHP</h3>
+<p>Функция <b>rmdir</b> используется для удаления папок. Пример:</p>
+<code>
+	<pre>
+		&lt?php
+		rmdir('dir');
+		?></pre>
+</code>
+<p>Эта команда используется для удаления <b>ПУСТЫХ</b> папок. Если в удаляемой директории будут файлы, то функция выдаст ошибку.</p>
+
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Удалите папку с названием test.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		mkdir('files/test2'); // Создаём пустую директорию
+		rmdir('files/test2'); // Удаляем созданную директорию.
+		?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+mkdir('files/test2'); // Создаём пустую директорию
+rmdir('files/test2'); // Удаляем созданную директорию.
+?>
+
+<h3 class="fw-bold mt-5">Переименование папок в PHP</h3>
+<p>С помощью функции <b>rename</b> можно переименовывать папки. Давайте попробуем:</p>
+<code>
+	<pre>
+		&lt?php
+		rename('old', 'new');
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Задача</p>
+<p>Пусть в корне вашего сайта лежит папка dir_r Переименуйте ее на test_r.</p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold">Результат:</p>
+<?php
+if (!file_exists('files/dir_r')) {
+	mkdir('files/dir_r'); // Создаём папку
+}
+if (!file_exists('files/test_r')) {
+	rename('files/dir_r', 'files/test_r'); // Переименовываем созданную папку
+}
+?>
+
+<h3 class="fw-bold mt-5">Перемещение папок в PHP</h3>
+<p>С помощью функции <b>rename</b> можно перемещать папки. Давайте попробуем:</p>
+<code>
+	<pre>
+		&lt?php
+		rename('old', 'dir/new');
+		?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Создайте папку dir_rn. Переместите ее в папку test_rn.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		if (file_exists('files/dir_rn')) {
+			rmdir('files/dir_rn');
+			echo "delete files/dir_rn";
+		}
+		if (file_exists('files/test_rn')) {
+			rmdir('files/test_rn/dir_rn');
+			rmdir('files/test_rn');
+			echo "delete files/test_rn";
+		}
+
+		mkdir('files/dir_rn');
+		mkdir('files/test_rn');
+
+		if (file_exists('files/test_rn/dir_rn')) {
+			rmdir('files/test_rn/dir_rn');
+		}
+		rename('files/dir_rn', 'files/test_rn/dir_rn');
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+if (file_exists('files/dir_rn')) {
+	rmdir('files/dir_rn');
+	echo "delete files/dir_rn";
+}
+if (file_exists('files/test_rn')) {
+	rmdir('files/test_rn/dir_rn');
+	rmdir('files/test_rn');
+	echo "delete files/test_rn";
+}
+
+mkdir('files/dir_rn');
+mkdir('files/test_rn');
+
+if (file_exists('files/test_rn/dir_rn')) {
+	rmdir('files/test_rn/dir_rn');
+}
+rename('files/dir_rn', 'files/test_rn/dir_rn');
+?>
+
+<h3 class="fw-bold mt-5">Чтение содержимого папки в PHP</h3>
+<p>Функция <b>scandir</b> позволяет посмотреть содержимое папки и получить в виде массива имена находящихся в ней файлов и подпапок. Параметром функция принимает путь к файлу.</p>
+<code>
+	<pre>
+	&lt?php
+	$files = scandir('dir');
+	var_dump($files);
+	?></pre>
+</code>
+<p>В массиве с результатом функция scandir также покажет наличие папок с именами ".." и ".". Технически первое имя соответствует ссылке на родительскую папку, а второе - на текущую.<br />Эти имена лучше убрать из массива с результатом. Делается это следующим образом:</p>
+<code>
+	<pre>
+	&lt?php
+	$files = scandir('dir');
+	$files = array_diff($files, ['..', '.']); 
+	var_dump($files);
+	?></pre>
+</code>
+<p>Можно упростить:</p>
+<code>
+	<pre>
+	&lt?php
+	$files = array_diff(scandir('dir'), ['..', '.']); 
+	var_dump($files);
+	?></pre>
+</code>
+
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в папкe files/test какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$files = array_diff(scandir('files/test'), ['.', '..']);
+		foreach ($files as $key => $file): ?>
+		&ltp>Файл №: &lt?= $key - 1 ?> с именем: &lt?= $file ?>&lt/p>
+		&lt?php endforeach ?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$files = array_diff(scandir('files/test'), ['.', '..']);
+foreach ($files as $key => $file): ?>
+	<p>Файл №: <?= $key - 1 ?> с именем: <?= $file ?></p>
+<?php endforeach ?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Пусть в корне вашего сайта лежит папка dir2, а в ней какие-то текстовые файлы. Переберите эти файлы циклом и выведите их тексты в браузер.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$files = array_diff(scandir('dir2'), ['.', '..']);
+		$text = '';
+		foreach ($files as $file) {
+			$text .= file_get_contents("dir2/$file");
+			$text .= ' ';
+		}
+		?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$files = array_diff(scandir('dir2'), ['.', '..']);
+$text = '';
+foreach ($files as $file) {
+	$text .= file_get_contents("dir2/$file");
+	$text .= ' ';
+}
+?>
+<p>Строка из файлов: <?= $text ?></p>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Пусть в корне вашего сайта лежит папка dir3, а в ней какие-то текстовые файлы. Переберите эти файлы циклом, откройте каждый из них и запишите в конец восклицательный знак.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$files = array_diff(scandir('dir3'), ['.', '..']);
+		$text = '';
+		foreach ($files as $file) {
+			file_put_contents("dir3/$file", file_get_contents("dir3/$file").'!');
+		}
+		?></pre>
+</code>
+<!-- <p class="fw-bold">Результат:</p> -->
+<?php
+// $files = array_diff(scandir('dir3'), ['.', '..']);
+// $text = '';
+// foreach ($files as $file) {
+// 	file_put_contents("dir3/$file", file_get_contents("dir3/$file") . '!');
+// }
+?>
+
+<h3 class="fw-bold mt-5">Отличаем папку от файла в PHP</h3>
+<p>Пусть у вас есть строка, содержащая путь к файлу или папке. С помощью специальных функций <b>is_file</b> и <b>is_dir</b> мы можем отличить, ссылается путь на файл или на папку.</p>
+<p>Они работают следующим образом:</p>
+<code>
+	<pre>
+		&lt?php
+		$path = 'некий путь';
+
+		var_dump(is_file($path)); // true для файла, false для папки
+		var_dump(is_dir($path));  // true для папки, false для файла
+		?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Пусть дан путь. Если путь ведет к папке выведите сообщение об этом. Если путь ведет к файлу выведите сообщение об этом.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	function checkPath($path)
+	{
+		if (is_dir($path)) {
+			return 'Это папка';
+		} else {
+			return 'Это файл';
+		}
+	}
+	?>
+	&ltp>Путь 'dir3' &lt?= checkPath('dir3') ?>&lt/p>
+	&ltp>Путь 'dir3/1.txt' &lt?= checkPath('dir3/1.txt') ?>&lt/p>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+function checkPath($path)
+{
+	if (is_dir($path)) {
+		return 'Это папка';
+	} else {
+		return 'Это файл';
+	}
+}
+?>
+<p>Путь 'dir3' <?= checkPath('dir3') ?></p>
+<p>Путь 'dir3/1.txt' <?= checkPath('dir3/1.txt') ?></p>
+
+<h3 class="fw-bold mt-5">Разбираем содержимое папки в PHP</h3>
+
+
+
+
+<h3 class="fw-bold mt-5">Заголовок</h3>
+<p>Пусть у нас дана некоторая папка dir, содержащая в себе как файлы, так и папки.<br />Давайте получим массив имен из этой папки:</p>
+<code>
+	<pre>
+	&lt?php
+	$files = array_diff(scandir('dir'), ['..', '.']);
+	?></pre>
+</code>
+<p>Давайте для каждого имени проверим, это файл или папка:</p>
+<code>
+	<pre>
+	&lt?php
+	$files = array_diff(scandir('dir'), ['..', '.']);
+	
+	foreach ($files as $file) {
+		echo $file;
+		var_dump(is_file('dir/' . $file));
+	}
+	?></pre>
+</code>
+<p>Обратите внимание на то, что имя папки, которую мы сканируем, написано в двух местах кода. Это не очень удобно. Вынесем это имя в отдельную переменную:</p>
+<code>
+	<pre>
+	&lt?php
+	$dir = 'dir';
+	$files = array_diff(scandir($dir), ['..', '.']);
+	
+	foreach ($files as $file) {
+		echo $file;
+		var_dump(is_file($dir. '/' . $file));
+	}
+	?></pre>
+</code>
+<p>Давайте теперь для всех файлов выведем на экран их содержимое:</p>
+<code>
+	<pre>
+	&lt?php
+	$dir = 'dir';
+	$files = array_diff(scandir($dir), ['..', '.']);
+	
+	foreach ($files as $file) {
+		if (is_file($dir. '/' . $file)) {
+			echo file_get_contents($dir. '/' . $file);
+		}
+	}
+	?></pre>
+</code>
+<p>Можно заметить, что путь к файлу вычисляется два раза. Давайте вынесем его в отдельную переменную:</p>
+<code>
+	<pre>
+	&lt?php
+	$dir = 'dir';
+	$files = array_diff(scandir($dir), ['..', '.']);
+	
+	foreach ($files as $file) {
+		$path = $dir. '/' . $file; // путь к файлу
+		
+		if (is_file($path)) {
+			echo file_get_contents($path);
+		}
+	}
+	?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Дана папка. Выведите на экран столбец имен подпапок из этой папки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$dir = $_SERVER['DOCUMENT_ROOT'];
+	$allFiles = array_diff(scandir($dir), ['.', '..']);
+	?>
+	&ltp>Ниже представлен список подпапок в папке  &lt?= $dir ?> :&lt/p>
+	&lt?php
+	foreach ($allFiles as $file): ?>
+		&lt?php if (is_dir($file)): ?>
+		&ltp>Подпака &lt?= $file ?>&lt/p>
+		&lt?php endif ?>
+	&lt?php endforeach ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$dir = $_SERVER['DOCUMENT_ROOT'];
+$allFiles = array_diff(scandir($dir), ['.', '..']);
+?>
+<p>Ниже представлен список подпапок в папке <?= $dir ?> :</p>
+<?php
+foreach ($allFiles as $file): ?>
+	<?php if (is_dir($file)): ?>
+		<p>Подпака <?= $file ?></p>
+	<?php endif ?>
+<?php endforeach ?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Дана папка. Выведите на экран столбец имен файлов из этой папки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$dir = $_SERVER['DOCUMENT_ROOT'];
+	$allFiles = array_diff(scandir($dir), ['.', '..']);
+	?>
+	&ltp>Ниже представлен список файлов в папке  &lt?= $dir ?> :&lt/p>
+	&lt?php
+	foreach ($allFiles as $file): ?>
+		&lt?php if (is_file($file)): ?>
+		&ltp>Подпака &lt?= $file ?>&lt/p>
+		&lt?php endif ?>
+	&lt?php endforeach ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$dir = $_SERVER['DOCUMENT_ROOT'];
+$allFiles = array_diff(scandir($dir), ['.', '..']);
+?>
+<p>Ниже представлен список файлов в папке <?= $dir ?> :</p>
+<?php
+foreach ($allFiles as $file): ?>
+	<?php if (is_file($file)): ?>
+		<p>Подпака <?= $file ?></p>
+	<?php endif ?>
+<?php endforeach ?>
+
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Дана папка. 'dir4' Запишите в конец каждого файла этой папки текущий момент времени.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		$files = array_diff(scandir('dir4'), ['.', '..']);
+		foreach ($files as $elem) {
+			if (is_file("dir4/$elem")) {
+				file_put_contents("dir4/$elem", file_get_contents("dir4/$elem") . " " . date('d-m-Y') . " " . date('h:i:s'));
+			}
+		}
+		?>
+	</pre>
+</code>
+<!-- <p class="fw-bold">Результат:</p> -->
+<?php
+// $files = array_diff(scandir('dir4'), ['.', '..']);
+// foreach ($files as $elem) {
+// 	if (is_file("dir4/$elem")) {
+// 		file_put_contents("dir4/$elem", file_get_contents("dir4/$elem") . " " . date('d-m-Y') . " " . date('h:i:s'));
+// 	}
+// }
+?>
+
+<h3 class="fw-bold mt-5">Вставка файлов в PHP</h3>
+<p>Пусть у нас есть один файл:</p>
+<code>
+	<pre>
+		&lt?php
+		echo 'index';
+		?>
+	</pre>
+</code>
+<p>Пусть также есть второй файл:</p>
+<code>
+	<pre>
+		&lt?php
+		echo 'test';
+		?>
+	</pre>
+</code>
+<p>Давайте выполним вставку содержимого второго файла в первый. Это делается с помощью оператора <b><i>include:</i></b></p>
+<code>
+	<pre>
+		&lt?php
+		include 'test.php';
+		echo 'index';
+		?>
+	</pre>
+</code>
+<p>Один и тот же файл можно вставлять сколько угодно раз:</p>
+<code>
+	<pre>
+		&lt?php
+		include 'test.php';
+		include 'test.php';
+		include 'test.php';
+		echo 'index';
+		?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Сделайте файлы file1.php, file2.php, file3.php. Подключите их к вашему основному файлу.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt?php
+		include 'files/file1.php';
+		include 'files/file2.php';
+		include 'files/file3.php';
+		?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+include 'files/file1.php';
+include 'files/file2.php';
+include 'files/file3.php';
+?>
+
+
+<h3 class="fw-bold mt-5">Деление верстки на элементы в PHP</h3>
+<p>Вставка одного файла в другой часто используется для того, чтобы разделять файлы с версткой на части. Это нужно для того, чтобы убрать повторяющиеся части HTML страниц в отдельные файлы для удобства редактирования.</p>
+<p>Посмотрим на примере. Пусть у нас есть следующая страница:</p>
+<code>
+	<pre>
+	&lthtml>
+		&lthead>
+			&lttitle>page1&lt/title>
+			&ltmeta charset="utf-8">
+			&ltlink rel="stylesheet" href="styles.css">
+		&lt/head>
+		&ltbody>
+			text 1
+		&lt/body>
+	&lt/html>
+	</pre>
+</code>
+<P>И еще одна:</P>
+<code>
+	<pre>
+	&lthtml>
+		&lthead>
+			&lttitle>page2&lt/title>
+			&ltmeta charset="utf-8">
+			&ltlink rel="stylesheet" href="styles.css">
+		&lt/head>
+		&ltbody>
+			text 2
+		&lt/body>
+	&lt/html>
+	</pre>
+</code>
+<p>Как вы видите, в этих двух файла одинаковое содержимое блока head. Вынесем его в отдельный файл:</p>
+<code>
+	<pre>
+	file: 'elem/headlink.php'
+
+	&ltmeta charset="utf-8">
+	&ltlink rel="stylesheet" href="styles.css">
+
+	</pre>
+</code>
+
+<p>Подключим этот файл к каждой из нашей страниц:</p>
+<code>
+	<pre>
+	&lthtml>
+		&lthead>
+			&lttitle>page2&lt/title>
+			&lt?php include 'elem/headlink.php';?>
+		&lt/head>
+		&ltbody>
+			text 2
+		&lt/body>
+	&lt/html>
+	</pre>
+</code>
+
+
+<!-- <h3 class="fw-bold mt-5">Вставка файлов в PHP</h3>
+<p>Пусть у нас есть один файл:</p> -->
+
+
+
+<!-- <p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p> -->
