@@ -544,3 +544,96 @@ foreach ($arrFileName as $value) {
 	}
 	?></pre>
 </code>
+
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Проверьте, лежит ли в корне вашего сайта файл file.txt.</p>
+<p class="fw-bold ">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$filename = 'file.txt';
+	$dir = 'files';
+	if(file_exists("$dir/$filename")):?>
+		&ltp>Файл &lt?=$filename?> есть в директории &lt?=$dir?>&lt/p>
+	&lt?php else :?>
+		&ltp>Файла &lt?=$filename?> нет в директории &lt?=$dir?>&lt/p>
+	&lt?php endif ?></pre>
+</code>
+<p class="fw-bold ">Результат:</p>
+<?php
+$filename = 'file.txt';
+$dir = 'files';
+if(file_exists("$dir/$filename")):?>
+<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
+<?php else :?>
+<p>Файла <?=$filename?> нет в директории <?=$dir?></p>
+<?php endif ?>
+	
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Проверьте, лежит ли в корне вашего сайта файл file.txt. Если нет - создайте его и запишите в него текст '!'.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$filename = 'file.txt';
+	$dir = 'files';
+	if(file_exists("$dir/$filename")):?>
+	&ltp>Файл &lt?=$filename?> есть в директории &lt?=$dir?>&lt/p>
+	&ltp>Вот его содержимое: &lt?= file_get_contents("$dir/$filename")?>&lt/p>
+	&lt?php else :?>
+	&ltp>Файла &lt?=$filename?> нет в директории &lt?=$dir?>&lt/p>
+	&lt?php
+	file_put_contents("$dir/$filename", '!');
+	?>
+	&ltp>Файла &lt?=$filename?> создан в директории &lt?=$dir?>&lt/p>
+	&lt?php endif ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$filename = 'file.txt';
+$dir = 'files';
+if(file_exists("$dir/$filename")):?>
+<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
+<p>Вот его содержимое: <?= file_get_contents("$dir/$filename")?></p>
+<?php else :?>
+<p>Файла <?=$filename?> нет в директории <?=$dir?></p>
+<?php
+file_put_contents("$dir/$filename", '!');
+?>
+<p>Файла <?=$filename?> создан в директории <?=$dir?></p>
+<?php endif ?>
+
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Проверьте, лежит ли в корне вашего сайта файл message.txt. Если такой файл есть - выведите текст этого файла на экран.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+		$filename = 'message.txt';
+		$dir = 'files';
+		if(file_exists("$dir/$filename")):?>
+		&ltp>Файл &lt?=$filename?> есть в директории &lt?=$dir?>&lt/p>
+		&ltp>Вот его содержимое: &lt?= file_get_contents("$dir/$filename")?>&lt/p>
+	&lt?php endif ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$filename = 'message.txt';
+$dir = 'files';
+if(file_exists("$dir/$filename")):?>
+<p>Файл <?=$filename?> есть в директории <?=$dir?></p>
+<p>Вот его содержимое: <?= file_get_contents("$dir/$filename")?></p>
+<?php endif ?>
+
+<h3 class="fw-bold mt-5">Создание папок в PHP</h3>
+<p>Функция mkdir позволяет создать папку. Параметром принимает путь к папке. Пример:</p>
+<code>
+	<pre>
+	&lt?php
+		mkdir('dir');
+	?>
+	</pre>
+</code>
