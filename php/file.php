@@ -1282,6 +1282,8 @@ include 'files/file3.php';
 <p>Пусть у нас есть некоторый файл:</p>
 <code>
 	<pre>
+		file: test.php
+
 	&ltdiv>
 		&lt?= 'test' ?>
 	&lt/div>
@@ -1292,22 +1294,307 @@ include 'files/file3.php';
 
 <code>
 	<pre>
+		file: index.php
+
 	&lt?php
 	$res = file_get_contents('test.php'); 
 	?>
 	</pre>
 </code>
 
-<p>У нас, однако, будет проблема - при записи в переменную PHP код нашего файла не будет выполнен.<br/>
-Для того, чтобы PHP код вставляемого файла был выполнен, нужно использовать оператор include. Проблема, однако, в том, что этот оператор сразу выводит данные на экран, поэтому результат подключения не может быть записан в переменную.<br/>
-Но это все-таки можно сделать, если использовать хитрый прием:</p>
+<p>У нас, однако, будет проблема - при записи в переменную, <b>PHP</b> код <i>(который содержится внутри вставляемого файла)</i> выполнен не будет!
+	<br />
+	Для того, чтобы PHP код вставляемого файла был выполнен, нужно использовать оператор include. Проблема, однако, в том, что этот оператор сразу выводит данные на экран, поэтому результат подключения не может быть записан в переменную.
+	<br />
+	Но это все-таки можно сделать, если использовать хитрый прием:
+</p>
 
-<!-- <h3 class="fw-bold mt-5">Вставка файлов в PHP</h3>
-<p>Пусть у нас есть один файл:</p> -->
+<code>
+	<pre>
+		file: index.php
+
+	&lt?php
+	ob_start();
+	include 'test.php'; 
+	$res = ob_get_clean();
+	?></pre>
+</code>
+<p>Оформим код приема в функцию:</p>
+<code>
+	<pre>
+		file: index.php
+
+	&lt?php
+	function getFile($name) {
+		ob_start();
+			include $name; 
+		return ob_get_clean(); 
+	}
+	?></pre>
+</code>
+<p>Воспользуемся нашей функцией для получения файла в переменную:</p>
+<code>
+	<pre>
+		file: index.php
+
+	&lt?php
+	$res = getFile('test.php');
+	echo 'index' . $res;
+	?></pre>
+</code>
 
 
-
-<!-- <p class="fw-bold mt-5">Задача 1</p>
-<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold mt-5">Задача</p>
+<p>Сделайте файл, который будет генерировать из массива дней выпадающий список дней недели. Запишите результат в переменную в вашем основном файле. Выведите эту переменную в нескольких местах файла.</p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p> -->
+<code>
+	<pre>
+		//file: task1.php
+
+	&lt?php
+	$arrWeekDay = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"];
+	?>
+&ltselect>
+	&lt?php foreach ($arrWeekDay as $key => $day) : ?>
+		&ltoption value="&lt?= $key ?>">&lt?= $day ?>&lt/option>
+	&lt?php endforeach ?>
+&lt/select>
+
+
+		//file: index.php
+
+	&lt?php
+	function getPhpCode($name)
+	{
+		ob_start();
+		include $name;
+		return ob_get_clean();
+	}
+	$sel = getPhpCode('layout_task/layout/task1.php');
+	?>
+&ltp>Тест: &lt?= $sel ?>&lt/p>
+&ltp>Тест: &lt?= $sel ?>&lt/p>
+&ltp>Тест: &lt?= $sel ?>&lt/p>
+	</pre>
+</code>
+
+<p class="fw-bold">Результат:</p>
+<?php
+function getPhpCode($name)
+{
+	ob_start();
+	include $name;
+	return ob_get_clean();
+}
+$sel = getPhpCode('layout_task/layout/task1.php');
+?>
+<p>Тест: <?= $sel ?></p>
+<p>Тест: <?= $sel ?></p>
+<p>Тест: <?= $sel ?></p>
+
+
+
+<h3 class="fw-bold mt-5">Подключение файлов в PHP</h3>
+<p>Пусть у нас есть файл, в котором хранится набор функций:</p>
+
+<code>
+	<pre>
+		file: function.php
+
+	&lt?php
+	function square($num) {
+		return $num ** 2;
+	}
+	
+	function cube($num) {
+		return $num ** 3;
+	}
+	?></pre>
+</code>
+<p>Давайте сделаем так, чтобы функции из этого файла были доступны в нашем основном файле. Для этого подключим файл с функциями с помощью оператора <b>require:</b></p>
+<code>
+	<pre>
+		file: index.php
+
+	&lt?php
+	require 'functions.php';
+	?></pre>
+</code>
+
+<p>После этого в нашем основном файле мы можем воспользоваться функциями из подключенного файла:</p>
+<code>
+	<pre>
+		file: index.php
+
+	&lt?php
+	require 'functions.php';
+	
+	echo square(3) + cube(4);
+	?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Сделайте файл с полезным набором функций. Подключите его к вашему основному файлу.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//file: func/func.php
+
+	&lt?php
+	function getScuare($num)
+	{
+		return pow($num, 2);
+	}
+	function getQube($num)
+	{
+		return pow($num, 3);
+	}
+	?>
+
+		//file: index.php
+
+	&lt?php
+	require 'func/func.php';
+	?>
+	&ltp>&lt?= getScuare(4) ?>&lt/p>
+	&ltp>&lt?= getQube(4) ?>&lt/p></pre>
+</code>
+
+<p class="fw-bold">Результат:</p>
+<?php
+require 'func/func.php';
+?>
+<p><?= getScuare(4) ?></p>
+<p><?= getQube(4) ?></p>
+
+<h3 class="fw-bold mt-5">Однократное подключение файлов в PHP</h3>
+<p>Пусть у нас есть файл pow.php, в котором хранится набор функций:</p>
+<code>
+	<pre>
+		//file: func/pow.php
+
+	&lt?php
+	function square($num) {
+		return $num ** 2;
+	}
+	
+	function cube() {
+		return $num ** 3;
+	}
+	?></pre>
+</code>
+<p>Пусть мы используем функции файла pow.php в файле sum.php:</p>
+<code>
+	<pre>
+		//file: func/sum.php
+
+	&lt?php
+	require 'pow.php';
+	
+	function squareSum($arr) {
+		$res = 0;
+		
+		foreach ($arr as $elem) {
+			$res += square($elem);
+		}
+		
+		return $res;
+	}
+	
+	function cubeSum($arr) {
+		$res = 0;
+		
+		foreach ($arr as $elem) {
+			$res += cube($elem);
+		}
+		
+		return $res;
+	}
+	?></pre>
+</code>
+<p>Пусть в основном файле мы подключаем оба файла с функциями:</p>
+<code>
+	<pre>
+		//file: index.php
+
+	&lt?php
+	require 'func/pow.php';
+	require 'func/sum.php';
+	
+	echo square(3) + squareSum([1, 2, 3]);
+	?></pre>
+</code>
+<p>Нас, однако, поджидает проблема. К файлу index.php файл pow.php будет подключен два раза: сам по себе и через файл pow.php.
+	<br />Это приведет к проблеме, так как у нас будут два набора функций с одинаковыми именами.
+	<br />Для решения проблемы следует подключать все файлы через оператор <b>require_once</b> - он будет подключать файл только один раз, игнорируя повторный подключения:
+</p>
+<code>
+	<pre>
+		//file: index.php
+
+	&lt?php
+	require_once 'func/pow.php';
+	require_once 'func/sum.php';
+	
+	echo square(3) + squareSum([1, 2, 3]);
+	?></pre>
+</code>
+
+
+<h3 class="fw-bold mt-5">Запись подключения в переменную PHP</h3>
+<p>Можно сделать так, чтобы результат подключаемого можно было записать в переменную. Для этого подключаемый файл должен возвращать данные через <b>return</b>.
+	<br />Посмотрим на примере. Пусть наш файл возвращает массив дней недели:
+</p>
+<code>
+	<pre>
+		//file: data/week.php
+
+	&lt?php
+		return ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+	?></pre>
+</code>
+
+<p>Давайте подключим этот файл и результат подключения запишем в переменную:</p>
+<code>
+	<pre>
+		//file: index.php
+
+	&lt?php
+		$week = require 'data/week.php';
+		var_dump($week);
+	?></pre>
+</code>
+<p class="fw-bold mt-5">Задача</p>
+<p>Сделайте файл, который будет возвращать названия дней недели. Подключите его в переменную в вашем основном файле.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//file: data/week.php
+
+	&lt?php
+	return ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+	?>
+
+		//file: index.php
+
+	&ltp>Дни недели:&lt/p>
+	&ltul>
+		&lt?php
+		$root = $_SERVER['DOCUMENT_ROOT'];
+		$week = require "$root/data/week.php";
+		foreach ($week as $day): ?>
+			&ltli>&lt?= $day ?>&lt/li>
+		&lt?php endforeach ?>
+	&lt/ul></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<p>Дни недели:</p>
+<ul>
+	<?php
+	$root = $_SERVER['DOCUMENT_ROOT'];
+	$week = require "$root/data/week.php";
+	foreach ($week as $day): ?>
+		<li><?= $day ?></li>
+	<?php endforeach ?>
+</ul>
+
