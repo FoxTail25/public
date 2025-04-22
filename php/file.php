@@ -1226,6 +1226,81 @@ include 'files/file3.php';
 	</pre>
 </code>
 
+<p class="fw-bold mt-5">Задача</p>
+<p>Даны файлы со следующей версткой:</p>
+<code>
+	<pre>
+&lt!DOCTYPE html>
+&lthtml>
+	&lthead>
+		&lttitle>title&lt/title>
+	&lt/head>
+	&ltbody>
+		&ltheader>
+			header
+		&lt/header>
+		&ltaside>
+			sidebar
+		&lt/aside>
+		&ltmain>
+			content
+		&lt/main>
+		&ltheader>
+			footer
+		&lt/header>
+	&lt/body>
+&lt/html>
+	</pre>
+</code>
+<p>Пусть верстка файлов отличается лишь тайтлами и контентом. Вынесите содержимое хедера, футера и сайдбара в отдельные подключаемые файлы.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		&lt!DOCTYPE html>
+	&lthtml>
+		&lthead>
+			&lttitle>title&lt/title>
+		&lt/head>
+		&ltbody>
+		&lt?php include 'layout/header.php';?>
+		&lt?php include 'layout/aside.php';?>
+			
+			&ltmain>
+				content
+				&lta href="../index.php">вернуться к учёбе&lt/a>
+			&lt/main>
+			
+		&lt?php include 'layout/footer.php';?>
+		&lt/body>
+	&lt/html>
+	</pre>
+</code>
+<p class="fw-bold"><a href="layout_task/index.php">Результат:</a></p>
+
+
+<h3 class="fw-bold mt-5">Запись вставки в переменную в PHP</h3>
+<p>Пусть у нас есть некоторый файл:</p>
+<code>
+	<pre>
+	&ltdiv>
+		&lt?= 'test' ?>
+	&lt/div>
+	</pre>
+</code>
+
+<p>Давайте в основном файле запишем текст нашего файла в переменную:</p>
+
+<code>
+	<pre>
+	&lt?php
+	$res = file_get_contents('test.php'); 
+	?>
+	</pre>
+</code>
+
+<p>У нас, однако, будет проблема - при записи в переменную PHP код нашего файла не будет выполнен.<br/>
+Для того, чтобы PHP код вставляемого файла был выполнен, нужно использовать оператор include. Проблема, однако, в том, что этот оператор сразу выводит данные на экран, поэтому результат подключения не может быть записан в переменную.<br/>
+Но это все-таки можно сделать, если использовать хитрый прием:</p>
 
 <!-- <h3 class="fw-bold mt-5">Вставка файлов в PHP</h3>
 <p>Пусть у нас есть один файл:</p> -->
