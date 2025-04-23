@@ -363,7 +363,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 				Давайте посмотрим их применение на примерах.
 </p>
 
-<p class="fw-bold mt-5">Пример 1</p>
+<p class="fw-bold">Пример 1</p>
 <p>Выберем юзера с id, равным 2:</p>
 <code>
 	<pre>
@@ -371,7 +371,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE id=2";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 2</p>
+<p class="fw-bold">Пример 2</p>
 <p>Выберем юзеров с id, большим 2:</p>
 <code>
 	<pre>
@@ -379,7 +379,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE id>2";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 3</p>
+<p class="fw-bold">Пример 3</p>
 <p>Выберем юзеров с id, большим или равным 2:</p>
 <code>
 	<pre>
@@ -387,7 +387,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE id>=2";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 4</p>
+<p class="fw-bold">Пример 4</p>
 <p>Выберем юзеров с id, не равным 2:</p>
 <code>
 	<pre>
@@ -395,7 +395,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE id!=2";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 5</p>
+<p class="fw-bold">Пример 5</p>
 <p>Вместо команды != можно писать команду <>:</p>
 <code>
 	<pre>
@@ -403,7 +403,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE id<>2";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 6</p>
+<p class="fw-bold">Пример 6</p>
 <p>Выберем юзеров возрастом 23 года:</p>
 <code>
 	<pre>
@@ -411,7 +411,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE age=23";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 7</p>
+<p class="fw-bold">Пример 7</p>
 <p>Выберем юзеров с зарплатой 500:</p>
 <code>
 	<pre>
@@ -419,7 +419,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE salary=500";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 8</p>
+<p class="fw-bold">Пример 8</p>
 <p>Выберем юзера с именем 'user1'. Здесь нас поджидает важный нюанс: так как имя является строкой, то его необходимо взять в кавычки:</p>
 <code>
 	<pre>
@@ -427,7 +427,7 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users WHERE name='user1'";
 		?></pre>
 </code>
-<p class="fw-bold mt-5">Пример 9</p>
+<p class="fw-bold">Пример 9</p>
 <p>Если команда WHERE отсутствует, то выберутся все записи из таблицы. Давайте выберем всех работников:</p>
 <code>
 	<pre>
@@ -435,9 +435,6 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 		$query = "SELECT * FROM users";
 		?></pre>
 </code>
-
-<p class="fw-bold mt-5">Задача 1</p>
-<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
 
 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
@@ -545,6 +542,128 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 echo getTable($data);
 ?>
 
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Выберите юзеров с зарплатой более 400.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_salayUp400= "select * from users where salary > '400'";
+	$res = mysqli_query($link, $query_salayUp400) or die(mysqli_error($link));
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_salayUp400 = "select * from users where salary > '400'";
+$res = mysqli_query($link, $query_salayUp400) or die(mysqli_error($link));
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 5</p>
+<p>Выберите юзеров с зарплатой равной или большей 500.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_salaryUp500 = "select * from users where salary >='500'";
+	$res = mysqli_query($link, $query_salaryUp500);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_salaryUp500 = "select * from users where salary >='500'";
+$res = mysqli_query($link, $query_salaryUp500);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+<p class="fw-bold mt-5">Задача 6</p>
+<p>Выберите юзеров с зарплатой НЕ равной 500.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_salaryNot500 = "select * from users where salary != 500";
+	$res = mysqli_query($link, $query_salaryNot500);
+	for($data=[]; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_salaryNot500 = "select * from users where salary != 500";
+$res = mysqli_query($link, $query_salaryNot500);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 7</p>
+<p>Выберите юзеров с зарплатой равной или меньшей 500.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_salaryDownOr500 = "select * from users where salary <= 500";
+	$res = mysqli_query($link, $query_salaryDownOr500);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_salaryDownOr500 = "select * from users where salary <= 500";
+$res = mysqli_query($link, $query_salaryDownOr500);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+
+<h3 class="fw-bold mt-5">Логические операции в SQL запросе в PHP</h3>
+<p>В условии выборки можно делать более сложные комбинации с помощью команд OR и AND. Работают они так же, как и их аналоги в PHP конструкции if. Давайте посмотрим на примерах.</p>
+<p class="fw-bold">Пример 1</p>
+<p>Выберем юзеров с зарплатой 500 И возрастом 23 года:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary=500 AND age=23";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 2</p>
+<p>Выберем юзеров с зарплатой 500 ИЛИ возрастом 23 года:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary=500 OR age=23";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 3</p>
+<p>Выберем юзеров с зарплатой от 450 до 900:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary>450 AND salary&lt900";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 4</p>
+<p>Выберем юзеров с возрастом от 23 до 27 лет включительно:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE age=>23 AND age&lt=27";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 5</p>
+<p>Сложные комбинации команд OR и AND можно группировать с помощью круглых скобок, чтобы показать приоритет условий:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE (age=>20 AND age&lt=27) OR (salary>300 AND salary&lt500)";
+		?></pre>
+</code>
 
 <!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->
 
