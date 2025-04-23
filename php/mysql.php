@@ -1,3 +1,6 @@
+<?php
+require 'func/func.php';
+?>
 <h3 class="fw-bold mt-5">Подготовительные манипуляции для работы с SQL в PHP</h3>
 <p>Давайте теперь научимся работать с базами данных через PHP. Для этого прежде всего необходимо установить соединение с сервером базы данных.<br />
 	Делается это с помощью функции mysql_connect, которая принимает 3 параметра: имя хоста (сервера), имя пользователя, под которым мы работаем с базой и пароль для этого пользователя.<br />
@@ -247,16 +250,310 @@ var_dump($row7); // выведет NULL - работники кончились
 </code>
 
 <p>Давайте разберемся, как работает этот цикл.<br />
-В каждой итерации цикла функция mysqli_fetch_assoc последовательно считывает каждую строку результата, записывая его в массив $data.<br />
-Как только в $res закончатся строки, то mysqli_fetch_assoc вернет NULL и цикл закончит свою работу. А полученный результат будет лежать в двухмерном массиве $data.
+	В каждой итерации цикла функция mysqli_fetch_assoc последовательно считывает каждую строку результата, записывая его в массив $data.<br />
+	Как только в $res закончатся строки, то mysqli_fetch_assoc вернет NULL и цикл закончит свою работу. А полученный результат будет лежать в двухмерном массиве $data.
 </p>
 
-<!-- <h3 class="fw-bold mt-5">Вставка файлов в PHP</h3>
-<p>Пусть у нас есть один файл:</p> -->
+<p class="fw-bold mt-5">Задача 1</p>
+<p>С помощью описанного цикла получите и выведите на экран таблицу всех работников.</p>
+
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$select_query = 'select * from users';
+	$res = mysqli_query($link, $select_query);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	?>
+	&ltstyle>
+		td,th {
+			border: 1px solid black;
+			padding: 5px;
+			text-align: center;
+		}
+	&lt/style>
+	&lttable>
+	&lttr>
+		&ltth>id&lt/th>
+		&ltth>name&lt/th>
+		&ltth>age&lt/th>
+		&ltth>salary&lt/th>
+	&lt/tr>
+	&lt?php foreach ($data as $row): ?>
+		&lttr>
+			&lttd>&lt?= $row['id'] ?>&lt/td>
+			&lttd>&lt?= $row['name'] ?>&lt/td>
+			&lttd>&lt?= $row['age'] ?>&lt/td>
+			&lttd>&lt?= $row['salary'] ?>&lt/td>
+		&lt/tr>
+		&lt?php endforeach ?>
+	&lt/table></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$select_query = 'select * from users';
+$res = mysqli_query($link, $select_query);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+?>
+<style>
+	td,
+	th {
+		border: 1px solid black;
+		padding: 5px;
+		text-align: center;
+	}
+</style>
+<table>
+	<tr>
+		<th>id</th>
+		<th>name</th>
+		<th>age</th>
+		<th>salary</th>
+	</tr>
+	<?php foreach ($data as $row): ?>
+		<tr>
+			<td><?= $row['id'] ?></td>
+			<td><?= $row['name'] ?></td>
+			<td><?= $row['age'] ?></td>
+			<td><?= $row['salary'] ?></td>
+		</tr>
+	<?php endforeach ?>
+</table>
 
 
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Из полученного результата получите первого работника. Через echo выведите на экран его имя.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltp>Имя первого работника: &lt?= $data[0]['name'] ?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<p>Имя первого работника: <?= $data[0]['name'] ?></p>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Из полученного результата получите второго работника. Через echo выведите на экран его имя и возраст.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltp>Второй работник имя: &lt?= $data[1]['name'] ?> возраст: &lt?= $data[1]['age'] ?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<p>Второй работник имя: <?= $data[1]['name'] ?> возраст: <?= $data[1]['age'] ?></p>
+
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Из полученного результата получите третьего работника. Через echo выведите на экран его имя, возраст и зарплату.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&ltp>Второй работник имя: &lt?=$data[2]['name']?> возраст: &lt?=$data[2]['age']?> зарплата: &lt?=$data[2]['salary']?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<p>Второй работник имя: <?= $data[2]['name'] ?> возраст: <?= $data[2]['age'] ?> зарплата: <?= $data[2]['salary'] ?> </p>
+
+<h3 class="fw-bold mt-5">Выборка записей при SQL запросе к базе в PHP</h3>
+<p>В тестовом коде вы уже видели команду SELECT, выполняющую выборку данных из БД. Давайте теперь подробнее разберемся с ее синтаксисом. Вот он:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM таблица WHERE условие";
+		?></pre>
+</code>
+<p>Как вы видите, после имени таблицы можно еще дописать команду WHERE, в которой можно писать ограничение на выбираемые записи. В условии допустимы следующие операции сравнения: =, !=, <>, <,>, <=,>=.<br />
+				Давайте посмотрим их применение на примерах.
+</p>
+
+<p class="fw-bold mt-5">Пример 1</p>
+<p>Выберем юзера с id, равным 2:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE id=2";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 2</p>
+<p>Выберем юзеров с id, большим 2:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE id>2";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 3</p>
+<p>Выберем юзеров с id, большим или равным 2:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE id>=2";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 4</p>
+<p>Выберем юзеров с id, не равным 2:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE id!=2";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 5</p>
+<p>Вместо команды != можно писать команду <>:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE id<>2";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 6</p>
+<p>Выберем юзеров возрастом 23 года:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE age=23";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 7</p>
+<p>Выберем юзеров с зарплатой 500:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary=500";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 8</p>
+<p>Выберем юзера с именем 'user1'. Здесь нас поджидает важный нюанс: так как имя является строкой, то его необходимо взять в кавычки:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE name='user1'";
+		?></pre>
+</code>
+<p class="fw-bold mt-5">Пример 9</p>
+<p>Если команда WHERE отсутствует, то выберутся все записи из таблицы. Давайте выберем всех работников:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users";
+		?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+
+
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+<p><i>Что бы "красиво" выводить полученные данные добавим в файл func/func/php вот такой код:</i></p>
+<code>
+	<pre>
+	&lt?php
+	function getTable($data)
+	{
+		$res = "&ltstyle>
+		td,
+		th {
+			border: 1px solid black;
+			padding: 5px;
+			text-align: center;
+		}
+		&lt/style>
+		&lttable>
+		&lttr>
+			&ltth>id&lt/th>
+			&ltth>name&lt/th>
+			&ltth>age&lt/th>
+			&ltth>salary&lt/th>
+		&lt/tr>";
+		foreach ($data as $row) {
+
+			$res .= "&lttr>";
+			$res .= "&lttd>$row[id]&lt/td>";
+			$res .= "&lttd>$row[name]&lt/td>";
+			$res .= "&lttd>$row[age]&lt/td>";
+			$res .= "&lttd>$row[salary]&lt/td>";
+			$res .= "&lt/tr>";
+		}
+		$res .= "&lt/table>";
+		return $res;
+	}
+	?></pre>
+</code>
+<p>теперь подключим его к нашему файлу с помощью
+	&lt?php
+	require 'func/func.php';
+	?>
+</p>
+<p><i>Теперь мы можем кравиво выводить (в виде таблицы) результаты SQL запросов к базе данных используя функци <b>getTable</b></i></p>
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Выберите юзера с id, равным 3.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+		$query_id3 = "select * from users where id = '3'";
+		$res = mysqli_query($link, $query_id3);
+		for($data = [];	$row = mysqli_fetch_assoc($res); $data[] = $row);
+		echo getTable($data);
+	?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_id3 = "select * from users where id = '3'";
+$res = mysqli_query($link, $query_id3);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Выберите юзеров с зарплатой 900.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+		$query_salary900 = "select * from users where salary ='900'";
+		$res = mysqli_query($link, $query_salary900);
+		for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+		echo getTable($data);
+	?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_salary900 = "select * from users where salary ='900'";
+$res = mysqli_query($link, $query_salary900);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Выберите юзеров в возрасте 23 года.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_age23 = "select * from users where age ='23'";
+	$res = mysqli_query($link, $query_age23);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_age23 = "select * from users where age ='23'";
+$res = mysqli_query($link, $query_age23);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+
+<!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->
 
 <!-- <p class="fw-bold mt-5">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	?></pre>
+</code>
 <p class="fw-bold">Результат:</p> -->
