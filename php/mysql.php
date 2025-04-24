@@ -683,7 +683,7 @@ echo getTable($data);
 <?php
 $query_age25and28 = 'select * from users where age > 25 and age <= 28';
 $res = mysqli_query($link, $query_age25and28);
-for($data=[]; $row=mysqli_fetch_assoc($res); $data[]=$row);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 echo getTable($data);
 ?>
 
@@ -703,7 +703,7 @@ echo getTable($data);
 <?php
 $query_user1 = "select * from users where name = 'user1'";
 $res = mysqli_query($link, $query_user1);
-for($data=[];$row=mysqli_fetch_assoc($res);$data[]=$row);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 echo getTable($data);
 ?>
 
@@ -713,28 +713,219 @@ echo getTable($data);
 <code>
 	<pre>
 	&lt?php
+	$query_user1and2 = "select * from users where name = 'user1' or name = 'user2'";
+	$res = mysqli_query($link, $query_user1and2);
+	for($data=[]; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
 	?></pre>
 </code>
 <p class="fw-bold">Результат:</p>
 <?php
-$query_user1and2 = "select * from users where (name = 'user1' AND name = 'user2')";
+$query_user1and2 = "select * from users where name = 'user1' or name = 'user2'";
 $res = mysqli_query($link, $query_user1and2);
-for($data; $row = mysqli_fetch_assoc($res); $data[]=$row);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 echo getTable($data);
-
 ?>
-
-
-
-
-<!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->
-
-<!-- <p class="fw-bold mt-5">Задача 1</p>
-<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Выберите всех, кроме юзера user3.</p>
 <p class="fw-bold">Решение:</p>
 <code>
 	<pre>
 	&lt?php
+	$query_notUser3 = "select * from users where name <> 'user3'";
+	// $query_notUser3 = "select * from users where name != 'user3'"; // тоже работает
+	$res = mysqli_query($link, $query_notUser3);
+	for($data=[]; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
 	?></pre>
 </code>
-<p class="fw-bold">Результат:</p> -->
+<p class="fw-bold">Результат:</p>
+<?php
+$query_notUser3 = "select * from users where name <> 'user3'";
+// $query_notUser3 = "select * from users where name != 'user3'"; // тоже работает
+$res = mysqli_query($link, $query_notUser3);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 5</p>
+<p>Выберите всех юзеров в возрасте 27 лет или с зарплатой 1000.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_age27orsalary1000 = "select * from users where age = 27 or salary = 1000";
+	$res = mysqli_query($link, $query_age27orsalary1000);
+	for($data=[]; $row= mysqli_fetch_assoc($res);$data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_age27orsalary1000 = "select * from users where age = 27 or salary = 1000";
+$res = mysqli_query($link, $query_age27orsalary1000);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+<p class="fw-bold mt-5">Задача 6</p>
+<p>Выберите всех юзеров в возрасте 27 лет или с зарплатой не равной 400.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_age27orsalaryNot400 = "select * from users where age = 27 OR salary <> 400";
+	$res = mysqli_query($link, $query_age27orsalaryNot400);
+	for($data=[]; $row=mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_age27orsalaryNot400 = "select * from users where age = 27 OR salary <> 400";
+$res = mysqli_query($link, $query_age27orsalaryNot400);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+<p class="fw-bold mt-5">Задача 7</p>
+<p>Выберите всех юзеров в возрасте от 23 лет (включительно) до 27 лет (не включительно) или с зарплатой 1000.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_ageUp23down27orsalary1000 = "select * from users where age >= 23 AND age < 27 OR salary = 1000";
+	$res = mysqli_query($link, $query_ageUp23down27orsalary1000);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_ageUp23down27orsalary1000 = "select * from users where age >= 23 AND age < 27 OR salary = 1000";
+$res = mysqli_query($link, $query_ageUp23down27orsalary1000);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+<p class="fw-bold mt-5">Задача 8</p>
+<p>Выберите всех юзеров в возрасте от 23 лет до 27 лет или с зарплатой от 400 до 1000.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_agefrom23to27andsalaryFrom400to1000 = "select * from users where (age > 23 and age < 27) or (salary > 400 and salary < 1000)";
+	$res = mysqli_query($link, $query_agefrom23to27andsalaryFrom400to1000);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_agefrom23to27andsalaryFrom400to1000 = "select * from users where (age > 23 and age < 27) or (salary > 400 and salary < 1000)";
+$res = mysqli_query($link, $query_agefrom23to27andsalaryFrom400to1000);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+echo getTable($data);
+?>
+
+<h3 class="fw-bold mt-5">Поля выборки при SQL запросе в PHP</h3>
+<p>В предыдущих уроках при выборке из БД в результат попадали все столбцы таблицы. Это на самом деле не обязательно - можно указать, какие конкретно поля нам нужны.<br />Для этого вместо звездочки, которую мы ставим после команды SELECT, через запятую можно перечислить имена нужных полей.<br />Посмотрим на примере. Давайте при выборке из нашей таблицы users достанем только имя и возраст работника:</p>
+
+<code>
+	<pre>
+	&lt?php
+	$query = "SELECT name, age FROM users WHERE id >= 3";
+	?></pre>
+</code>
+
+
+<p><i>Для начала сделаем новую функцию <b>getTableM</b>. За основу возьмем нашу функцию <b>getTable</b> которая находится в файл <b>func/func.php</b><br />
+		И модернизируем её под новые условия. Вот код новой функции:</i></p>
+<code>
+	<pre>
+	function getTableM($data)
+	{
+		$res = "&ltstyle>
+				td,
+				th {
+					border: 1px solid black;
+					padding: 5px;
+					text-align: center;
+				}
+				&lt/style>
+				&lttable>
+					&lttr>";
+
+		foreach (array_keys($data[0]) as $header) {
+			$res .= "&ltth>$header&lt/th>";
+		}
+
+		$res .= "&lt/tr>";
+		foreach ($data as $row) {
+
+			$res .= "&lttr>";
+			isset($row['id']) ? $res .= "&lttd>$row[id]&lt/td>" : "";
+			isset($row['name']) ? $res .= "&lttd>$row[name]&lt/td>" : "";
+			isset($row['age']) ? $res .= "&lttd>$row[age]&lt/td>" : "";
+			isset($row['salary']) ? $res .= "&lttd>$row[salary]&lt/td>" : "";
+			$res .= "&lt/tr>";
+		}
+		echo $res. "&lt/table>";
+	}
+	</pre>
+</code>
+<p><i>Теперь функция будет сразу отрисовывать таблицу только из тех значений, которые пришли в ответе от SQL запроса</i></p>
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Выберите из таблицы users имя, возраст и зарплату для каждого работника.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_nameAndSalary = "select name, salary from users";
+	$res = mysqli_query($link, $query_nameAndSalary);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_nameAndSalary = "select name, salary from users";
+$res = mysqli_query($link, $query_nameAndSalary);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Выберите из таблицы users имена всех работников.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_allNames = "select name from users";
+	$res = mysqli_query($link, $query_allNames);
+	for($data =[]; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_allNames = "select name from users";
+$res = mysqli_query($link, $query_allNames);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<!-- 
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>
+	&lt?php
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p> 
+<?php
+
+?>
+-->
+
+
+<!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->

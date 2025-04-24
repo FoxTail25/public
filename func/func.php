@@ -34,4 +34,33 @@ function getTable($data){
 	$res .= "</table>";
 	return $res;
 }
+function getTableM($data)
+{
+	$res = "<style>
+			td,
+			th {
+				border: 1px solid black;
+				padding: 5px;
+				text-align: center;
+			}
+			</style>
+			<table>
+				<tr>";
+
+	foreach (array_keys($data[0]) as $header) {
+		$res .= "<th>$header</th>";
+	}
+
+	$res .= "</tr>";
+	foreach ($data as $row) {
+
+		$res .= "<tr>";
+		isset($row['id']) ? $res .= "<td>$row[id]</td>" : "";
+		isset($row['name']) ? $res .= "<td>$row[name]</td>" : "";
+		isset($row['age']) ? $res .= "<td>$row[age]</td>" : "";
+		isset($row['salary']) ? $res .= "<td>$row[salary]</td>" : "";
+		$res .= "</tr>";
+	}
+	echo $res. "</table>";
+}
 ?>
