@@ -665,6 +665,68 @@ echo getTable($data);
 		?></pre>
 </code>
 
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Выберите юзеров в возрасте от 25 (не включительно) до 28 лет (включительно).</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_age25and28 = 'select * from users where age > 25 and age <= 28';
+	$res = mysqli_query($link, $query_age25and28);
+	for($data=[]; $row=mysqli_fetch_assoc($res); $data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_age25and28 = 'select * from users where age > 25 and age <= 28';
+$res = mysqli_query($link, $query_age25and28);
+for($data=[]; $row=mysqli_fetch_assoc($res); $data[]=$row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Выберите юзера user1.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_user1 = "select * from users where name = 'user1'";
+	$res = mysqli_query($link, $query_user1);
+	for($data=[];$row=mysqli_fetch_assoc($res);$data[]=$row);
+	echo getTable($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_user1 = "select * from users where name = 'user1'";
+$res = mysqli_query($link, $query_user1);
+for($data=[];$row=mysqli_fetch_assoc($res);$data[]=$row);
+echo getTable($data);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Выберите юзеров user1 и user2.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_user1and2 = "select * from users where (name = 'user1' AND name = 'user2')";
+$res = mysqli_query($link, $query_user1and2);
+for($data; $row = mysqli_fetch_assoc($res); $data[]=$row);
+echo getTable($data);
+
+?>
+
+
+
+
 <!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->
 
 <!-- <p class="fw-bold mt-5">Задача 1</p>
