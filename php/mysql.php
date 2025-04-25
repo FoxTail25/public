@@ -944,13 +944,13 @@ getTableM($data);
 <p>Добавьте нового юзера 'user7', 26 лет, зарплата 300.</p>
 <p class="fw-bold">Решение:</p>
 <code>
-<pre>
+	<pre>
 	&lt?php
 	$query_insUser = "insert into users (name, age, salary) values ('user7',26,1000)";
 	mysqli_query($link, $query_insUser) or die(mysqli_error($link));
 	?></pre>
 </code>
-<p class="fw-bold">Результат:</p> 
+<p class="fw-bold">Результат:</p>
 <?php
 // $query_insUser = "insert into users (name, age, salary) values ('user7',26,1000)";
 // mysqli_query($link, $query_insUser) or die(mysqli_error($link));
@@ -974,20 +974,518 @@ getTableM($data);
 <p>Добавьте нового юзера 'xxxx', не указав ему возраст и зарплату.</p>
 <p class="fw-bold">Решение:</p>
 <code>
-<pre>
+	<pre>
 	&lt?php
 	$query_insEr = "insert into users (name) values ('xxxx')";
 	mysqli_query($link, $query_insEr) or die($mysqli_error($link));
 	?></pre>
 </code>
-<p class="fw-bold">Результат:</p> 
+<p class="fw-bold">Результат:</p>
 <?php
 // $query_insEr = "insert into users (name) values ('xxxx')";
 // $err = mysqli_query($link, $query_insEr) or die($mysqli_error($link));
 // echo $err;
 ?>
 <p>Резальтат будет таким: Fatal error: Uncaught mysqli_sql_exception: Field 'age' doesn't have a default value</p>
+
 <h3 class="fw-bold mt-5">Обновление записей через SQL запрос в PHP</h3>
+<p>Давайте теперь научимся изменять записи. Это делается с помощью команды UPDATE. Она имеет следующий синтаксис:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "UPDATE таблица SET полe = значениe WHERE условие";
+	?>
+	</pre>
+</code>
+
+<p class="fw-bold">Пример 1</p>
+<p>Давайте поменяем возраст и зарплату юзера:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "UPDATE users SET age=20, salary=800 WHERE id=1";
+		?></pre>
+</code>
+
+<p class="fw-bold">Пример 2</p>
+<p>Установим зарплату 400 и возраст 24 всем юзерам в возрасте 23:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "UPDATE users SET age=24, salary=400 WHERE age=23";
+		?></pre>
+</code>
+
+<p class="fw-bold">Пример 3</p>
+<p>Без команды WHERE обновления захватят всю таблицу. Например, установим всем юзерам зарплату 400 и возраст 24:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "UPDATE users SET age=24, salary=400";
+		?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Используя созданный ранее вами дамп таблицы users приведите ее в исходное состояние.</p>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Юзеру с id 4 поставьте возраст 35 лет.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_update = "update users set age=35 where id=4";
+	mysqli_query($link, $query_update);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_update = "update users set age=35 where id=4";
+// mysqli_query($link, $query_update);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Всем, у кого зарплата 500, сделайте ее 700.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_updateSal = "update users set salary = 700 where salary = 500 ";
+	mysqli_query($link, $query_updateSal);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_updateSal = "update users set salary = 700 where salary = 500 ";
+// mysqli_query($link, $query_updateSal);
+?>
+
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Работникам с id больше 2 и меньше 5 включительно поставьте возраст 23.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_updateAge = "update users set age = 23 where id >= 2 and id <= 5 ";
+	mysqli_query($link, $query_updateAge);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_updateAge = "update users set age = 23 where id >= 2 and id <= 5 ";
+// mysqli_query($link, $query_updateAge);
+?>
+
+<h3 class="fw-bold mt-5">Удаление записей через SQL запрос в PHP</h3>
+<p>С помощью команды DELETE можно удалять записи из таблицы. Ее синтаксис похож на изученное вами ранее:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "DELETE FROM таблица WHERE условие";
+	?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Удалите юзера с id, равным 7.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_deleteId7 = "delete from users where id = 7";
+	mysqli_query($link, $query_deleteId7);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_deleteId7 = "delete from users where id = 7";
+// mysqli_query($link, $query_deleteId7);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Удалите всех юзеров, у которых возраст 23 года.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_deleteId7 = "delete from users where age = 23";
+	mysqli_query($link, $query_deleteId7);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_deleteId7 = "delete from users where age = 23";
+// mysqli_query($link, $query_deleteId7);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Удалите всех юзеров.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_deleteAll = "delete from users";
+	mysqli_query($link, $query_deleteAll);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+// $query_deleteAll = "delete from users";
+// mysqli_query($link, $query_deleteAll);
+?>
+
+<h3 class="fw-bold mt-5">Сортировка записей через SQL запрос в PHP</h3>
+<p>С помощью команды ORDER BY можно сортировать строки результата.</p>
+
+<p class="fw-bold">Пример 1</p>
+<p>Выберем из нашей таблицы users всех юзеров и отсортируем их по возрасту от меньшего к большему:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users ORDER BY age";
+		?></pre>
+</code>
+
+<p class="fw-bold">Пример 2</p>
+<p>Поменяем порядок сортировки с помощью команды DESC:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users ORDER BY age DESC";
+		?></pre>
+</code>
+
+<p class="fw-bold">Пример 3</p>
+<p>Выберем всех юзеров с зарплатой 500 и отсортируем их по возрасту от меньшего к большему:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary=500 ORDER BY age";
+		?></pre>
+</code>
+
+<p class="fw-bold">Пример 4</p>
+<p>Можно сортировать не по одному полю, а по нескольким. Давайте для примера выберем всех юзеров и отсортируем их сначала по возрастанию возраста, а юзеров с одинаковыми возрастами отсортируем по возрастанию зарплаты:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users ORDER BY age, salary";
+		?></pre>
+</code>
+
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Достаньте всех юзеров и отсортируйте их по возрастанию зарплаты.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selectOrd = "select * from users order by salary";
+	$res = mysqli_query($link, $query_selectOrd);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selectOrd = "select * from users order by salary";
+$res = mysqli_query($link, $query_selectOrd);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Достаньте всех юзеров и отсортируйте их по убыванию зарплаты.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selectOrdDesc = "select * from users order by salary desc";
+	$res = mysqli_query($link, $query_selectOrdDesc);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selectOrdDesc = "select * from users order by salary desc";
+$res = mysqli_query($link, $query_selectOrdDesc);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Достаньте всех юзеров и отсортируйте их по имени.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selOrdName = "select * from users order by name";
+	$res = mysqli_query($link, $query_selOrdName);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selOrdName = "select * from users order by name";
+$res = mysqli_query($link, $query_selOrdName);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Достаньте юзеров с зарплатой 500 и отсортируйте их по возрасту.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selSalOrdAge = "select * from users where salary = 500 order by age";
+	$res = mysqli_query($link, $query_selSalOrdAge);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selSalOrdAge = "select * from users where salary = 500 order by age";
+$res = mysqli_query($link, $query_selSalOrdAge);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 5</p>
+<p>Достаньте всех юзеров и отсортируйте их по имени и по зарплате.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selOrdNamSal = "select * from users order by name, salary";
+	$res = mysqli_query($link, $query_selOrdNamSal);
+	for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selOrdNamSal = "select * from users order by name, salary";
+$res = mysqli_query($link, $query_selOrdNamSal);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<h3 class="fw-bold mt-5">Ограничение количества записей в SQL в PHP</h3>
+<p>С помощью команды LIMIT мы можем ограничить количество строк в результате.</p>
+
+<p class="fw-bold">Пример 1</p>
+<p>Выберем первых двух юзеров:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users LIMIT 2";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 2</p>
+<p>Выберем всех юзеров с зарплатой 500, а затем с помощью LIMIT возьмем только первых двух из выбранных:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users WHERE salary=500 LIMIT 2";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 3</p>
+<p>С помощью LIMIT можно выбрать несколько строк из середины результата. В примере ниже мы выберем со второй строки (нумерация строк с нуля), 5 штук:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users LIMIT 1,5";
+		?></pre>
+</code>
+<p class="fw-bold">Пример 4</p>
+<p>Команду LIMIT можно комбинировать с ORDER BY. При этом сначала нужно писать команду сортировки, а потом - лимит. В следующем примере мы сначала отсортируем записи по возрастанию возраста, а потом возьмем первые 3 штуки:</p>
+<code>
+	<pre>
+		&lt?php
+		$query = "SELECT * FROM users ORDER BY age LIMIT 3";
+		?></pre>
+</code>
+
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Получите первых 4 юзера.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selL4 = "select * from users limit 4";
+	$res = mysqli_query($link, $query_selL4);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selL4 = "select * from users limit 4";
+$res = mysqli_query($link, $query_selL4);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Получите юзеров со второго, 3 штуки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selL2from2 = "select * from users limit 1,3";
+	$res = mysqli_query($link, $query_selL2from2);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selL2from2 = "select * from users limit 1,3";
+$res = mysqli_query($link, $query_selL2from2);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 3</p>
+<p>Отсортируйте юзеров по возрастанию зарплаты и получите первых 3 работника из результата сортировки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selOrdSalL3 = "select * from users order by salary limit 3";
+	$res = mysqli_query($link, $query_selOrdSalL3);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selOrdSalL3 = "select * from users order by salary limit 3";
+$res = mysqli_query($link, $query_selOrdSalL3);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<p class="fw-bold mt-5">Задача 4</p>
+<p>Отсортируйте юзеров по убыванию зарплаты и получите первых 3 юзера из результата сортировки.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_selOrdSalDL3 = "select * from users order by salary desc limit 3";
+	$res = mysqli_query($link, $query_selOrdSalDL3);
+	for($data = []; $row = mysqli_fetch_assoc($res); $data[]=$row);
+	getTableM($data);
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_selOrdSalDL3 = "select * from users order by salary desc limit 3";
+$res = mysqli_query($link, $query_selOrdSalDL3);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM($data);
+?>
+
+<h3 class="fw-bold mt-5">Подсчет количества через SQL запрос в PHP</h3>
+<p>С помощью команды COUNT можно подсчитать количество строк в выборке.<br />
+	Давайте, например, подсчитаем всех юзеров в таблице:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "SELECT COUNT(*) FROM users";
+	?></pre>
+</code>
+<p>А теперь подсчитаем всех, у кого зарплата равна 900:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "SELECT COUNT(*) FROM users WHERE salary=900";
+	?></pre>
+</code>
+
+<h3 class="fw-bold mt-5">Получение количества в PHP</h3>
+<p>Давайте посмотрим, как получить подсчитанное количество в нашем PHP скрипте, так как тут не все так просто.<br />
+	Напишем код, подчитывающий количество юзеров:
+</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "SELECT COUNT(*) FROM users";
+	$res = mysqli_query($link, $query) or die(mysqli_error($link));
+	$data = mysqli_fetch_assoc($res);
+	?></pre>
+</code>
+<p>В нашем случае получится, что количество попадет в переменную $data. Однако, эта переменная будет представлять собой массив следующего вида:</p>
+<code>
+	<pre>
+	&lt?php
+	var_dump($data); // ['COUNT(*)' => 6]
+	?></pre>
+</code>
+<p>Для того, чтобы ключ в этом массиве был более красивый, можно переименовать наше поле в запросе с помощью команды as:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "SELECT COUNT(*) as count FROM users";
+	?></pre>
+</code>
+<p>После такого переименования в переменной $data наше количество уже будет лежать в ключе 'count':</p>
+<code>
+	<pre>
+	&lt?php
+	var_dump($data); // ['count' => 6]
+	?></pre>
+</code>
+
+<p class="fw-bold mt-5">Задача 1</p>
+<p>Подсчитайте всех юзеров с зарплатой 300.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_CWsal400 = "select count(*) as count from users where salary = 400";
+	$res = mysqli_query($link, $query_CWsal400);
+	$data = mysqli_fetch_assoc($res);
+	?>
+&ltp>Кол-во сотрудников с заплатой 400: &lt?= $data['count'] ?>&lt/p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_CWsal400 = "select count(*) as count from users where salary = 400";
+$res = mysqli_query($link, $query_CWsal400);
+$data = mysqli_fetch_assoc($res);
+?>
+<p>Кол-во сотрудников с заплатой 400: <?= $data['count'] ?></p>
+
+<p class="fw-bold mt-5">Задача 2</p>
+<p>Подсчитайте всех юзеров с зарплатой 400 или возрастом 23.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	$query_CWsal400orAge23 = "select count(*) as count from users where salary = 400 or age=23";
+	$res = mysqli_query($link, $query_CWsal400orAge23);
+	$data = mysqli_fetch_assoc($res);
+	?>
+<p>Кол-во сотрудников с заплатой 400 или возрастом 23 : &lt?= $data['count'] ?>&lt/p></p></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query_CWsal400orAge23 = "select count(*) as count from users where salary = 400 or age=23";
+$res = mysqli_query($link, $query_CWsal400orAge23);
+$data = mysqli_fetch_assoc($res);
+?>
+<p>Кол-во сотрудников с заплатой 400 или возрастом 23 : <?= $data['count'] ?></p>
+
+<h3 class="fw-bold mt-5">Изучение продвинутых SQL запросов</h3>
+<p>В предыдущих уроках вы изучили наиболее используемые команды. Конечно же, их намного больше и найти вы их можете в <a href="https://code.mu/ru/sql/manual/" target="_blank">справочнике SQL</a>. При изучении справочника особое внимание обратите на команды IN, MIN, MAX, GROUP BY, CONCAT, а также на функции для работы с датой.</p>
 <!-- 
 <p class="fw-bold mt-5">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
