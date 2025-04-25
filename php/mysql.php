@@ -912,6 +912,82 @@ for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
 getTableM($data);
 ?>
 
+<h3 class="fw-bold mt-5">Вставка записей через SQL запрос в PHP</h3>
+<p>Давайте теперь научимся добавлять новые записи в таблицу. Это делается с помощью команды INSERT INTO. Она имеет следующий синтаксис:</p>
+
+<code>
+	<pre>
+	&lt?php
+	$query = "INSERT INTO таблица (поле1, поле2...) VALUES (значение1, значение2...)"; 
+	?>
+	</pre>
+</code>
+<p>Давайте в нашу таблицу users добавим нового юзера:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "INSERT INTO users (name, age, salary) VALUES ('user', 30, 1000)"; 
+	?>
+	</pre>
+</code>
+<p>Может быть не очень очевидно, что результат вставки нам не нужно обрабатывать через mysqli_fetch_assoc. Нам нужно просто выполнить этот запрос через mysqli_query, а результат вставки нужно смотреть через PhpMyAdmin:</p>
+<code>
+	<pre>
+	&lt?php
+	$query = "INSERT INTO users (name, age, salary) VALUES ('user', 30, 1000)"; 
+	mysqli_query($link, $query) or die(mysqli_error($link));	?>
+	</pre>
+</code>
+<p>Обратите также внимание на то, что при вставке мы не указываем столбец id и его значение. И это правильно, так как значение этого столбца проставится базой автоматически.</p>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Добавьте нового юзера 'user7', 26 лет, зарплата 300.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>
+	&lt?php
+	$query_insUser = "insert into users (name, age, salary) values ('user7',26,1000)";
+	mysqli_query($link, $query_insUser) or die(mysqli_error($link));
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p> 
+<?php
+// $query_insUser = "insert into users (name, age, salary) values ('user7',26,1000)";
+// mysqli_query($link, $query_insUser) or die(mysqli_error($link));
+?>
+
+<h3 class="fw-bold mt-5">Вставка записей при отсутствующих столбцах через SQL запрос в PHP</h3>
+<p>Что будет, если не указать значение какого-либо столбца? Давайте, например, укажем только имя и возраст:</p>
+
+<code>
+	<pre>
+	&lt?php
+	$query = "INSERT INTO users (name, age) VALUES ('user', 30)";
+	mysqli_query($link, $query) or die(mysqli_error($link));
+	?>
+	</pre>
+</code>
+
+<p>В таком случае не указанные столбцы возьмут значение по умолчанию. Если такое значение не указано в PhpMyAdmin, то это приведет к ошибке и такой запрос откажется выполнятся.</p>
+
+<p class="fw-bold mt-5">Задача</p>
+<p>Добавьте нового юзера 'xxxx', не указав ему возраст и зарплату.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>
+	&lt?php
+	$query_insEr = "insert into users (name) values ('xxxx')";
+	mysqli_query($link, $query_insEr) or die($mysqli_error($link));
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p> 
+<?php
+// $query_insEr = "insert into users (name) values ('xxxx')";
+// $err = mysqli_query($link, $query_insEr) or die($mysqli_error($link));
+// echo $err;
+?>
+<p>Резальтат будет таким: Fatal error: Uncaught mysqli_sql_exception: Field 'age' doesn't have a default value</p>
+<h3 class="fw-bold mt-5">Обновление записей через SQL запрос в PHP</h3>
 <!-- 
 <p class="fw-bold mt-5">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
@@ -928,4 +1004,6 @@ getTableM($data);
 -->
 
 
-<!-- <h3 class="fw-bold mt-5">Практические задачи</h3> -->
+<!-- 
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+  -->
