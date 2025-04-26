@@ -63,4 +63,34 @@ function getTableM($data)
 	}
 	echo $res. "</table>";
 }
+function getTableM2($data)
+{
+	$res = "<style>
+			td,
+			th {
+				border: 1px solid black;
+				padding: 5px;
+				text-align: center;
+			}
+			</style>
+			<table>
+				<tr>";
+	$arrKeys = array_keys($data[1]);
+	foreach ($arrKeys as $header) {
+		$res .= "<th>$header</th>";
+	}
+
+	$res .= "</tr>";
+	foreach ($data as $row) {
+
+		$res .= "<tr>";
+
+		foreach($arrKeys as $key) {
+			$res .= "<td>{$row[$key]}</td>";
+		}
+
+		$res .= "</tr>";
+	}
+	echo $res . "</table>";
+}
 ?>
