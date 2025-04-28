@@ -606,6 +606,69 @@ getTableM2($data);
     </tbody>
 </table>
 
+<h3 class="fw-bold mt-5">Запросы</h3>
+<p>Давайте сделаем запрос, с помощью которого вытащим юзеров вместе с их городами. Для этого нам понадобится сделать два джоина: первый джоин присоединит к юзерам таблицу связи, а второй джоин по связям присоединит города:</p>
+
+
+<pre>
+    <span class="text-warning">SELECT</span>
+      users.name as user_name,
+      cities.name as city_name,
+    <span class="text-warning">FROM</span>
+      user_cities
+    <span class="text-warning">LEFT JOIN</span> user_cities <span class="text-warning">ON</span> user_cities.user_id=users.id
+    <span class="text-warning">LEFT JOIN</span> cities <span class="text-warning">ON</span> user_cities.city_id=cities.id</pre>
+
+<h3 class="fw-bold mt-5">Результат запроса</h3>
+<p>Результат нашего запроса в PHP будет содержать имя каждого юзера столько раз, со скольки городами он связан:</p>
+
+<code>
+    <pre>
+    &lt?php
+        $arr = [
+        ['user_name' => 'user1', 'city_name' => 'city1'],
+        ['user_name' => 'user1', 'city_name' => 'city2'],
+        ['user_name' => 'user1', 'city_name' => 'city3'],
+        ['user_name' => 'user2', 'city_name' => 'city1'],
+        ['user_name' => 'user2', 'city_name' => 'city2'],
+        ['user_name' => 'user3', 'city_name' => 'city2'],
+        ['user_name' => 'user3', 'city_name' => 'city3'],
+        ['user_name' => 'user4', 'city_name' => 'city1'],
+        ];
+    ?></pre>
+</code>
+<p>Удобнее было бы переконвертировать такой массив и превратить его в следующий:</p>
+
+<code>
+    <pre>
+    &lt?php
+        $res = [
+            ['user1' => ['city1', 'city2', 'city3']],
+            ['user2' => ['city1', 'city2']],
+            ['user3' => ['city2', 'city3']],
+            ['user4' => ['city1']],
+        ];
+    ?></pre>
+</code>
+<p>Напишем код, выполняющий такую конвертацию:</p>
+
+
+<code>
+    <pre>
+    &lt?php
+        $res = [];
+        
+        foreach ($data as $elem) {
+            $res[$elem['user_name']][] = $elem['city_name'];
+        }
+        
+        var_dump($res);
+    ?></pre>
+</code>
+
+<p class="fw-bold mt-3">Задача 1</p>
+<p>Пусть товар может принадлежать нескольким категориям. Распишите структуру хранения.</p>
+
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
