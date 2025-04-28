@@ -668,7 +668,189 @@ getTableM2($data);
 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть товар может принадлежать нескольким категориям. Распишите структуру хранения.</p>
+<p class="fw-bold">Решение:</p>
+<p>Понадобятся 3 таблицы. Таблица с наименование товара. Таблица с наименованием категорий и таблица связи имени товара с категорией товара</p>
 
+<p class="fw-bold mt-3">Задача 2</p>
+<p>Напишите запрос, который достанет товары вместе с их категориями.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+        &lt?php
+        $host = 'MySQL-8.0';
+        $user = 'root';
+        $pass = '';
+        $dbname = 't_shop';
+
+        $t_shopLink = mysqli_connect($host, $user, $pass, $dbname);
+        mysqli_query($t_shopLink, "SET NAMES 'utf8'");
+
+        $query = "SELECT
+                product.name as product_name,
+                category.name as category_name
+        FROM
+            product_category
+        LEFT JOIN product ON product_category.product_id = product.id
+        LEFT JOIN category ON product_category.category_id = category.id";
+        $res = mysqli_query($t_shopLink, $query);
+        for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+        getTableM2($data);
+        ?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$host = 'MySQL-8.0';
+$user = 'root';
+$pass = '';
+$dbname = 't_shop';
+
+$t_shopLink = mysqli_connect($host, $user, $pass, $dbname);
+mysqli_query($t_shopLink, "SET NAMES 'utf8'");
+
+$query = "SELECT
+                product.name as product_name,
+                category.name as category_name
+        FROM
+            product_category
+        LEFT JOIN product ON product_category.product_id = product.id
+        LEFT JOIN category ON product_category.category_id = category.id";
+$res = mysqli_query($t_shopLink, $query);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+getTableM2($data);
+?>
+
+<p class="fw-bold mt-3">Задача 3</p>
+<p>Выведите полученные данные в виде списка ul так, чтобы в каждой li вначале стояло имя продукта, а после двоеточия через запятую перечислялись категории этого продукта. Примерно так:
+    <code>
+        <pre>
+    &ltul>
+        &ltli>product1: category1, category2, category3&lt/li>
+        &ltli>product2: category1, category3&lt/li>
+        &ltli>product3: category1&lt/li>
+    &lt/ul>
+        </pre>
+    </code>
+</p>
+<p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+    &lt?php
+    $query = "SELECT
+            product.name as product_name,
+            category.name as category_name
+    FROM
+        product_category
+    LEFT JOIN product ON product_category.product_id = product.id
+    LEFT JOIN category ON product_category.category_id = category.id";
+    $res = mysqli_query($t_shopLink, $query);
+    for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+    $result = [];
+
+    foreach ($data as $elem) {
+        $result[$elem['product_name']][] = $elem['category_name'];
+    }
+    ?>
+    &ltul>
+        &lt?php foreach ($result as $key => $categoryArr): ?>
+        &ltli>&lt?= $key ?>: &lt?php foreach ($categoryArr as $category): ?> &lt?= $category ?>,&lt?php endforeach ?>&lt/li>
+        &lt?php endforeach ?>
+    &lt/ul></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<?php
+$query = "SELECT
+                product.name as product_name,
+                category.name as category_name
+        FROM
+            product_category
+        LEFT JOIN product ON product_category.product_id = product.id
+        LEFT JOIN category ON product_category.category_id = category.id";
+$res = mysqli_query($t_shopLink, $query);
+for ($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+$result = [];
+
+foreach ($data as $elem) {
+    $result[$elem['product_name']][] = $elem['category_name'];
+}
+?>
+<ul>
+    <?php foreach ($result as $key => $categoryArr): ?>
+        <li><?= $key ?>: <?php foreach ($categoryArr as $category): ?> <?= $category ?>,<?php endforeach ?></li>
+    <?php endforeach ?>
+</ul>
+
+
+<h3 class="fw-bold mt-5">Родственные связи данных в PHP</h3>
+<p>Пусть перед нами стоит задача хранить отцов и сыновей. Пусть каждый отец может иметь только одного сына, а сын в свою очередь тоже может иметь одного сына.<br />
+    Нужно придумать, как мы будем хранить данные. Первая идея, которая может прийти в голову - сделать две таблицы: parents для отцов и sons для сыновей. Затем связать эти таблицы каким-нибудь полем: son_id или parent_id.<br />
+    Однако, это идея не очень хорошая - ведь один и тот же человек может быть одновременно и отцом и сыном - и придется хранить его в обоих таблицах, а это неудобно, занимает больше место и легко приводит к ошибкам.<br />
+    Более хороший вариант - связать таблицу саму с собой: сделаем таблицу users, в ней будем хранить всех юзеров и каждому сделаем поле son_id, в котором будет храниться id сына из этой же таблицы:</p>
+
+<table>
+    <caption>users</caption>
+    <tbody>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>son_id</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>user1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>user2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>user3</td>
+            <td>null</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 class="fw-bold mt-5">Запросы</h3>
+<p>Давайте теперь напишем запрос, который достанет юзера вместе с его сыном.<br />
+    Для начала давайте просто достанем юзеров:</p>
+<code>
+    <pre>
+    SELECT
+        *
+    FROM
+        users</pre>
+</code>
+<p>Теперь заджойним к юзерам их сыновей. Джойнить мы будем таблицу саму к себе, поэтому нам нужно выполнить ее переименование:</p>
+<code>
+    <pre>LEFT JOIN users as sons</pre>
+</code>
+<p>Теперь мы можем указать связь основой таблицы и переименованной:</p>
+<code>
+    <pre>LEFT JOIN users as sons ON sons.id=users.son_id</pre>
+</code>
+<p>Укажем теперь поля:</p>
+<code>
+    <pre>
+    SELECT
+	users.name as user_name, sons.name as son_name</pre>
+</code>
+<p>Соберем все вместе и получим следующий запрос:</p>
+<code>
+    <pre>
+    SELECT
+    	users.name as user_name, sons.name as son_name
+    FROM
+        users
+    LEFT JOIN users as sons ON sons.id=users.son_id</pre>
+</code>
+<h3 class="fw-bold mt-5">Практические задачи</h3>
+
+<p class="fw-bold mt-3">Задача 1</p>
+<p>Пусть у нас есть категории. Каждая категория может принадлежать родительской категории, та в свою очередь своей родительской и так далее. Распишите структуру хранения.</p>
+<p class="fw-bold">Решение:</p>
+<p>все категории записываются в одну таблицу</p>
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
