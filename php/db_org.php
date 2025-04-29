@@ -851,6 +851,112 @@ foreach ($data as $elem) {
 <p>Пусть у нас есть категории. Каждая категория может принадлежать родительской категории, та в свою очередь своей родительской и так далее. Распишите структуру хранения.</p>
 <p class="fw-bold">Решение:</p>
 <p>все категории записываются в одну таблицу</p>
+
+
+<h3 class="fw-bold mt-5">Несколько потомков в родственных связях в PHP</h3>
+<p>В предыдущем уроке отец мог иметь только одного сына. Это достигалось за счет того, что у отца была связь son_id.<br/>
+Пусть теперь отец может иметь несколько сыновей. В этом случае мы по-прежнему можем сделать только одну таблицу, которая будет связана сама с собой. Только в поле связи будем хранить не id сына, а id отца. В этом случае несколько юзеров смогут сослаться на своего отца - и тем самым отец будет иметь несколько сыновей:</p>
+<table>
+		<caption>users</caption>
+		<tbody><tr>
+			<th>id</th>
+			<th>name</th>
+			<th>father_id</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>user1</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>user2</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>user3</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>user4</td>
+			<td>null</td>
+		</tr>
+	</tbody></table>
+    <p>Получить юзера вместе с его отцом можно следующим образом:</p>
+<code>
+    <pre>
+    SELECT
+        users.name as user_name,
+        fathers.name as father_name
+    FROM
+        users
+    LEFT JOIN users as fathers 
+        ON fathers.id=users.father_id 
+    </pre>
+</code>
+
+<h3 class="fw-bold mt-5">Двойная связь с одной таблицей в PHP</h3>
+<p>Пусть у нас есть города:</p>
+<table>
+		<caption>cities</caption>
+		<tbody><tr>
+			<th>id</th>
+			<th>name</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>city1</td>
+		</tr>
+		<tr>
+		</tr><tr>
+			<td>2</td>
+			<td>city2</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>city3</td>
+		</tr>
+	</tbody></table>
+<p>Пусть у нас есть маршруты между городами, при этом каждый маршрут имеет город начала и город конца:</p>
+<table>
+		<caption>routes</caption>
+		<tbody><tr>
+			<th>id</th>
+			<th>name</th>
+			<th>from_city_id</th>
+			<th>to_city_id</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>route1</td>
+			<td>1</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>route2</td>
+			<td>2</td>
+			<td>3</td>
+		</tr>
+	</tbody></table>
+    <p>Пусть мы хотим получить маршруты вместе с городами. Сложность здесь представляет то, что каждый маршрут имеет два города: начало и конец.
+
+Получается, что таблицу с городами нужно джойнить два раза. При каждом джоине таблицу придется переименовать:</p>
+<code>
+    <pre>
+    SELECT
+	    from_cities.name as from_city_name, 
+	    to_cities.name as to_city_name
+    FROM
+        routes
+    LEFT JOIN cities as from_cities
+        ON from_cities.id=routes.from_city_id
+    LEFT JOIN cities as to_cities
+        ON to_cities.id=routes.to_city_id
+    </pre>
+</code>
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>

@@ -119,9 +119,13 @@
 	<div class="text-left ms-4 mb-4">
 		<?php // include './php/mysql.php'; ?>
 	</div> -->
-	<h3 class="text-center redT m-2">Организация базы данных </h3>
+	<!-- <h3 class="text-center redT m-2">Организация базы данных </h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/db_org.php'; ?>
+		<?php //include './php/db_org.php'; ?>
+	</div> -->
+	<h3 class="text-center redT m-2">Практика на Базы данных </h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/db_pract.php'; ?>
 	</div>
 
 	<script src="./js.js"></script>
