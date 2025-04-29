@@ -851,6 +851,22 @@ foreach ($data as $elem) {
 <p>Пусть у нас есть категории. Каждая категория может принадлежать родительской категории, та в свою очередь своей родительской и так далее. Распишите структуру хранения.</p>
 <p class="fw-bold">Решение:</p>
 <p>все категории записываются в одну таблицу</p>
+<p class="fw-bold">Результат:</p>
+<?php
+$query = "SELECT 
+                all_category.category as chid_category,
+                child_category.category as parent_category
+            FROM all_category
+            LEFT JOIN all_category as child_category ON child_category.id = all_category.parent_category_id";
+$res = mysqli_query($t_shopLink, $query);
+for($data = []; $row = mysqli_fetch_assoc($res); $data[] = $row);
+// var_dump($data);
+getTableM2($data);
+        
+// $res = 
+
+?>
+
 
 
 <h3 class="fw-bold mt-5">Несколько потомков в родственных связях в PHP</h3>
