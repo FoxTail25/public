@@ -634,7 +634,153 @@ echo $result;
 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>На странице new.php реализуйте форму для добавления нового юзера.</p>
+<p class="fw-bold mt-3">Задача 2</p>
+<p>Модифицируйте предыдущую задачу так, чтобы после отправки формы значения из нее не удалялись.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+    // file: user/new.php
+
+        &lt?php
+        if (!empty($_POST)) {
+            $host = "MySQL-8.0";
+            $user = "root";
+            $pass = "";
+            $dbname = "db_pract";
+            $db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+            mysqli_query($db_pract_link, "SET NAMES 'utf8'");
+
+            $name = $_POST['name'];
+            $age = $_POST['age'];
+            $salary = $_POST['salary'];
+            $query = "INSERT INTO users SET name='$name', age='$age', 
+		salary='$salary'";
+            mysqli_query($db_pract_link, $query) or die(mysqli_error($db_pract_link));
+        }
+        ?>
+
+&ltform action="" method="POST">
+	&ltlabel for="">Имя:&ltbr />
+		&ltinput name="name" value=&lt?= isset($_POST['name']) ? $_POST['name'] : "" ?>>
+	&lt/label>&ltbr />
+	&ltlabel for="">Возраст:&ltbr />
+		&ltinput name="age" value=&lt?= isset($_POST['age']) ? $_POST['age'] : "" ?>>
+	&lt/label>&ltbr />
+	&ltlabel for="">Зарплата:&ltbr />
+		&ltinput name="salary" value=&lt?= isset($_POST['salary']) ? $_POST['salary'] : "" ?>>
+	&lt/label>&ltbr />
+	&ltinput type="submit">
+&lt/form>
+
+&lta href="../index.php">nazad&lt/a>
+    </pre>
+</code>
+<p class="fw-bold">Результат:</p>
+
+<p><a href="user/new.php">Добавить нового пользвателя</a></p>
+
+
+<h3 class="fw-bold mt-5">Редактирование записи в БД на PHP</h3>
+<p>Давайте теперь реализуем редактирование юзера. Для этого нам понадобится две страницы: страница edit.php, на которой будет размещаться форма для редактирования юзера, и страница save.php, на которую форма будет отправляться для последующего сохранения.</p>
+<h4 class="fw-bold mt-5">Страница редактирования</h4>
+<p>Для начала на странице edit.php сделаем форму:</p>
+<code>
+    <pre> //file: edit.php
+    &ltform action="" method="POST">
+        &ltinput name="name">
+        &ltinput name="age">
+        &ltinput name="salary">
+        &ltinput type="submit">
+    &lt/form>
+    </pre>
+</code>
+<p>В эту форму мы будем загружать текущее данные юзера из базы данных. Пусть id юзера для редактирования передается в GET параметре:</p>
+<code>
+    <pre> //file: edit.php
+        $id = $_GET['id'];
+    </pre>
+</code>
+<p>Сформируем запрос на получение юзера:</p>
+<code>
+    <pre> //file: edit.php
+        $query = "SELECT * FROM users WHERE id=$id";
+    </pre>
+</code>
+<p>Выполним запрос:</p>
+<code>
+    <pre> //file: edit.php
+        $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    </pre>
+</code>
+<p>Получим данные юзера в переменную:</p>
+<code>
+    <pre> //file: edit.php
+        $user = mysqli_fetch_assoc($result);
+    </pre>
+</code>
+<p>Выведем эти данные в нашей форме:</p>
+<code>
+    <pre> //file: edit.php
+    &ltform method="POST">
+        &ltinput name="name" value="&lt?= $user['name']
+                                    ?>"> 
+        &ltinput name="age" value="&lt?= $user['age'] ?>">
+        &ltinput name="salary" value="&lt?= $user['salary']
+                                    ?>"> 
+        &ltinput type="submit">
+    &lt/form>
+    </pre>
+</code>
+<p>Поменяем action формы так, чтобы она отправлялась на страницу save.php:</p>
+<code>
+    <pre>
+        &ltform action="save.php" method="POST">
+    </pre>
+</code>
+<p>При этом GET параметром будем передавать id юзера для редактирования:</p>
+<code>
+    <pre>
+        &ltform action="save.php?id=&lt?= $_GET['id'] ?>" method="POST">
+    </pre>
+</code>
+<h4 class="fw-bold mt-5">Страница редактирования</h4>
+<p>На странице save.php получим отправленные данные:</p>
+<code>
+    <pre>
+        &lt?php
+        $id = $_GET['id'];
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $salary = $_POST['salary'];
+        ?>
+    </pre>
+</code>
+<p>Сформируем запрос на обновление:</p>
+<code>
+    <pre>
+        &lt?php
+        $query = "UPDATE users SET
+		name='$name', age='$age', salary='$salary'
+	    WHERE id=$id";
+        ?>
+    </pre>
+</code>
+<p>Выполним запрос:</p>
+<code>
+    <pre>
+        &lt?php
+        mysqli_query($link, $query) or die(mysqli_error($link));
+        ?>
+    </pre>
+</code>
+<p>Вывыдем сообщение об успехе операции:</p>
+<code>
+    <pre>
+        &lt?php
+        echo 'юзер успешно изменен!';
+        ?>
+    </pre>
+</code>
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
