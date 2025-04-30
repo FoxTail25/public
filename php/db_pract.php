@@ -583,6 +583,58 @@ echo $result;
 <a href="user/show.php?show=2">user2</a>
 <a href="user/show.php?show=3">user3</a>
 
+<h3 class="fw-bold mt-5">Добавление новой записи в БД на PHP</h3>
+<p>Давайте теперь сделаем страницу new.php для добавления нового юзера в нашу базу данных. Сделаем для этого соответствующую форму:</p>
+<code>
+    <pre>
+    &ltform action="" method="POST">
+        &ltinput name="name">
+        &ltinput name="age">
+        &ltinput name="salary">
+        &ltinput type="submit">
+    &lt/form></pre>
+</code>
+<p>После отправки формы сохраним ее данные в базу. Для начала поймаем сам момент отправки формы:</p>
+<code>
+    <pre>
+    &lt?php
+        if (!empty($_POST)) {
+            // тут будет код обработки формы
+        }
+    ?>    </pre>
+</code>
+<p>Внутри условия получим наши данные в переменные:</p>
+<code>
+    <pre>
+    &lt?php
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $salary = $_POST['salary'];
+    ?>    </pre>
+</code>
+
+<p>Сформируем запрос на вставку данных:</p>
+
+<code>
+    <pre>
+    &lt?php
+        $query = "INSERT INTO users SET name='$name', age='$age', 
+            salary='$salary'"; 
+    ?>    </pre>
+</code>
+
+<p>Выполним этот запрос:</p>
+
+<code>
+    <pre>
+    &lt?php
+        mysqli_query($link, $query) or die(mysqli_error($link));
+    ?>    </pre>
+</code>
+
+<p class="fw-bold mt-3">Задача 1</p>
+<p>На странице new.php реализуйте форму для добавления нового юзера.</p>
+<p class="fw-bold">Решение:</p>
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
