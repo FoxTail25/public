@@ -781,6 +781,10 @@ echo $result;
         ?>
     </pre>
 </code>
+
+<a href="user/edit.php?id=1">user1</a>
+<a href="user/edit.php?id=2">user2</a>
+<a href="user/edit.php?id=3">user3</a>
 <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
