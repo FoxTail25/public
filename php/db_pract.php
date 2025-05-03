@@ -782,10 +782,71 @@ echo $result;
     </pre>
 </code>
 
-<a href="user/edit.php?id=1">user1</a>
-<a href="user/edit.php?id=2">user2</a>
-<a href="user/edit.php?id=3">user3</a>
-<!-- 
+<!-- <a href="user/edit.php?id=1">user1</a><br/>
+<a href="user/edit.php?id=2">user2</a><br/>
+<a href="user/edit.php?id=3">user3</a><br/> -->
+
+
+
+<p class="fw-bold mt-3">Задача</p>
+<p>На странице index.php выведите на экран список юзеров так, чтобы для каждого юзера была ссылка для его редактирования:</p>
+<pre>
+    &ltul>
+	&ltli>user1 &lta href="?edit=1">edit&lt/a>&lt/li>
+	&ltli>user2 &lta href="?edit=2">edit&lt/a>&lt/li>
+	&ltli>user3 &lta href="?edit=3">edit&lt/a>&lt/li>
+    &lt/ul>   
+</pre>
+
+
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>
+	&lt?php
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+
+
+
+<ul>
+	<li>user1 <a href="?edit=1">edit</a></li>
+	<li>user2 <a href="?edit=2">edit</a></li>
+	<li>user3 <a href="?edit=3">edit</a></li>
+</ul>
+
+<?php
+if(isset($_GET['edit'])):?>
+<?php
+    echo "edit $_GET[edit]";
+    
+    
+    $id = $_GET['edit'];
+    $query = "SELECT
+            name, age, salary
+            FROM users
+            WHERE id = $id
+        ";
+$res = mysqli_query($db_pract_link, $query);
+$userData = mysqli_fetch_assoc($res);
+?>
+<form id="editform" action="user/save.php?id=<?= $_GET['edit'] ?>" method="POST">
+    <label>Name:<br/>
+<input type="text" name="name" value="<?=$userData['name']?>">
+    </label><br/>
+    <label>Age:<br/>
+<input type="number" name="age" value="<?=$userData['age']?>">
+    </label><br/>
+    <label>Salary:<br/>
+<input type="number" name="salary" value="<?=$userData['salary']?>">
+    </label><br/>
+    <input type="submit" >
+</form>
+
+
+<?php endif?>
+
+    <!-- 
 <p class="fw-bold mt-3">Задача 1</p>
 <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
 <p class="fw-bold">Решение:</p>
