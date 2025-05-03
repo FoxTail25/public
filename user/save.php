@@ -18,4 +18,5 @@ $query = "UPDATE users SET
 mysqli_query($db_pract_link, $query) or die(mysqli_error($link));
 echo "Данные $name изменены";
 ?>
+<br/>
 <a href="../index.php">nazad</a>

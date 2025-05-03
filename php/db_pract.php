@@ -1,4 +1,4 @@
-<h3 class="fw-bold mt-5">Оформление вывода из базы данных в PHP</h3>
+<h3 id="top" class="fw-bold mt-5">Оформление вывода из базы данных в PHP</h3>
 <p>Вы уже умеете получать данные из базы данных. Давайте выведем теперь такие данные, оформив их тегами.</p>
 <p>Например, записи нашей тестовой таблицы users выведем в следующем виде:</p>
 <code>
@@ -801,61 +801,170 @@ echo $result;
 
 <p class="fw-bold">Решение:</p>
 <code>
-<pre>
-	&lt?php
-	?></pre>
+    <pre>
+    //file index.php
+    &lt?php
+        $res = mysqli_query($db_pract_link, $querySelect);
+        for ($data = []; $row = mysqli_fetch_array($res); $data[] = $row);
+    ?>
+    &ltul>
+        &lt?php foreach ($data as $user): ?>
+            &ltli>&lt?= $user['name'] ?> &lta href="user/edit.php?id=&lt?= $user['id'] ?>">edit&lt/a>&lt/li>
+        &lt?php endforeach ?>
+    &lt/ul>
+
+    //file user/edit.php
+    &lt?php
+    $host = "MySQL-8.0";
+    $user = "root";
+    $pass = "";
+    $dbname = "db_pract";
+    $db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+    mysqli_query($db_pract_link, "SET NAMES 'utf8'");
+
+
+    $id = $_GET['id'];
+    $query = "SELECT
+                name, age, salary
+                FROM users
+                WHERE id = $id
+            ";
+    $res = mysqli_query($db_pract_link, $query);
+    $userData = mysqli_fetch_assoc($res);
+    ?>
+    &ltform action="save.php?id=&lt?= $_GET['id'] ?>" method="POST">
+        &ltlabel>Name:&ltbr/>
+    &ltinput type="text" name="name" value="&lt?= $userData['name'] ?>">
+        &lt/label>&ltbr/>
+        &ltlabel>Age:&ltbr/>
+    &ltinput type="number" name="age" value="&lt?= $userData['age'] ?>">
+        &lt/label>&ltbr/>
+        &ltlabel>Salary:&ltbr/>
+    &ltinput type="number" name="salary" value="&lt?= $userData['salary'] ?>">
+        &lt/label>&ltbr/>
+        &ltinput type="submit" >
+    &lt/form>
+
+    //file user/save.php
+    &lt?php
+
+    $host = "MySQL-8.0";
+    $user = "root";
+    $pass = "";
+    $dbname = "db_pract";
+    $db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+    mysqli_query($db_pract_link, "SET NAMES 'utf8'");
+
+    $id = $_GET['id'];
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $salary = $_POST['salary'];
+    $query = "UPDATE users SET 
+        name = '$name', age = '$age', salary = '$salary'
+        WHERE id = $id";
+
+    mysqli_query($db_pract_link, $query) or die(mysqli_error($link));
+    echo "Данные $name изменены";
+    ?>
+    &ltbr/>
+    &lta href="../index.php">nazad&lt/a></pre>
 </code>
 <p class="fw-bold">Результат:</p>
 
-
-
+<?php
+$res = mysqli_query($db_pract_link, $querySelect);
+for ($data = []; $row = mysqli_fetch_array($res); $data[] = $row);
+?>
 <ul>
-	<li>user1 <a href="?edit=1">edit</a></li>
-	<li>user2 <a href="?edit=2">edit</a></li>
-	<li>user3 <a href="?edit=3">edit</a></li>
+    <?php foreach ($data as $user): ?>
+        <li><?= $user['name'] ?> <a href="user/edit.php?id=<?= $user['id'] ?>">edit</a></li>
+    <?php endforeach ?>
 </ul>
 
-<?php
-if(isset($_GET['edit'])):?>
-<?php
-    echo "edit $_GET[edit]";
-    
-    
-    $id = $_GET['edit'];
-    $query = "SELECT
-            name, age, salary
-            FROM users
-            WHERE id = $id
-        ";
-$res = mysqli_query($db_pract_link, $query);
-$userData = mysqli_fetch_assoc($res);
-?>
-<form id="editform" action="user/save.php?id=<?= $_GET['edit'] ?>" method="POST">
-    <label>Name:<br/>
-<input type="text" name="name" value="<?=$userData['name']?>">
-    </label><br/>
-    <label>Age:<br/>
-<input type="number" name="age" value="<?=$userData['age']?>">
-    </label><br/>
-    <label>Salary:<br/>
-<input type="number" name="salary" value="<?=$userData['salary']?>">
-    </label><br/>
-    <input type="submit" >
-</form>
-
-
-<?php endif?>
-
-    <!-- 
-<p class="fw-bold mt-3">Задача 1</p>
-<p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+<p class="fw-bold mt-3">Задача</p>
+<p>Реализуйте обработку формы на странице edit2.php.</p>
+</p>
 <p class="fw-bold">Решение:</p>
 <code>
-<pre>
-	&lt?php
-	?></pre>
+    <pre>
+    //file index.php
+    &lt?php
+        $res = mysqli_query($db_pract_link, $querySelect);
+        for ($data = []; $row = mysqli_fetch_array($res); $data[] = $row);
+    ?>
+    &ltul id="editlist">
+        &lt?php foreach ($data as $user): ?>
+            &ltli>&lt?= $user['name'] ?> &lta href="user/edit2.php?id=&lt?= $user['id'] ?>">edit&lt/a>&lt/li>
+        &lt?php endforeach ?>
+    &lt/ul>
+    //file edit2.php
+    &lt?php
+    $host = "MySQL-8.0";
+    $user = "root";
+    $pass = "";
+    $dbname = "db_pract";
+    $db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+    mysqli_query($db_pract_link, "SET NAMES 'utf8'");
+
+    if (!isset($_GET['save'])) : ?>
+        &lt?php
+            $id = $_GET['id'];
+            $query = "SELECT
+                name, age, salary
+                FROM users
+                WHERE id = $id
+            ";
+            $res = mysqli_query($db_pract_link, $query);
+            $userData = mysqli_fetch_assoc($res);
+        ?>
+        &ltform action="?save=&lt?= $id ?>" method="POST">
+            &ltlabel>Name:&ltbr />
+                &ltinput type="text" name="name" value="&lt?= $userData['name'] ?>">
+            &lt/label>&ltbr />
+            &ltlabel>Age:&ltbr />
+                &ltinput type="number" name="age" value="&lt?= $userData['age'] ?>">
+            &lt/label>&ltbr />
+            &ltlabel>Salary:&ltbr />
+                &ltinput type="number" name="salary" value="&lt?= $userData['salary'] ?>">
+            &lt/label>&ltbr />
+            &ltinput type="submit">
+        &lt/form>
+    &lt?php else : ?>
+        &lt?php
+            $id = $_GET['save'];
+            $name = $_POST['name'];
+            $age = $_POST['age'];
+            $salary = $_POST['salary'];
+            $query = "UPDATE users SET 
+            name = '$name', age = '$age', salary = '$salary'
+            WHERE id = $id";
+
+            mysqli_query($db_pract_link, $query) or die(mysqli_error($link));
+        ?>
+        &ltp>Данные &lt?= $name ?> изменены&lt/p>
+        &ltbr />
+        &lta href="../index.php#editlist">вернуться&lt/a>
+
+    &lt?php endif ?></pre>
 </code>
 <p class="fw-bold">Результат:</p>
+<?php
+$res = mysqli_query($db_pract_link, $querySelect);
+for ($data = []; $row = mysqli_fetch_array($res); $data[] = $row);
+?>
+<ul id="editlist">
+    <?php foreach ($data as $user): ?>
+        <li><?= $user['name'] ?> <a href="user/edit2.php?id=<?= $user['id'] ?>">edit</a></li>
+    <?php endforeach ?>
+</ul>
+
+
+
+<!-- 
+    <p class="fw-bold mt-3">Задача 1</p>
+    <p>Пусть в корне вашего сайта лежит папка dir, а в ней какие-то текстовые файлы. Выведите на экран столбец имен этих файлов.</p>
+    <p class="fw-bold">Решение:</p>
+    <p class="fw-bold">Результат:</p>
 
 -->
 

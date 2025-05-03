@@ -1,5 +1,4 @@
 <?php
-var_dump($_REQUEST);
 $host = "MySQL-8.0";
 $user = "root";
 $pass = "";
