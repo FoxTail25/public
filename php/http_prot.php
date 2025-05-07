@@ -334,6 +334,37 @@ foreach ($requestHeaders as $headerKey => $headerValue) : ?>
 	</pre>
 </code>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	//file: index.php
+	&ltp class="fw-bold" id="key">Результат:&lt/p>
+	&ltform action="http_prot/404.php">
+		&ltselect name="key" id="">
+			&ltoption value="0">1&lt/option>
+			&ltoption value="1">2&lt/option>
+			&ltoption value="2">3&lt/option>
+			&ltoption value="3">4&lt/option>
+		&lt/select>
+		&ltinput type="submit">
+	&lt/form>
+
+	//file: 404.php
+	&lt?php
+		$arr = ['a', 'b', 'c'];
+		$key = $_GET['key'];
+
+		if (isset($arr[$key])) {
+			echo $arr[$key];
+		} else {
+			// отдать 404
+			header('HTTP/1.1 404 Not Found');
+			echo 'error нет такой страницы';
+		}
+	?>
+	&ltbr />
+	&lta href="../index.php#key">назад&lt/a>
+	</pre>
+</code>
 <p class="fw-bold" id="key">Результат:</p>
 <form action="http_prot/404.php">
 	<select name="key" id="">
@@ -344,6 +375,89 @@ foreach ($requestHeaders as $headerKey => $headerValue) : ?>
 	</select>
 	<input type="submit">
 </form>
+
+<h3 class="fw-bold mt-5">Отдача статуса HTTP ответа в PHP</h3>
+<p>Можно отдельно задать статус HTTP ответа, не указывая стартовую строку. Это делается с помощью функции http_response_code:</p>
+<code>
+	<pre>
+	&lt?php
+	http_response_code(404);
+	?></pre>
+</code>
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Допишите код так, чтобы отдавались соответствующие HTTP статусы:</p>
+<pre>	&lt?php
+		$arr = ['a', 'b', 'c'];
+		
+		if (isset($_GET['key'])) {
+			$key = $_GET['key'];
+			
+			if (isset($arr[$key])) {
+				echo $arr[$key];
+			} else {
+				// отдать 404
+				echo 'Not Found';
+			}
+		} else {
+			// отдать 403
+			echo 'Forbidden';
+		}
+	?></pre>
+<p class="fw-bold">Решение:</p>
+<code>
+<pre>	&lt?php
+		$arr = ['a', 'b', 'c'];
+		
+		if (isset($_GET['key'])) {
+			$key = $_GET['key'];
+			
+			if (isset($arr[$key])) {
+				echo $arr[$key];
+			} else {
+				// отдать 404
+				http_response_code(404);
+				echo 'Not Found';
+			}
+		} else {
+			// отдать 403
+			http_response_code(403);
+			echo 'Forbidden';
+		}
+	?></pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="http_prot/404403.php">test</a>
+
+<h3 class="fw-bold mt-5">Введение в редиректы PHP</h3>
+<p>С помощью функции header можно перенаправить браузер с одной страницы на другую. Для этого нужно передать в ней HTTP заголовок Location:</p>
+<code>
+	<pre>	&lt?php
+		header('Location: test.php');
+	?></pre>
+</code>
+<p>Адрес целевой страницы может хранится и в переменной:</p>
+<code>
+	<pre>	&lt?php
+		$addr = 'test.php';
+		header('Location: ' . $addr);
+	?></pre>
+</code>
+<p>Вместо конкатенации можно использовать вставку переменных:</p>
+<code>
+	<pre>	&lt?php
+		$addr = 'test.php';
+		header("Location: $addr");
+	?></pre>
+</code>
+
+<p class="fw-bold mt-3" id="redir">Задача</p>
+    <p>При заходе на страницу index.php выполните редирект на страницу page.php.</p>
+    <p class="fw-bold">Решение:</p>
+    <p class="fw-bold">Результат:</p>
+	<a href="http_prot/redir.php">test</a>
+
+
 <!-- <a href="http_prot/404.php?key=3">test</a> -->
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
@@ -352,7 +466,6 @@ foreach ($requestHeaders as $headerKey => $headerValue) : ?>
     <p class="fw-bold">Результат:</p>
 
 -->
-
 
 
 <!-- 
