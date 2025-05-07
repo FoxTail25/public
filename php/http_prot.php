@@ -429,33 +429,6 @@ foreach ($requestHeaders as $headerKey => $headerValue) : ?>
 <p class="fw-bold">Результат:</p>
 <a href="http_prot/404403.php">test</a>
 
-<h3 class="fw-bold mt-5">Введение в редиректы PHP</h3>
-<p>С помощью функции header можно перенаправить браузер с одной страницы на другую. Для этого нужно передать в ней HTTP заголовок Location:</p>
-<code>
-	<pre>	&lt?php
-		header('Location: test.php');
-	?></pre>
-</code>
-<p>Адрес целевой страницы может хранится и в переменной:</p>
-<code>
-	<pre>	&lt?php
-		$addr = 'test.php';
-		header('Location: ' . $addr);
-	?></pre>
-</code>
-<p>Вместо конкатенации можно использовать вставку переменных:</p>
-<code>
-	<pre>	&lt?php
-		$addr = 'test.php';
-		header("Location: $addr");
-	?></pre>
-</code>
-
-<p class="fw-bold mt-3" id="redir">Задача</p>
-    <p>При заходе на страницу index.php выполните редирект на страницу page.php.</p>
-    <p class="fw-bold">Решение:</p>
-    <p class="fw-bold">Результат:</p>
-	<a href="http_prot/redir.php">test</a>
 
 
 <!-- <a href="http_prot/404.php?key=3">test</a> -->

@@ -127,9 +127,13 @@
 	<div class="text-left ms-4 mb-4">
 		<?php //include './php/db_pract.php'; ?>
 	</div> -->
-	<h3 class="text-center redT m-2">Протокол HTTP в PHP</h3>
+	<!-- <h3 class="text-center redT m-2">Протокол HTTP в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/http_prot.php'; ?>
+		<?php //include './php/http_prot.php'; ?>
+	</div> -->
+	<h3 class="text-center redT m-2">Редирект в PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/redirect.php'; ?>
 	</div>
 
 	<script src="./js.js"></script>
