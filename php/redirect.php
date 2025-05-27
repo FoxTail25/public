@@ -63,24 +63,52 @@
 </code>
 
 <p class="fw-bold mt-3">Задача</p>
-    <p>Воспроизведите какой-нибудь паразитный эффект в вашем коде. Затем исправьте его с помощью функции die.</p>
-    <p class="fw-bold">Решение:</p>
-	<code>
-		<pre>
-		//file: redirect/redir3.php
-		&lt?php
-	if(!isset($_GET['test'])){
-	header('Location: redir4.php');
-	die();
-	} 
-	file_put_contents('111.txt', '11111111');
+<p>Воспроизведите какой-нибудь паразитный эффект в вашем коде. Затем исправьте его с помощью функции die.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	//file: redirect/redir3.php
+	&lt?php
+if(!isset($_GET['test'])){
+header('Location: redir4.php');
+die();
+} 
+file_put_contents('111.txt', '11111111');
 
-	?>
-		</pre>
-	</code>
-    <p class="fw-bold">Результат:</p>
-	<a href="redirect/redir3.php">go to redir3</a>
-<!-- 
+?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="redirect/redir3.php">go to redir3</a>
+
+
+<h3 class="fw-bold mt-5">GET запросы и редирект в PHP</h3>
+<p>При редиректе можно так же передавать GET параметры</p>
+
+<code>
+	<pre>
+		&lt?php
+			header('Location: test.php?arg=1')
+		?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Пусть на странице index.php можно передать GET параметр с именем success. Сделайте так, чтобы при наличии такого параметра, на страницу выводилось сообщение об успехе операции.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold" id="redir_5">Результат:</p>
+
+<a href="redirect/redir5.php?yes=1">yes</a>
+<a href="redirect/redir5.php">no</a>
+<?php
+if(isset($_GET['success'])){
+	echo "успех";
+}
+?>
+
+
+
+	<!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
     <p class="fw-bold">Решение:</p>
@@ -91,3 +119,4 @@
 <!-- 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
  -->
+
