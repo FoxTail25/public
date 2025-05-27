@@ -97,14 +97,15 @@ file_put_contents('111.txt', '11111111');
 <p>Пусть на странице index.php можно передать GET параметр с именем success. Сделайте так, чтобы при наличии такого параметра, на страницу выводилось сообщение об успехе операции.</p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold" id="redir_5">Результат:</p>
+<?php if(isset($_GET['success'])){?>
+	<div style="border: 1px solid black; padding: 10px; text-align:center; margin:5px;">
+		Успех!
+	</div>
+<?php } ?>
+
 
 <a href="redirect/redir5.php?yes=1">yes</a>
 <a href="redirect/redir5.php">no</a>
-<?php
-if(isset($_GET['success'])){
-	echo "успех";
-}
-?>
 
 
 
