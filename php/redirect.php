@@ -96,6 +96,29 @@ file_put_contents('111.txt', '11111111');
 <p class="fw-bold mt-3">Задача</p>
 <p>Пусть на странице index.php можно передать GET параметр с именем success. Сделайте так, чтобы при наличии такого параметра, на страницу выводилось сообщение об успехе операции.</p>
 <p class="fw-bold">Решение:</p>
+
+<code>
+	<pre>
+		// index.php
+	&lt?php if(isset($_GET['success'])){?>
+	&ltdiv style="border: 1px solid black; padding: 10px; text-align:center; margin:5px;">
+		Успех!
+	&lt/div>
+	&lt?php } ?>
+	&lta href="redirect/redir5.php?yes=1">yes&lt/a>
+	&lta href="redirect/redir5.php">no&lt/a>
+
+		//redir5.php
+	&lt?php
+	if(isset($_GET['yes'])){
+		header('Location:../index.php?success="yes"#redir_5');
+		die();
+	} else {
+		header('Location:../index.php#redir_5');
+	}
+	?></pre>
+</code>
+
 <p class="fw-bold" id="redir_5">Результат:</p>
 <?php if(isset($_GET['success'])){?>
 	<div style="border: 1px solid black; padding: 10px; text-align:center; margin:5px;">
