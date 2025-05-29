@@ -189,6 +189,30 @@ file_put_contents('111.txt', '11111111');
 <p class="fw-bold mt-3" id="redir_6">Задача</p>
 <p>Пусть на странице redir_6.php можно передать число с помощью GET параметра с именем num. Сделайте так, чтобы при заходе без данного параметра, автоматически выполнялся редирект на эту же страницу, но с параметром num в значении 1.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//index.php
+		&ltform action="redirect/redir_6.php" method="get">
+		введите число:
+		&ltinput type="number" name="num">
+		&ltinput type="submit">
+		&lt/form>
+		
+		// redir_6.php
+		&lt?php
+		if($_GET['num'] == "" or !isset($_GET['num'])){
+			header('Location: ?num=1&def=true');
+			die();
+		}
+		?>
+		&lt?php
+		if(isset($_GET['def'])):?>
+		&ltp>Число не было передано, по этому по умолчанию установленно число 1&lt/p>
+		&lt?php endif?>
+		&ltdiv>Передано число: &lt?=$_GET['num']?>&lt/div>
+		&lta href="../index.php#redir_6">Назад&lt/a>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <form action="redirect/redir_6.php" method="get">
 введите число:
@@ -196,6 +220,47 @@ file_put_contents('111.txt', '11111111');
 	<input type="submit">
 </form>
 
+<h3 class="fw-bold mt-5">Флеш сообщения в PHP</h3>
+<p>
+Иногда при редиректе нужно передать некоторую информацию с одной страницы на другую. Например, чтобы вывести на целевой странице какое-нибудь текст для пользователя
+
+Такие сообщения называются флеш (flash) сообщениями. Такое название выбрано потому, что сообщение должно показаться только один раз, а при обновлении страницы исчезнуть.
+
+Давайте реализуем описанное. Пусть на странице page.php мы записываем в сессию некоторое сообщение и выполняем редирект на другую страницу:
+</p>
+<code>
+	<pre>
+		//page.php
+		
+		&lt?php
+		session_start();
+		
+		$_SESSION['flash'] = 'сообщение';
+		header('Location: index.php');
+		die();
+		?></pre>
+</code>
+<p>
+	На странице index.php выведем сообщение и удалим его из сессии во избежание повторного показа:
+</p>
+<code>
+	<pre>
+		//index.php
+			
+		&lt?php
+		session_start();
+		
+		if (isset($_SESSION['flash'])) {
+			echo $_SESSION['flash'];
+			unset($_SESSION['flash']);
+		}
+		?>
+	</pre>
+</code>
+<p class="fw-bold mt-3">Задача</p>
+<p>Реализуйте описанные флеш сообщения. Проверьте их работу.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
