@@ -335,8 +335,93 @@ file_put_contents('111.txt', '11111111');
 <p class="fw-bold mt-3" id="flash7">Задача</p>
 <p>Реализуйте описанные флеш сообщения. Проверьте их работу.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//index.php
+		&lta href="redirect/flash_arr_1.php">Массив flash сообщений&lt/a>
+		
+		//flash_arr_1.php
+		&lt?php
+		session_start();
+		$_SESSION['flash'][] = "Hello";
+		header('Location:flash_arr_2.php');
+		die();
+		?>
+
+		//flash_arr_2.php
+		&lt?php
+		session_start();
+		$_SESSION['flash'][] = "World";
+		header('Location:flash_arr_3.php');
+		?>
+
+		//flash_arr_3.php
+		&lt?php
+		session_start();
+		if (!empty($_SESSION['flash'])) {
+			foreach ($_SESSION['flash'] as $flash) {
+				echo "$flash" . ' ';
+			}
+			$_SESSION['flash'] = [];
+		}
+		?>
+		&ltbr/>
+		&lta href="../index.php#flash7">Назад&lt/a>
+
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <a href="redirect/flash_arr_1.php">Массив flash сообщений</a>
+
+
+<h3 class="fw-bold mt-5">Отправка формы в БД и редирект в PHP</h3>
+<p>Пусть у нас есть некоторая форма:</p>
+<code>
+	<pre>
+	//form.php
+	&ltform method="POST">
+		&ltinput name="test1">
+		&ltinput name="test2">
+		&ltinput type="submit">
+	&lt/form>
+	</pre>
+</code>
+<p>Давайте сохраним данные этой формы в базу:</p>
+<code>
+	<pre>
+	//form.php
+	&lt?php
+	if (!empty($_POST)) {
+		// сохраняем в базу
+	}
+	?>
+	</pre>
+</code>
+<p>
+	Здесь, однако, нас поджидает проблема: если обновить страницу браузера, то форма будет отправлена и сохранена еще раз, породив дубль данных.
+	<br />
+	Для решения проблемы нужно после сохранения формы выполнить редирект на эту же страницу:
+</p>
+
+<code>
+	<pre>
+	//form.php
+	&lt?php
+	if (!empty($_POST)) {
+		// сохраняем в базу
+
+		header('Location: form.php');
+		die();
+	}
+	?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Сделайте форму и реализуйте ее сохранение в БД после отправки. Избавьтесь от двойного сохранения после отправки.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
+<a href="redirect/form.php">решение</a>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
