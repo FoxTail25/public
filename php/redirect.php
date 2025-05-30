@@ -417,18 +417,142 @@ file_put_contents('111.txt', '11111111');
 	</pre>
 </code>
 
-<p class="fw-bold mt-3">Задача</p>
+<p class="fw-bold mt-3" id="redir_form">Задача</p>
 <p>Сделайте форму и реализуйте ее сохранение в БД после отправки. Избавьтесь от двойного сохранения после отправки.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	//form.php
+	&lt?php
+
+	$host = "MySQL-8.0";
+	$user = "root";
+	$pass = "";
+	$dbname = 'db_pract';
+	$db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+
+	if (!empty($_POST)) {
+		$name1 = $_POST['test1'];
+		$name2 = $_POST['test2'];
+		$query = "INSERT INTO redir SET name1='$name1', name2='$name2'";
+		mysqli_query($db_pract_link, $query);
+		header('location:form.php');
+	}
+	?>
+&ltform method="POST" style="display:grid; width:50%; margin: 0 auto;">
+тест1
+&ltinput name="test1">
+тест2
+&ltinput name="test2">
+&ltinput type="submit">
+&lt/form>
+&lta href="../index.php#redir_form">назад&lt/a>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <a href="redirect/form.php">решение</a>
+
+<h3 class="fw-bold mt-5">Сообщения об успехе при отправке формы в PHP</h3>
+<p>Давайте теперь сделаем так, чтобы после редиректа на страницу выводилось сообщение об успехе сохранения. Используем для этого флеш сообщения:</p>
+<code>
+	<pre>
+		&lt?php
+		session_start();
+		
+		if (!empty($_POST)) {
+			// сохраняем в базу
+			
+			$_SESSION['flash'] = 'форма успешно сохранена';
+			header('Location: form.php');
+			die();
+		}
+		
+		if (isset($_SESSION['flash'])) {
+			echo $_SESSION['flash'];
+			unset($_SESSION['flash']);
+		}
+		?>
+	</pre>
+</code>
+
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Модифицируйте предыдущую задачу так, чтобы на экран выводилось сообщение об успешном сохранении формы.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	session_start();
+	$host = "MySQL-8.0";
+	$user = "root";
+	$pass = "";
+	$dbname = 'db_pract';
+	$db_pract_link = mysqli_connect($host, $user, $pass, $dbname);
+
+	if (!empty($_POST)) {
+		$name1 = $_POST['test1'];
+		$name2 = $_POST['test2'];
+		$query = "INSERT INTO redir SET name1='$name1', name2='$name2'";
+		mysqli_query($db_pract_link, $query);
+		$_SESSION['flash'] = 'форма успешно сохранена';
+		header('location:form.php');
+		die();
+	}
+	if (isset($_SESSION['flash'])) {
+		echo $_SESSION['flash'];
+		unset($_SESSION['flash']);
+	}
+	?>
+&ltform method="POST" style="display:grid; width:50%; margin: 0 auto;">
+тест1
+&ltinput name="test1">
+тест2
+&ltinput name="test2">
+&ltinput type="submit">
+&lt/form>
+&lta href="../index.php#redir_form">назад&lt/a>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="redirect/form.php">решение</a>
+
+<h3 class="fw-bold mt-5">Редирект при валидация формы в PHP</h3>
+<p>Представим теперь, что вам необходимо выполнять валидацию формы. Если валидация пройдена успешно, то форму будем сохранять в бд и выводить сообщение об успехе. В противном случае нужно вывести сообщение о неудаче. Реализуем:</p>
+<code>
+	<pre>
+	&lt?php
+	session_start();
+	
+	if (!empty($_POST)) {
+		if (валидация формы) {
+			// сохраняем в базу
+			
+			$_SESSION['flash'] = 'форма успешно сохранена';
+			header('Location: form.php');
+			die();
+		} else {
+			$_SESSION['flash'] = 'форма не прошла валидацию';
+		}
+	}
+	
+	if (isset($_SESSION['flash'])) {
+		echo $_SESSION['flash'];
+		unset($_SESSION['flash']);
+	}
+?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Модифицируйте предыдущую задачу так, чтобы выполнялась валидация формы. Сделайте так, чтобы данные формы не исчезали после отправки.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
     <p class="fw-bold">Решение:</p>
     <p class="fw-bold">Результат:</p>
-
--->
+	-->
 
 <!-- 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
