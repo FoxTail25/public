@@ -113,27 +113,38 @@
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Работа с файлами в PHP </h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/file.php'; ?>
+		<?php //include './php/file.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Работа с MySQL PHP </h3>
 	<div class="text-left ms-4 mb-4">
-		<?php // include './php/mysql.php'; ?>
+		<?php // include './php/mysql.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Организация базы данных </h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/db_org.php'; ?>
+		<?php //include './php/db_org.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Практика на Базы данных </h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/db_pract.php'; ?>
+		<?php //include './php/db_pract.php'; 
+		?>
 	</div> -->
 	<!-- <h3 class="text-center redT m-2">Протокол HTTP в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php //include './php/http_prot.php'; ?>
+		<?php //include './php/http_prot.php'; 
+		?>
 	</div> -->
-	<h3 class="text-center redT m-2">Редирект в PHP</h3>
+	<!-- <h3 class="text-center redT m-2">Редирект в PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/redirect.php'; ?>
+		<?php //include './php/redirect.php'; 
+		?>
+	</div> -->
+	<h3 class="text-center redT m-2">Введение в аутентификацию на PHP</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/auth.php'; 
+		?>
 	</div>
 
 	<script src="./js.js"></script>

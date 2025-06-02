@@ -543,10 +543,13 @@ file_put_contents('111.txt', '11111111');
 	</pre>
 </code>
 
-<p class="fw-bold mt-3">Задача</p>
+<p class="fw-bold mt-3" id="redir_valid_form">Задача</p>
 <p>Модифицируйте предыдущую задачу так, чтобы выполнялась валидация формы. Сделайте так, чтобы данные формы не исчезали после отправки.</p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold">Результат:</p>
+
+<a href="redirect/form2.php">Решение</a>
+
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
