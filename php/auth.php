@@ -29,6 +29,132 @@
 	</tbody>
 </table>
 
+<p>Сделаем теперь форму, в которую будут вбиваться логин и пароль:</p>
+<code>
+	<pre>
+		//login.php
+
+	&ltform action="" method="POST">
+		&ltinput name="login">
+		&ltinput name="password" type="password">
+		&ltinput type="submit">
+	&lt/form>
+	</pre>
+</code>
+<p>
+	Напишем теперь код, который будет проверять, отправлена ли форма и, если отправлена, то проверять, есть ли в базе данных пользователь с таким логином и паролем:
+</p>
+<code>
+	<pre>
+		//login.php
+
+	&lt?php
+		if (!empty($_POST['password']) and !empty($_POST['login'])) {
+			$login = $_POST['login'];
+			$password = $_POST['password'];
+
+			$query = "SELECT * FROM users WHERE login='$login' AND password='$password'";
+			$res = mysqli_query($link, $query);
+			$user = mysqli_fetch_assoc($res);
+
+			if (!empty($user)) {
+				// прошел авторизацию
+			} else {
+				// неверно ввел логин или пароль
+			}
+		}
+	?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3" id="auth_1_1">Задача 1</p>
+<p>
+	Реализуйте описанную выше авторизацию. Сделайте так, чтобы, если пользователь прошел авторизацию - выводилось сообщение об этом, а если не прошел - то сообщение о том, что введенный логин или пароль вбиты не правильно.
+</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	//php_tasks/auth_1_1.php
+
+	&ltform style="display: grid; width:200px;" method="POST">
+		login
+		&ltinput type="text" name="login">
+		password
+		&ltinput type="password" name="password">
+		&ltinput type="submit">
+	&lt/form>
+
+	&lt?php
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		require '../db/connect.php'; // импортируем $db_pract_link
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+		$res = mysqli_query($db_pract_link, $query);
+
+		$user = mysqli_fetch_assoc($res);
+	}
+	?>
+	&lt?php if (!empty($user)): ?>
+		&ltp>auth success&lt/p>
+	&lt?php else: ?>
+		&ltp>Логин или пароль вбиты не правильно&lt/p>
+	&lt?php endif; ?>
+
+	&ltbr />
+	&lta href="../index.php#auth_1_1">Назад&lt/a>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/auth_1_1.php">Реализация</a>
+
+<p class="fw-bold mt-3" id="auth_1_2">Задача 2</p>
+<p>Модифицируйте код так, чтобы в случае успешной авторизации форма для ввода пароля и логина не показывалась на экране.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		require '../db/connect.php'; // импортируем $db_pract_link
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+		$res = mysqli_query($db_pract_link, $query);
+
+		$user = mysqli_fetch_assoc($res);
+	}
+	?>
+
+	&lt?php
+	if (empty($_POST)) : ?>
+
+		&ltp>Введите логин и пароль&lt/p>
+
+		&ltform style="display: grid; width:200px;" method="POST">
+			login
+			&ltinput type="text" name="login">
+			password
+			&ltinput type="password" name="password">
+			&ltinput type="submit">
+		&lt/form>
+
+	&lt?php else : ?>
+		&lt?php if (!empty($user)): ?>
+			&ltp>Auth success&lt/p>
+			&lta href="javascript:history.back()">попробовать заново&lt/a>
+		&lt?php else: ?>
+			&ltp>Логин или пароль введены не правильно&lt/p>
+			&lta href="javascript:history.back()">попробовать заново&lt/a>
+		&lt?php endif; ?>
+
+	&lt?php endif; ?>
+	&ltbr/>
+	&ltbr/>
+	&lta href="../index.php#auth_1_2">назад&lt/a>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/auth_1_2.php">Реализация</a>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
