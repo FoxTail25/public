@@ -74,7 +74,7 @@
 <p class="fw-bold">Решение:</p>
 <code>
 	<pre>
-	//php_tasks/auth_1_1.php
+		//php_tasks/auth_1_1.php
 
 	&ltform style="display: grid; width:200px;" method="POST">
 		login
@@ -113,6 +113,7 @@
 <p class="fw-bold">Решение:</p>
 <code>
 	<pre>
+		//file: php_tasks/auth_1_2.php
 	&lt?php
 	if (!empty($_POST['login']) and !empty($_POST['password'])) {
 		require '../db/connect.php'; // импортируем $db_pract_link
@@ -155,6 +156,54 @@
 </code>
 <p class="fw-bold">Результат:</p>
 <a href="php_tasks/auth_1_2.php">Реализация</a>
+
+<p class="fw-bold mt-3" id="auth_1_3">Задача 3</p>
+<p>Модифицируйте код так, чтобы в случае успешной авторизации происходил редирект на страницу index.php.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//file: php_tasks/auth_1_3.php
+	&lt?php
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		require '../db/connect.php'; // импортируем $db_pract_link
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+		$res = mysqli_query($db_pract_link, $query);
+
+		$user = mysqli_fetch_assoc($res);
+	}
+	?>
+
+	&lt?php
+	if (empty($_POST)) : ?>
+
+	&ltp>Введите логин и пароль&lt/p>
+
+	&ltform style="display: grid; width:200px;" method="POST">
+		login
+		&ltinput type="text" name="login">
+		password
+		&ltinput type="password" name="password">
+		&ltinput type="submit">
+	&lt/form>
+
+	&lt?php else : ?>
+		&lt?php if (!empty($user)): header('location:../index.php'); die();?>
+			
+		&lt?php else: ?>
+			&ltp>Логин или пароль введены не правильно&lt/p>
+			&lta href="javascript:history.back()">попробовать заново&lt/a>
+		&lt?php endif; ?>
+
+	&lt?php endif; ?>
+	&ltbr/>
+	&ltbr/>
+	&lta href="../index.php#auth_1_3">назад&lt/a>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/auth_1_3.php">Реализация</a>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
