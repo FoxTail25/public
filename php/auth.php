@@ -211,13 +211,69 @@ session_start();
 <p class="fw-bold mt-3" id="auth_1_4">Задача 4</p>
 <p>Модифицируйте код так, чтобы на странице index.php выводилось сообщение об успешной авторизации. Решите задачу через флеш-сообщения на сессиях.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//index.php
+	&lt?php
+	if (!isset($_SESSION['auth']) or $_SESSION['auth'] == false): ?>
+		&ltp>Вы не аторизованы&lt/p>
+	&lt?php else : ?>
+		&ltp>Добро пожаловать&lt/p>
+	&lt?php endif; ?>
+
+		//auth_1_4.php
+	&lt?php
+	session_start();
+	$_SESSION['auth'] = false;
+
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		require '../db/connect.php'; // импортируем $db_pract_link
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+		$res = mysqli_query($db_pract_link, $query);
+
+		$user = mysqli_fetch_assoc($res);
+	}
+	?>
+
+	&lt?php
+	if (empty($_POST)) : ?>
+
+		&ltp>Введите логин и пароль&lt/p>
+
+		&ltform style="display: grid; width:200px;" method="POST">
+			login
+			&ltinput type="text" name="login">
+			password
+			&ltinput type="password" name="password">
+			&ltinput type="submit">
+		&lt/form>
+
+	&lt?php else : ?>
+		&lt?php if (!empty($user)):
+			$_SESSION['auth'] = true;
+			header('location:../index.php#auth_1_4');
+			die(); ?>
+			
+		&lt?php else: ?>
+			&ltp>Логин или пароль введены не правильно&lt/p>
+			&lta href="javascript:history.back()">попробовать заново&lt/a>
+		&lt?php endif; ?>
+
+	&lt?php endif; ?>
+	&ltbr/>
+	&ltbr/>
+	&lta href="../index.php#auth_1_4">назад&lt/a>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <?php
-if(!isset($_SESSION['auth']) or $_SESSION['auth'] == false ):?>
-<p>Вы не аторизованы</p>
-<?php else :?>
+if (!isset($_SESSION['auth']) or $_SESSION['auth'] == false): ?>
+	<p>Вы не аторизованы</p>
+<?php else : ?>
 	<p>Добро пожаловать</p>
-<?php endif;?>
+<?php endif; ?>
 
 <a href="php_tasks/auth_1_4.php">Реализация</a>
 
@@ -225,32 +281,32 @@ if(!isset($_SESSION['auth']) or $_SESSION['auth'] == false ):?>
 <h3 class="fw-bold mt-5">Авторизация через сессию на PHP</h3>
 
 <p>
-Наша авторизация должна работать так: пользователь, который хочет авторизоваться на сайте, заходит на страницу login.php, вбивает правильные логин и пароль и далее ходит по страницам сайта уже будучи авторизованным.<br/>
-Чтобы другие страницы сайта знали о том, что наш пользователь авторизован, мы должны хранить в сессии пометку об этом.<br/>
-Пока наша авторизация не совсем рабочая, так как сессию мы еще не подключили и другие страницы сайта не могут понять, авторизован пользователь или нет.<br/>
-Будем хранить пометку об авторизации в переменной сессии $_SESSION['auth'] - если там записано true, то пользователь авторизован, а если null - то не авторизован.<br/>
-Давайте внесем соответствующую правку в наш код:
+	Наша авторизация должна работать так: пользователь, который хочет авторизоваться на сайте, заходит на страницу login.php, вбивает правильные логин и пароль и далее ходит по страницам сайта уже будучи авторизованным.<br />
+	Чтобы другие страницы сайта знали о том, что наш пользователь авторизован, мы должны хранить в сессии пометку об этом.<br />
+	Пока наша авторизация не совсем рабочая, так как сессию мы еще не подключили и другие страницы сайта не могут понять, авторизован пользователь или нет.<br />
+	Будем хранить пометку об авторизации в переменной сессии $_SESSION['auth'] - если там записано true, то пользователь авторизован, а если null - то не авторизован.<br />
+	Давайте внесем соответствующую правку в наш код:
 </p>
 <code>
 	<pre>
-		&lt?php
-			session_start();
+	&lt?php
+		session_start();
+		
+		if (!empty($_POST['password']) and !empty($_POST['login'])) {
+			$login = $_POST['login'];
+			$password = $_POST['password'];
 			
-			if (!empty($_POST['password']) and !empty($_POST['login'])) {
-				$login = $_POST['login'];
-				$password = $_POST['password'];
-				
-				$query = "SELECT * FROM users WHERE login='$login' AND password='$password'";
-				$res = mysqli_query($link, $query);
-				$user = mysqli_fetch_assoc($res);
-				
-				if (!empty($user)) {
-					$_SESSION['auth'] = true;
-				} else {
-					// неверно ввел логин или пароль
-				}
+			$query = "SELECT * FROM users WHERE login='$login' AND password='$password'";
+			$res = mysqli_query($link, $query);
+			$user = mysqli_fetch_assoc($res);
+			
+			if (!empty($user)) {
+				$_SESSION['auth'] = true;
+			} else {
+				// неверно ввел логин или пароль
 			}
-		?>
+		}
+	?>
 	</pre>
 </code>
 <p>
@@ -259,24 +315,82 @@ if(!isset($_SESSION['auth']) or $_SESSION['auth'] == false ):?>
 
 <code>
 	<pre>
-		&lt?php
-			if (!empty($_SESSION['auth'])) {
-				
-			}
-		?>
+	&lt?php
+		if (!empty($_SESSION['auth'])) {
+			
+		}
+	?>
 	</pre>
 </code>
 
 <p>
 	Можно закрыть текст какой-нибудь страницы целиком для неавторизованного пользователя:
 </p>
-<!-- 
+<code>
+	<pre>
+	&lt?php if (!empty($_SESSION['auth'])): ?>
+		&lt!DOCTYPE html>
+		&lthtml>
+			&lthead>
+				
+			&lt/head>
+			&ltbody>
+				&ltp>текст только для авторизованного пользователя&lt/p>
+			&lt/body>
+		&lt/html>
+	&lt?php else: ?>
+		&ltp>пожалуйста, авторизуйтесь&lt/p>
+	&lt?php endif; ?>
+	</pre>
+</code>
+
+<p>Можно закрыть только часть страницы:</p>
+
+<code>
+	<pre>
+	&lt!DOCTYPE html>
+	&lthtml>
+		&lthead>
+			
+		&lt/head>
+		&ltbody>
+			&ltp>текст для любого пользователя&lt/p>
+			&lt?php
+			if (!empty($_SESSION['auth'])) {
+				echo 'текст только для авторизованного пользователя';
+			}
+			?>
+			&ltp>текст для любого пользователя&lt/p>
+		&lt/body>
+	&lt/html>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3" id="auth_2_1">Задача 1</p>
+<p>Пусть на нашем сайте, кроме страницы login.php, есть еще и страницы 1.php, 2.php и 3.php. Сделайте так, чтобы к этим страницам мог получить доступ только авторизованный пользователь.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
+<?php
+if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
+	<p>Просмотр страниц доступен только авторизированным пользователям 
+		<a href="php_tasks/auth_2_1.php">Авторизация</a>
+	</p>
+<?php else: ?>
+	<p>Добро пожаловать 
+		<a href="php_tasks/logoff.php">log off</a>
+	</p>
+	<a href="php_tasks/auth_2_pages/page_1.php">page_1</a> <br />
+	<a href="php_tasks/auth_2_pages/page_2.php">page_2</a> <br />
+	<a href="php_tasks/auth_2_pages/page_3.php">page_3</a> <br />
+
+<?php endif; ?>
+	<!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
     <p class="fw-bold">Решение:</p>
     <p class="fw-bold">Результат:</p>
 	-->
 
-<!-- 
+	<!-- 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
  -->
