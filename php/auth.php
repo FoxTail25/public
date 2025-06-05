@@ -459,7 +459,10 @@ if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
 <p>Для решения, достаточно взять предыдущий вариант и немного доработать код на странице index.php:</p>
 <code>
 	<pre>
-	&ltp>Рады видеть вас на нашем сайте!&lt/p>
+		//index.php
+
+
+	&ltp>Рады видеть вас на нашем сайте!&lt/p> // добавив эту строку к предыдущему коду - мы решим задачу.
 	&lt?php
 	if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
 		&ltp>Просмотр страниц доступен только авторизированным пользователям
@@ -484,13 +487,210 @@ if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
 	</p>
 <?php else: ?>
 	<p>Добро пожаловать
-		<a href="php_tasks/logoff.php">log off</a>
+		<a href="php_tasks/logoff.php?auth=2_1">log off</a>
 	</p>
 	<a href="php_tasks/auth_2_pages/page_1.php">page_1</a> <br />
 	<a href="php_tasks/auth_2_pages/page_2.php">page_2</a> <br />
 	<a href="php_tasks/auth_2_pages/page_3.php">page_3</a> <br />
 
 <?php endif; ?>
+
+<p class="fw-bold mt-3">Задача 3 и 4</p>
+<p>Модифицируйте ваш код так, чтобы при успешной авторизации в сессию записывался также логин пользователя.</p>
+<p>Сделайте так, чтобы при заходе на любую страницу сайта, авторизованный пользователь видел свой логин, а не авторизованный - ссылку на страницу авторизации.</p>
+<p class="fw-bold">Решение:</p>
+<p>Для решения этих задач нам нужно будет более серёзно модифицировать код:</p>
+<code>
+	<pre>
+		//index.php
+	&ltp>Рады видеть вас на нашем сайте
+		&lt?php // В сесси теперь лежит массив! 
+				//По ключу 'auth' - находится результат авторизации. 
+				//По ключу 'name' - находится login пользователя.
+		if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == false) : ?>
+			Неизвестный!
+		&lt?php else : echo ($_SESSION['auth_2_3']['name']) . '!'; ?>
+		&lt?php endif; ?>
+	&lt/p>
+	&lt?php
+	if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == false) : ?>
+		&ltp>Просмотр страниц доступен только авторизированным пользователям
+			&lta href="php_tasks/auth_2_3.php">Авторизация&lt/a>
+		&lt/p>
+		&ltp>
+			&lta href="php_tasks/auth_2_3_pages/page_1.php">page_1&lt/a> &ltbr />
+			&lta href="php_tasks/auth_2_3_pages/page_2.php">page_2&lt/a> &ltbr />
+			&lta href="php_tasks/auth_2_3_pages/page_3.php">page_3&lt/a> &ltbr />
+		&lt/p>
+	&lt?php else: ?>
+		&lta href="php_tasks/auth_2_3_pages/page_1.php">page_1&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_3_pages/page_2.php">page_2&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_3_pages/page_3.php">page_3&lt/a> &ltbr />
+		&ltbr />
+		&ltp>
+			&lta href="php_tasks/logoff.php">log off&lt/a>
+		&lt/p>
+	&lt?php endif; ?>
+
+		//auth_2_3.php
+		&lt?php
+			session_start();
+			$_SESSION['auth_2_3']['auth'] = false;
+
+			if (!empty($_POST['login']) and !empty($_POST['password'])) {
+				require '../db/connect.php'; // импортируем $db_pract_link
+				$login = $_POST['login'];
+				$password = $_POST['password'];
+				$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+				$res = mysqli_query($db_pract_link, $query);
+
+				$user = mysqli_fetch_assoc($res);
+			}
+		?>
+		&lt?php
+		if (empty($_POST)) : ?>
+			&ltp>Введите логин и пароль&lt/p>
+			&ltform style="display: grid; width:200px;" method="POST">
+				login
+				&ltinput type="text" name="login">
+				password
+				&ltinput type="password" name="password">
+				&ltinput type="submit">
+			&lt/form>
+		&lt?php else : ?>
+			&lt?php if (!empty($user)):
+				$_SESSION['auth_2_3'] = ['auth' => true, 'name' => $user['login']];
+				header('location:../index.php#auth_2_3');
+				die(); ?>
+			&lt?php else: ?>
+				&ltp>Логин или пароль введены не правильно&lt/p>
+				&lta href="javascript:history.back()">попробовать заново&lt/a>
+			&lt?php endif; ?>
+		&lt?php endif; ?>
+		&ltbr />
+		&ltbr />
+		&lta href="../index.php#auth_2_3">назад&lt/a>
+
+			//auth_2_3_pages/page_*.php
+		&lt?php
+		session_start();
+		if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == false): ?>
+			&ltp>Страница доступна только авторизированным пользователям&lt/p>
+			&lta href="../auth_2_3.php">Авторизация&lt/a>
+			&ltbr/>
+			&ltbr/>
+			&lta href="../../index.php#auth_2_3">Вернуться на главную&lt/a>
+		&lt?php else : ?>
+			&ltp>Приветствуем вас &lt?= $_SESSION['auth_2_3']['name'] ?>&lt/p>
+			&ltp>Страница 1&lt/p>
+			&lta href="../../index.php#auth_2_3">Вернуться на главную&lt/a>
+		&lt?php endif; ?>
+
+	</pre>
+</code>
+<p class="fw-bold" id="auth_2_3">Результат:</p>
+<p>Рады видеть вас на нашем сайте
+	<?php
+	if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == false) : ?>
+		Неизвестный!
+	<?php else : echo ($_SESSION['auth_2_3']['name']) . '!'; ?>
+	<?php endif; ?>
+</p>
+<?php
+if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == false) : ?>
+	<p>Просмотр страниц доступен только авторизированным пользователям
+		<a href="php_tasks/auth_2_3.php">Авторизация</a>
+	</p>
+	<p>
+		<a href="php_tasks/auth_2_3_pages/page_1.php">page_1</a> <br />
+		<a href="php_tasks/auth_2_3_pages/page_2.php">page_2</a> <br />
+		<a href="php_tasks/auth_2_3_pages/page_3.php">page_3</a> <br />
+	</p>
+<?php else: ?>
+	<a href="php_tasks/auth_2_3_pages/page_1.php">page_1</a> <br />
+	<a href="php_tasks/auth_2_3_pages/page_2.php">page_2</a> <br />
+	<a href="php_tasks/auth_2_3_pages/page_3.php">page_3</a> <br />
+	<br />
+	<p>
+		<a href="php_tasks/logoff.php?auth=2_3">log off</a>
+	</p>
+<?php endif; ?>
+
+<h3 class="fw-bold mt-5">Выход из сессии на PHP</h3>
+<p>Авторизованный пользователь должен возможность перестать быть авторизованным, то есть совершить выход из своего аккаунта. Для этого нужно сделать отдельную страницу и удалять на ней пометку об авторизации, примерно вот так:</p>
+
+<code>
+	<pre>
+	&lt?php
+	session_start();
+	$_SESSION['auth'] = null;
+	?>
+	</pre>
+</code>
+
+<p class="fw-bold mt-3">Задача</p>
+<p>Реализуйте страницу logout.php, зайдя на которую, пользователь перестанет быть авторизованным.</p>
+<p>Модифицируйте предыдущую задачу так, чтобы страница logout.php после выполнения своего кода выполняла редирект на index.php. Покажите на этой странице сообщение о том, что пользователь перестал быть авторизованным.</p>
+<p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//file: index.php
+	&lta href="php_tasks/logoff.php?auth=2_3">log off</a>
+		
+	
+		//file: logoff.php
+	&lt?php
+		session_start();
+		$sess_num = 'auth_' . $_GET['auth'];
+		$_SESSION[$sess_num] = null;
+		header('location: ../../index.php#' . $sess_num);
+	?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+
+<h3 class="fw-bold mt-5">Регистрация на PHP</h3>
+<p>
+	Давайте теперь реализуем регистрацию. Для этого сделаем отдельную страницу register.php. По заходу на эту страницу, пользователь должен увидеть форму, в которую он должен вбить желаемый логин и пароль:
+</p>
+<code>
+	<pre>
+		//file: registr.php
+	&ltform action="" method="POST">
+		&ltinput name="login">
+		&ltinput name="password" type="password">
+		&ltinput type="submit">
+	&lt/form>
+	</pre>
+</code>
+<p>
+	По нажатию на кнопку отправки форму логин и пароль пользователя должны занестись в базу данных с помощью INSERT запроса, вот так:
+</p>
+<code>
+	<pre>
+		//file: registr.php
+	&lt?php
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+
+		$query = "INSERT INTO users SET login='$login', password='$password'";
+		mysqli_query($link, $query);
+	}
+	?>	
+	</pre>
+</code>
+<p>
+	Затем пользователь может зайти на страницу авторизации, ввести логин и пароль, под которым он зарегистрировался и авторизоваться.
+</p>
+
+<p class="fw-bold mt-3">Задача 1</p>
+<p>
+	Реализуйте описанную выше регистрацию. После этого зарегистрируйте нового пользователя и авторизуйтесь под ним. Убедитесь, что все работает, как надо.
+</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold" id="register">Результат:</p>
+<a href="php_tasks/registr.php">Регистрация нового пользователя</a>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
