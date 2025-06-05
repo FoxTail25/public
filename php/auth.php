@@ -369,14 +369,82 @@ if (!isset($_SESSION['auth']) or $_SESSION['auth'] == false): ?>
 <p class="fw-bold mt-3" id="auth_2_1">Задача 1</p>
 <p>Пусть на нашем сайте, кроме страницы login.php, есть еще и страницы 1.php, 2.php и 3.php. Сделайте так, чтобы к этим страницам мог получить доступ только авторизованный пользователь.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+		//index.php
+	&lt?php if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
+		&ltp>Просмотр страниц доступен только авторизированным пользователям 
+			&lta href="php_tasks/auth_2_1.php">Авторизация&lt/a>
+		&lt/p>	
+	&lt?php else: ?>
+		&ltp>Добро пожаловать 
+			&lta href="php_tasks/logoff.php">log off&lt/a>
+		&lt/p>
+		&lta href="php_tasks/auth_2_pages/page_1.php">page_1&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_pages/page_2.php">page_2&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_pages/page_3.php">page_3&lt/a> &ltbr />
+	&lt?php endif; ?>
+
+
+		//auth_2_1.php
+	&lt?php
+	session_start();
+	$_SESSION['auth'] = false;
+	if (!empty($_POST['login']) and !empty($_POST['password'])) {
+		require '../db/connect.php'; // импортируем $db_pract_link
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$query = "SELECT * FROM user_auth WHERE login='$login' AND password='$password'";
+		$res = mysqli_query($db_pract_link, $query);
+		$user = mysqli_fetch_assoc($res);
+	}
+	?>
+	&lt?php
+	if (empty($_POST)) : ?>
+		&ltp>Введите логин и пароль&lt/p>
+		&ltform style="display: grid; width:200px;" method="POST">
+			login
+			&ltinput type="text" name="login">
+			password
+			&ltinput type="password" name="password">
+			&ltinput type="submit">
+		&lt/form>
+	&lt?php else : ?>
+		&lt?php if (!empty($user)):
+			$_SESSION['auth_2_1'] = true;
+			header('location:../index.php#auth_2_1');
+			die(); ?>
+		&lt?php else: ?>
+			&ltp>Логин или пароль введены не правильно&lt/p>
+			&lta href="javascript:history.back()">попробовать заново&lt/a>
+		&lt?php endif; ?>
+	&lt?php endif; ?>
+	&ltbr />
+	&ltbr />
+	&lta href="../index.php#auth_2_1">назад&lt/a>
+
+
+		//php_tasks/auth_2_pages/page_*.php
+	&lt?php
+	session_start();
+	if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false): ?>
+		&ltp>Страница доступна только авторизированным пользователям&lt/p>
+		&lta href="../auth_2_1.php">Авторизация&lt/a>
+		&lta href="../../index.php#auth_2_1">Вернуться на главную&lt/a>
+	&lt?php else : ?>
+		&ltp>Страница 1&lt/p>
+		&lta href="../../index.php#auth_2_1">Вернуться на главную&lt/a>
+	&lt?php endif; ?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
 <?php
 if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
-	<p>Просмотр страниц доступен только авторизированным пользователям 
+	<p>Просмотр страниц доступен только авторизированным пользователям
 		<a href="php_tasks/auth_2_1.php">Авторизация</a>
 	</p>
 <?php else: ?>
-	<p>Добро пожаловать 
+	<p>Добро пожаловать
 		<a href="php_tasks/logoff.php">log off</a>
 	</p>
 	<a href="php_tasks/auth_2_pages/page_1.php">page_1</a> <br />
@@ -384,13 +452,52 @@ if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
 	<a href="php_tasks/auth_2_pages/page_3.php">page_3</a> <br />
 
 <?php endif; ?>
-	<!-- 
+
+<p class="fw-bold mt-3">Задача 2</p>
+<p>Пусть на нашем сайте есть еще и страница index.php. Сделайте так, чтобы часть этой страницы была открыта для всех пользователей, а часть - только для авторизованных.</p>
+<p class="fw-bold">Решение:</p>
+<p>Для решения, достаточно взять предыдущий вариант и немного доработать код на странице index.php:</p>
+<code>
+	<pre>
+	&ltp>Рады видеть вас на нашем сайте!&lt/p>
+	&lt?php
+	if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
+		&ltp>Просмотр страниц доступен только авторизированным пользователям
+			&lta href="php_tasks/auth_2_1.php">Авторизация&lt/a>
+		&lt/p>
+	&lt?php else: ?>
+		&ltp>Добро пожаловать
+			&lta href="php_tasks/logoff.php">log off&lt/a>
+		&lt/p>
+		&lta href="php_tasks/auth_2_pages/page_1.php">page_1&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_pages/page_2.php">page_2&lt/a> &ltbr />
+		&lta href="php_tasks/auth_2_pages/page_3.php">page_3&lt/a> &ltbr />
+	&lt?php endif; ?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<p>Рады видеть вас на нашем сайте!</p>
+<?php
+if (!isset($_SESSION['auth_2_1']) or $_SESSION['auth_2_1'] == false) : ?>
+	<p>Просмотр страниц доступен только авторизированным пользователям
+		<a href="php_tasks/auth_2_1.php">Авторизация</a>
+	</p>
+<?php else: ?>
+	<p>Добро пожаловать
+		<a href="php_tasks/logoff.php">log off</a>
+	</p>
+	<a href="php_tasks/auth_2_pages/page_1.php">page_1</a> <br />
+	<a href="php_tasks/auth_2_pages/page_2.php">page_2</a> <br />
+	<a href="php_tasks/auth_2_pages/page_3.php">page_3</a> <br />
+
+<?php endif; ?>
+<!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
     <p class="fw-bold">Решение:</p>
     <p class="fw-bold">Результат:</p>
 	-->
 
-	<!-- 
+<!-- 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
  -->
