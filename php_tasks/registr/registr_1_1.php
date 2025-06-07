@@ -1,7 +1,7 @@
 <?php
 session_start();
 ?>
-
+<p>Регистрация нового пользователя</p>
 
 <form method="post" style="display: grid; width:200px;">
 	login:
@@ -29,3 +29,6 @@ if (isset($_SESSION['success'])): ?>
 	<a href="../index.php#register">вернуться на главную</a>
 <?php endif;
 $_SESSION['success'] = null;
+?>
+<br/>
+<a href="../../index.php">На главную</a>
