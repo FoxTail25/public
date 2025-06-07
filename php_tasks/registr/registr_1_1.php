@@ -13,7 +13,7 @@ session_start();
 
 <?php
 if (!empty($_POST['login']) and !empty($_POST['password'])) {
-	include('../db/connect.php');
+	include('../../db/connect.php');
 	$login = $_POST['login'];
 	$password = $_POST['password'];
 	$query = "INSERT INTO user_auth SET login='$login', password = '$password'";

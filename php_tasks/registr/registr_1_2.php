@@ -11,24 +11,25 @@ session_start();
     email:
 	<input type="email" name="email">
     BirthDate:
-	<input type="data" name="birthdate">
+	<input type="date" name="birthdate">
 
 	<input type="submit">
 </form>
 
 <?php
 if (!empty($_POST['login']) and !empty($_POST['password'])) {
-	include('../db/connect.php');
+	include('../../db/connect.php');
 	$login = $_POST['login'];
 	$password = $_POST['password'];
     $email = $_POST['email'];
     $birthdate = $_POST['birthdate'];
 	$query = "INSERT INTO user_auth SET login='$login', password = '$password'";
 	// $query_add_email = "INSERT INTO user_email SET login='$email', user_id ='$user_id'";
-	mysqli_query($db_pract_link, $query);
+	$answer = mysqli_query($db_pract_link, $query);
 	$_SESSION['success'] = true;
 	unset($_POST);
-	header('location:#');
+    var_dump($answer);
+	// header('location:#');
 }
 ?>
 <?php

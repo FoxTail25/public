@@ -690,12 +690,13 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 </p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold" id="register">Результат:</p>
-<a href="php_tasks/registr/registr_1_1.php">Регистрация нового пользователя</a>
+<a href="php_tasks/registr/registr_1_1.php">1 Регистрация нового пользователя</a>
 
 <p class="fw-bold mt-3">Задача 2</p>
 <p>Модифицируйте ваш код так, чтобы кроме логина и пароля пользователю нужно было ввести еще и дату своего рождения и email. Сохраните эти данные в базу данных.</p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/registr_1_2.php">2 Регистрация нового пользователя</a>
 
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
