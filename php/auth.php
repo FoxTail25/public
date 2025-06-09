@@ -715,19 +715,23 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 <code>
 	<pre>
 	&lt?php
-	if (!empty($_POST['login']) and !empty($_POST['password'])) {
-		$login = $_POST['login'];
-		$password = $_POST['password'];
+		if (!empty($_POST['login']) and !empty($_POST['password'])) {
+			$login = $_POST['login'];
+			$password = $_POST['password'];
 
-		$query = "INSERT INTO users SET login='$login', password='$password'";
-		mysqli_query($link, $query);
+			$query = "INSERT INTO users SET login='$login', password='$password'";
+			mysqli_query($link, $query);
 
-		$_SESSION['auth'] = true; // пометка об авторизации
-	}
+			$_SESSION['auth'] = true; // пометка об авторизации
+		}
 	?>
 	</pre>
 </code>
 
+<p class="fw-bold mt-3">Задача</p>
+<p>Модифицируйте ваш код так, чтобы после регистрации пользователь автоматически становился авторизованным.</p>
+<p class="fw-bold">Решение:</p>
+<p class="fw-bold">Результат:</p>
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
     <p></p>
