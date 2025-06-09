@@ -33,8 +33,7 @@ if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['em
 
 	$query_add_email = "INSERT INTO user_email SET email='$email', user_id ='$userId'";
 	mysqli_query($db_pract_link, $query_add_email);
-	// $query_add_birth_date = "INSERT INTO user_birth_date SET birth_date='$birthDate', user_id ='$userId'";
-	// mysqli_query($db_pract_link, $query_add_birth_date);
+
 
 	$_SESSION['success'] = true;
 	unset($_POST);
