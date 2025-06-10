@@ -25,6 +25,7 @@ if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['em
 	$_SESSION['success'] = true;
 	$_SESSION['auth_2_3']['auth'] = true; // записываем данные в сессию что бы пользоатель сразу авторизовался на сайте.
 	$_SESSION['auth_2_3']['name'] = $login; // записываем логин пользователя в сессию.
+	$_SESSION['user_id'] = $userId;
 	unset($_POST);
 	header('location:#');
 	die();
