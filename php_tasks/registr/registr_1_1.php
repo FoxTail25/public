@@ -21,6 +21,7 @@ if (!empty($_POST['login']) and !empty($_POST['password'])) {
 	$_SESSION['success'] = true;
 	unset($_POST);
 	header('location:#');
+	die();
 }
 ?>
 <?php
