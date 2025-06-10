@@ -913,8 +913,73 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 <p>Модифицируйте ваш код так, чтобы при отправке формы пароль сравнивался с его подтверждением. Если они совпадают - то продолжаем регистрацию, а если не совпадают - то выводим сообщение об этом.
 </p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
-<a href="php_tasks/registr/registr_2.php">Регистрация</a>
+<code>
+	<pre>
+	&lt?php
+	session_start();
+
+	if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['email']) and !empty($_POST['birthdate'])) {
+		if ($_POST['password'] == $_POST['confirm']) {
+
+			include('../../db/connect.php');
+			$login = $_POST['login'];
+			$password = $_POST['password'];
+			$email = $_POST['email'];
+			$birthDate = $_POST['birthdate'];
+			$timestamp = date('Y-m-d H:i:s');
+			$query = "INSERT INTO user_auth SET login='$login', password = '$password', birth_date='$birthDate', register_date='$timestamp'";
+			mysqli_query($db_pract_link, $query);
+
+			$userId = $id = mysqli_insert_id($db_pract_link); //Короткий способ!
+
+			$query_add_email = "INSERT INTO user_email SET email='$email', user_id ='$userId'";
+			mysqli_query($db_pract_link, $query_add_email);
+
+			$_SESSION['success'] = true;
+			$_SESSION['auth_2_3']['auth'] = true; // записываем данные в сессию что бы пользоатель сразу авторизовался на сайте.
+			$_SESSION['auth_2_3']['name'] = $login; // записываем логин пользователя в сессию.
+			$_SESSION['user_id'] = $userId;
+			unset($_POST);
+			header('location:#');
+			die();
+		} else {
+			echo 'введённые пароли не совпадают';
+		}
+	}
+	?>
+
+	&ltp>Регистрация нового пользователя&lt/p>
+	&ltform method="post" style="display: grid; width:200px;">
+		login:
+		&ltinput type="text" name="login">
+		password:
+		&ltinput type="password" name="password">
+		confirm password:
+		&ltinput type="password" name="confirm">
+		email:
+		&ltinput type="email" name="email">
+		BirthDate:
+		&ltinput type="date" name="birthdate">
+
+		&ltinput type="submit">
+	&lt/form>
+
+
+	&lt?php
+	if (isset($_SESSION['success'])): ?>
+		&ltp>Пользователь успешно добавлен в базу&lt/p>
+		&lta href="../../index.php#register2">вернуться на главную&lt/a>
+	&lt?php else : ?>
+		&ltbr />
+		&lta href="../../index.php#register2">На главную&lt/a>
+	&lt?php endif;
+
+	$_SESSION['success'] = null;
+	?>
+	</pre>
+</code>
+<p class="fw-bold" id="registr_3_1">Результат:</p>
+<a href="php_tasks/registr/registr_2.php">Регистрация 3</a>
 
 <h3 class="fw-bold mt-5">Проверка логина на занятость</h3>
 <p>
@@ -923,8 +988,9 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 	Для решения проблемы необходимо перед запросом на добавление нового пользователя в базу данных, выполнить SELECT запрос, который проверит, занят желаемый логин или нет. Если не занят - регистрируем, если занят - не регистрируем, а выводим сообщение об этом.
 
 	Давайте напишем этот код:
-	<code>
-		<pre>
+</p>
+<code>
+	<pre>
 	&lt?php
 		if (!empty($_POST['login']) and !empty($_POST['password'])) {
 			$login = $_POST['login'];
@@ -945,54 +1011,358 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 		}
 	?>
 	</pre>
-	</code>
-</p>
-<p class="fw-bold mt-3">Задача</p>
+</code>
+
+<p class="fw-bold mt-3" id="registr_3_2">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы при попытке регистрации выполнялась проверка на занятость логина и, если он занят, - выводите сообщение об этом и просите ввести другой логин.
 </p>
 <p class="fw-bold">Решение:</p>
+<code>
+	<pre>
+	&lt?php
+	session_start();
+
+	if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['email']) and !empty($_POST['birthdate'])) {
+
+
+		$login = $_POST['login'];
+		$password = $_POST['password'];
+		$email = $_POST['email'];
+		$birthDate = $_POST['birthdate'];
+		$timestamp = date('Y-m-d H:i:s');
+
+		if ($_POST['password'] == $_POST['confirm']) {
+
+			include('../../db/connect.php');
+
+			$query_check_user = "SELECT * FROM user_auth WHERE login='$login'";
+			$check_user = mysqli_fetch_assoc(mysqli_query($db_pract_link, $query_check_user));
+
+			if (empty($check_user)) {
+
+
+				$query = "INSERT INTO user_auth SET login='$login', password = '$password', birth_date='$birthDate', register_date='$timestamp'";
+				mysqli_query($db_pract_link, $query);
+
+				$userId = $id = mysqli_insert_id($db_pract_link); //Короткий способ!
+
+				$query_add_email = "INSERT INTO user_email SET email='$email', user_id ='$userId'";
+				mysqli_query($db_pract_link, $query_add_email);
+
+				$_SESSION['success'] = true;
+				$_SESSION['auth_2_3']['auth'] = true; // записываем данные в сессию что бы пользоатель сразу авторизовался на сайте.
+				$_SESSION['auth_2_3']['name'] = $login; // записываем логин пользователя в сессию.
+				$_SESSION['user_id'] = $userId;
+				unset($_POST);
+				header('location:#');
+				die();
+			} else {
+				echo "Данный логин уже занят";
+			}
+		} else {
+			echo 'введённые пароли не совпадают';
+		}
+	}
+	?>
+
+	&ltp>Регистрация нового пользователя&lt/p>
+	&ltform method="post" style="display: grid; width:200px;">
+		login:
+		&ltinput type="text" name="login">
+		password:
+		&ltinput type="password" name="password">
+		confirm password:
+		&ltinput type="password" name="confirm">
+		email:
+		&ltinput type="email" name="email">
+		BirthDate:
+		&ltinput type="date" name="birthdate">
+
+		&ltinput type="submit">
+	&lt/form>
+
+
+	&lt?php
+	if (isset($_SESSION['success'])): ?>
+		&ltp>Пользователь успешно добавлен в базу&lt/p>
+		&lta href="../../index.php#registr_3_2">вернуться на главную&lt/a>
+	&lt?php else : ?>
+		&ltbr />
+		&lta href="../../index.php#registr_3_2">На главную&lt/a>
+	&lt?php endif;
+
+	$_SESSION['success'] = null;
+	?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/registr_3.php">Регистрация 3_1</a>
 
 <h3 class="fw-bold mt-5">Валидация данных при регистрации на PHP</h3>
 <p>
 	Сейчас мы не накладываем никаких ограничений на пару логин-пароль, однако, это неправильно. К примеру, сейчас у нас пользователи случайно или намеренно могут зарегистрироваться с пустым логином или паролем, или с паролем, состоящим из одного символа. Такой пароль будет слишком простым и не безопасным.<br />
 	Учтите, что если какое-то поле вбито некорректно, форма не должна очищаться, так как это будет доставлять ему неудобство пользователю: он вводил-вводил данные, нажал - и все пропало, хотя ошибка возможно была в одном символе.
 </p>
-<p class="fw-bold mt-3">Задача</p>
+<p class="fw-bold mt-3" id="valid_reg">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы нельзя было зарегистрировать пользователя с пустым логином или паролем.
 </p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
+<p><i>Ниже приведённый код, будет проверять логин и пароль на "незаполненность" и на количество символов менее 2х. Так же он будет выподить сообщение о той ошибке, по которой логин или пароль не могут быть приняты.</i></p>
+<code>
+	<pre>
+		//file: php_tasks/register/valid_reg.php
 
-<p class="fw-bold mt-3">Задача</p>
+	&lt?php
+	session_start();
+
+	if (!empty($_POST)) {
+		if (checkLog()['test']) {
+			echo checkLog($_POST['login'])['msg'];
+
+			if (checkPass()['test']) {
+				echo checkPass()['msg'];
+
+				if (!empty($_POST['confirm'])) {
+
+					if ($_POST['password'] == $_POST['confirm'] and strlen($_POST['password']) == strlen($_POST['confirm'])) {
+						echo 'password и password confirm совпадают&ltbr/>';
+						echo 'Можно добалять в базу';
+
+						//Код добавления в базу.
+
+					} else {
+						echo 'password и password confirm не совпадают';
+					}
+				} else {
+					echo 'подтверждение пароля не заполнено&ltbr/>';
+				}
+			} else {
+				echo checkPass()['msg'];
+			}
+		} else {
+			echo checkLog()['msg'];
+		}
+	}
+	?>
+
+
+	&ltform action="" method="post" style="display: grid; width:200px;">
+		login:
+		&ltinput type="text" name="login" value="&lt?= isset($_POST['login']) ? $_POST['login'] : '' ?>">
+		password:
+		&ltinput type="password" name="password" value="&lt?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+		confirm password:
+		&ltinput type="password" name="confirm" value="&lt?= isset($_POST['confirm']) ? $_POST['confirm'] : '' ?>">
+		&ltbr />
+		&ltinput type="submit">
+	&lt/form>
+	&ltbr />
+	&lta href="../../index.php#valid_reg">вернуться на главную&lt/a>
+
+	&lt?php
+	function checkLog()
+	{
+		$_POST['login'] = trim($_POST['login']);
+		$login = $_POST['login'];
+
+		if (empty($login)) { // проверка на заполненность поля и 0
+			if (empty($login) and $login == 0) {
+				return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+			}
+			return ['test' => false, 'msg' => "логин не заполнен&ltbr/>"];
+		}
+		$loginLength = strlen(trim($login));
+
+		if ($loginLength &lt 2) { // проверка на длинну
+			return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+		}
+
+		return ['test' => true, 'msg' => "логин подходит&ltbr/>"]; // все проверки прошли успешно.
+	}
+
+	function checkPass()
+	{
+		$_POST['password'] = trim($_POST['password']);
+		$pass = $_POST['password'];
+
+		if (empty($pass)) { // проверка на заполненность поля и 0
+			if (empty($pass) and $pass == 0) {
+				return ['test' => false, 'msg' => "пароль слишком короткий&ltbr/>"];
+			}
+			return ['test' => false, 'msg' => "пароль не заполнен&ltbr/>"];
+		}
+
+		$passLength = strlen(trim($pass));
+		if ($passLength &lt 2) { // проверка на длинну
+			return ['test' => false, 'msg' => "пароль слишком короткий&ltbr/>"];
+		}
+
+		return ['test' => true, 'msg' => "пароль подходит&ltbr/>"]; // все проверки прошли успешно.
+	}
+	?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg.php">Регистрация с валидацией</a>
+
+<p class="fw-bold mt-3" id="valid_reg2">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы логин мог содержать только латинские буквы и цифры. В случае, если это не так, выводите сообщение об этом над формой.
 </p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
+<p><i>Для решения этой задачи, нам достаточно немного дополнить наш код. А именно добавить ещё одну проверку в функцию checkLog. Вот как теперь будет выглядеть наша функция:</i></p>
+<code>
+	<pre>
+		//file: php_tasks/registr/valid_reg_2.php
+	function checkLog()
+	{
+		$_POST['login'] = trim($_POST['login']);
+		$login = $_POST['login'];
 
-<p class="fw-bold mt-3">Задача</p>
+		if (empty($login)) { // проверка на заполненность поля и 0
+			if (empty($login) and $login == 0) {
+				return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+			}
+			return ['test' => false, 'msg' => "логин не заполнен&ltbr/>"];
+		}
+		$loginLength = strlen($login);
+
+		if ($loginLength &lt 2) { // проверка на длинну
+			return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+		}
+		
+		$ciril_sym = preg_match('#\W#', $login); // Проверка на наличие только латинских букв и цифр
+		if($ciril_sym) {
+			return ['test' => false, 'msg' => "должны быть только латинские символы и цифры&ltbr/>"];
+		}
+
+		return ['test' => true, 'msg' => "логин подходит&ltbr/>"]; // все проверки прошли успешно.
+	}
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg_2.php">Регистрация с валидацией 2</a>
+
+<p class="fw-bold mt-3" id="valid_reg3">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы логин был длиной от 4 до 10 символов. В случае, если это не так, выводите сообщение об этом над формой.
 </p>
-<p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
-
-<p class="fw-bold mt-3">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы пароль был длиной от 6 до 12 символов. В случае, если это не так, выводите сообщение об этом над формой.
 </p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
+<p><i>Для этого так же поправил функции проверки логина и пароля:</i></p>
+<code>
+	<pre>
+	&lt?php
+	function checkLog()
+	{
+		$_POST['login'] = trim($_POST['login']);
+		$login = $_POST['login'];
 
-<p class="fw-bold mt-3">Задача</p>
+		if (empty($login)) { // проверка на заполненность поля и 0
+			if (empty($login) and $login == 0) {
+				return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+			}
+			return ['test' => false, 'msg' => "логин не заполнен&ltbr/>"];
+		}
+		$loginLength = strlen($login);
+
+		if ($loginLength &lt 4) { // проверка что бы не был слишком короткий
+			return ['test' => false, 'msg' => "логин слишком короткий&ltbr/>"];
+		}
+		if ($loginLength > 10) { // проверка что бы не был слишком длинный
+			return ['test' => false, 'msg' => "логин слишком длинный&ltbr/>"];
+		}
+
+		$ciril_sym = preg_match('#\W#', $login); // Проверка на наличие только латинских букв и цифр
+		if ($ciril_sym) {
+			return ['test' => false, 'msg' => "должны быть только латинские символы и цифры&ltbr/>"];
+		}
+
+		return ['test' => true, 'msg' => "логин подходит&ltbr/>"]; // все проверки прошли успешно.
+	}
+
+	function checkPass()
+	{
+		$_POST['password'] = trim($_POST['password']);
+		$pass = $_POST['password'];
+
+		if (empty($pass)) { // проверка на заполненность поля и 0
+			if (empty($pass) and $pass == 0) {
+				return ['test' => false, 'msg' => "пароль слишком короткий&ltbr/>"];
+			}
+			return ['test' => false, 'msg' => "пароль не заполнен&ltbr/>"];
+		}
+
+		$passLength = strlen(trim($pass));
+		if ($passLength &lt 6) { // проверка что бы не был слишком короткий
+			return ['test' => false, 'msg' => "пароль слишком короткий&ltbr/>"];
+		}
+		if ($passLength > 12) { // проверка что бы не был слишком длинный
+			return ['test' => false, 'msg' => "пароль слишком длинный&ltbr/>"];
+		}
+
+		return ['test' => true, 'msg' => "пароль подходит&ltbr/>"]; // все проверки прошли успешно.
+	}
+	?>
+	</pre>
+</code>
+<p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg_3.php">Регистрация с валидацией 3</a>
+
+<p class="fw-bold mt-3" id="valid_reg4">Задача</p>
 <p>
 	Модифицируйте ваш код так, чтобы, если логин или пароль вбиты некорректно, над соответствующим инпутом выводилось сообщение об этом.
 </p>
 <p class="fw-bold">Решение:</p>
+<p><i>Здесь нужно немного доработать вывод сообщений. Функции проверки можно не трогать</i></p>
+<code>
+	<pre>
+	&lt?php
+	session_start();
+
+	if (!empty($_POST)) {
+		if (checkLog()['test']) {
+
+			if (checkPass()['test']) {
+
+				if (!empty($_POST['confirm'])) {
+
+					if ($_POST['password'] == $_POST['confirm'] and strlen($_POST['password']) == strlen($_POST['confirm'])) {
+						echo 'password и password confirm совпадают&ltbr/>';
+						echo 'Можно добалять в базу';
+
+						//Код добавления в базу.
+
+					} else {
+						echo 'password и password confirm не совпадают';
+					}
+				} else {
+					echo 'подтверждение пароля не заполнено&ltbr/>';
+				}
+			} else {
+			}
+		} else {
+		}
+	}
+	?>
+	&ltform action="" method="post" style="display: grid; width:200px;">
+		login: &lt?= (!empty($_POST) and !checkLog()['test']) ? checkLog()['msg'] : '' ?>
+		&ltinput type="text" name="login" value="&lt?= isset($_POST['login']) ? $_POST['login'] : '' ?>">
+		password: &lt?= (!empty($_POST) and !checkPass()['test']) ? checkPass()['msg'] : '' ?>
+		&ltinput type="password" name="password" value="&lt?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+		confirm password:
+		&ltinput type="password" name="confirm" value="&lt?= isset($_POST['confirm']) ? $_POST['confirm'] : '' ?>">
+		&ltbr />
+		&ltinput type="submit">
+	&lt/form>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg_4.php">Регистрация с валидацией 4</a>
 
 <p class="fw-bold mt-3">Задача</p>
 <p>

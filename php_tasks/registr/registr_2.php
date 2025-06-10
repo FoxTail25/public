@@ -2,7 +2,7 @@
 session_start();
 
 if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['email']) and !empty($_POST['birthdate'])) {
-	if($_POST['password'] == $_POST['confirm']) {
+	if ($_POST['password'] == $_POST['confirm']) {
 
 		include('../../db/connect.php');
 		$login = $_POST['login'];
@@ -12,12 +12,12 @@ if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['em
 		$timestamp = date('Y-m-d H:i:s');
 		$query = "INSERT INTO user_auth SET login='$login', password = '$password', birth_date='$birthDate', register_date='$timestamp'";
 		mysqli_query($db_pract_link, $query);
-		
+
 		$userId = $id = mysqli_insert_id($db_pract_link); //Короткий способ!
-		
+
 		$query_add_email = "INSERT INTO user_email SET email='$email', user_id ='$userId'";
 		mysqli_query($db_pract_link, $query_add_email);
-		
+
 		$_SESSION['success'] = true;
 		$_SESSION['auth_2_3']['auth'] = true; // записываем данные в сессию что бы пользоатель сразу авторизовался на сайте.
 		$_SESSION['auth_2_3']['name'] = $login; // записываем логин пользователя в сессию.
@@ -51,10 +51,10 @@ if (!empty($_POST['login']) and !empty($_POST['password']) and !empty($_POST['em
 <?php
 if (isset($_SESSION['success'])): ?>
 	<p>Пользователь успешно добавлен в базу</p>
-	<a href="../../index.php#register2">вернуться на главную</a>
+	<a href="../../index.php#registr_3_1">вернуться на главную</a>
 <?php else : ?>
 	<br />
-	<a href="../../index.php#register2">На главную</a>
+	<a href="../../index.php#registr_3_1">На главную</a>
 <?php endif;
 
 $_SESSION['success'] = null;
