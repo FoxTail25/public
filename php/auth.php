@@ -1364,12 +1364,172 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 <p class="fw-bold">Результат:</p>
 <a href="php_tasks/registr/valid_reg_4.php">Регистрация с валидацией 4</a>
 
-<p class="fw-bold mt-3">Задача</p>
+<p class="fw-bold mt-3" id="valid_reg5">Задача</p>
 <p>
 	Спросите у пользователя при регистрации еще и email. Занесите его в базу данных. Выполните проверку емейла на корректность и, если он некорректен, над соответствующим инпутом выведите сообщение об этом.
 </p>
 <p class="fw-bold">Решение:</p>
+<p><i>Для этой задачи, я модифицировал код. Для удобства разбив его на функциональные части. Проверку корректности email сделал частично на клиенте, частично на сервере.</i></p>
+<code>
+	<pre>
+		//file: php_tasks/registr/valid_reg_5
+
+		&lt?php
+		session_start();
+
+		if (!empty($_POST)) {
+			if (checkLog()['test']) { //проверка логина
+
+				if (checkPass()['test']) { //проверка пароля
+
+					if (checkConfirm()['test']) { //проверка совпадения паролей
+
+						if (checkEmail()['test']) { //проверка email
+
+							addUserRegDataInDb(); //Функция добавления данных в базу.
+
+							$_SESSION['valid_auth_5']['auth'] = true; // записываем данные в сессию что бы пользоатель сразу авторизовался на сайте.
+							$_SESSION['valid_auth_5']['name'] = $login; // записываем логин пользователя в сессию.
+							unset($_POST); //на всякий случай очищаем $_POST
+							header('location:../../index.php'); // перенаправляем пользователя на основную страницу
+							die();
+						}
+					}
+				}
+			}
+		}
+		?>
+
+		&ltform action="" method="post" style="display: grid; width:200px;">
+			login: &lt?= (!empty($_POST) and !checkLog()['test']) ? checkLog()['msg'] : '' ?>
+			&ltinput type="text" name="login" value="&lt?= isset($_POST['login']) ? $_POST['login'] : '' ?>">
+			password: &lt?= (!empty($_POST) and !checkPass()['test']) ? checkPass()['msg'] : '' ?>
+			&ltinput type="password" name="password" value="&lt?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+			confirm password: &lt?= (!empty($_POST) and !checkConfirm()['test']) ? checkConfirm()['msg'] : '' ?>
+			&ltinput type="password" name="confirm" value="&lt?= isset($_POST['confirm']) ? $_POST['confirm'] : '' ?>">
+			email:&lt?= (!empty($_POST) and !checkEmail()['test']) ? checkEmail()['msg'] : '' ?>
+			&ltinput type="email" name="email" value="&lt?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
+			&ltbr />
+			&ltinput type="submit">
+		&lt/form>
+		&ltbr />
+		&lta href="../../index.php#valid_reg5">вернуться на главную&lt/a>
+
+		&lt?php
+			function checkLog()
+			{
+				$_POST['login'] = trim($_POST['login']);
+				$login = $_POST['login'];
+
+				if (empty($login)) { // проверка на заполненность поля и 0
+					if (empty($login) and $login == 0) {
+						return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+					}
+					return ['test' => false, 'msg' => " не заполнен&ltbr/>"];
+				}
+				$loginLength = strlen($login);
+
+				if ($loginLength &lt 4) { // проверка что бы не был слишком короткий
+					return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+				}
+				if ($loginLength > 10) { // проверка что бы не был слишком длинный
+					return ['test' => false, 'msg' => " слишком длинный&ltbr/>"];
+				}
+
+				$ciril_sym = preg_match('#\W#', $login); // Проверка на наличие только латинских букв и цифр
+				if ($ciril_sym) {
+					return ['test' => false, 'msg' => "должны быть только латинские символы и цифры&ltbr/>"];
+				}
+				include('../../db/connect.php'); //Проверна на наличие такого логина в базе данных
+				$queryCheckLoginInDb = "SELECT * FROM user_auth WHERE login = '$login'";
+				$userInBd = mysqli_fetch_assoc(mysqli_query($db_pract_link, $queryCheckLoginInDb));
+				
+				if($userInBd) {
+					return ['test' => false, 'msg' => "уже есть в базе&ltbr/>"];
+				}
+
+				return ['test' => true, 'msg' => "логин подходит&ltbr/>"]; // все проверки прошли успешно.
+			}
+			function checkPass()
+			{
+				$_POST['password'] = trim($_POST['password']);
+				$pass = $_POST['password'];
+
+				if (empty($pass)) { // проверка на заполненность поля и 0
+					if (empty($pass) and $pass == 0) {
+						return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+					}
+					return ['test' => false, 'msg' => " не заполнен&ltbr/>"];
+				}
+
+				$passLength = strlen($pass);
+				if ($passLength &lt 6) { // проверка что бы не был слишком короткий
+					return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+				}
+				if ($passLength > 12) { // проверка что бы не был слишком длинный
+					return ['test' => false, 'msg' => " слишком длинный&ltbr/>"];
+				}
+
+				return ['test' => true, 'msg' => " подходит&ltbr/>"]; // все проверки прошли успешно.
+			}
+			function checkConfirm()
+			{
+
+				$_POST['confirm'] = trim($_POST['confirm']);
+				$confirm = $_POST['confirm'];
+
+				if (empty($confirm)) { // проверка на заполненность поля и 0
+					if (empty($confirm) and $confirm == 0) {
+						return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+					}
+					return ['test' => false, 'msg' => " не заполнен&ltbr/>"];
+				}
+
+				if ($_POST['password'] == $_POST['confirm'] and strlen($_POST['password']) == strlen($_POST['confirm'])) {
+					return ['test' => true, 'msg' => "пароли совпадают&ltbr/>"];
+				} else {
+					return ['test' => false, 'msg' => "пароли не совпадают&ltbr/>"];
+				}
+			}
+			function checkEmail()
+			{
+				$_POST['email'] = trim($_POST['email']);
+				$email = $_POST['email'];
+
+				if (empty($email)) { // проверка на заполненность поля и 0
+					if (empty($email) and $email == 0) {
+						return ['test' => false, 'msg' => " слишком короткий&ltbr/>"];
+					}
+					return ['test' => false, 'msg' => " не заполнен&ltbr/>"];
+				}
+
+				$domen = preg_match('#(\.ru|\.com)$#', $email);
+				if (!$domen) { // проверка на окончание почтового ящика доменом
+					return ['test' => false, 'msg' => " укажите домен (.ru или .com) &ltbr/>"];
+				}
+
+				return ['test' => true, 'msg' => "email подходит&ltbr/>"]; // все проверки прошли успешно.
+			}
+			function addUserRegDataInDb()
+			{
+				include('../../db/connect.php');
+				$login = $_POST['login'];
+				$password = $_POST['password'];
+				$email = $_POST['email'];
+				$timestamp = date('Y-m-d H:i:s');
+				$query = "INSERT INTO user_auth SET login='$login', password = '$password', register_date='$timestamp'";
+				mysqli_query($db_pract_link, $query);
+
+				$userId = $id = mysqli_insert_id($db_pract_link); //Короткий способ получения id последней добавленной записи.
+
+				$query_add_email = "INSERT INTO user_email SET email='$email', user_id ='$userId'";
+				mysqli_query($db_pract_link, $query_add_email);
+			}
+		?>
+	</pre>
+</code>
 <p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg_5.php">Регистрация с валидацией 5</a>
 
 <p class="fw-bold mt-3">Задача</p>
 <p>
