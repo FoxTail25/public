@@ -121,4 +121,8 @@ function checkConfirm()
 
 	return ['test' => true, 'msg' => " подходит<br/>"]; // все проверки прошли успешно.
 }
+
+function checkEmail(){
+	
+}
 ?>
