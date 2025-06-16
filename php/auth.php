@@ -1531,12 +1531,13 @@ if (!isset($_SESSION['auth_2_3']['auth']) or $_SESSION['auth_2_3']['auth'] == fa
 <p class="fw-bold">Результат:</p>
 <a href="php_tasks/registr/valid_reg_5.php">Регистрация с валидацией 5</a>
 
-<p class="fw-bold mt-3">Задача</p>
+<p class="fw-bold mt-3"  id="valid_reg6">Задача</p>
 <p>
 	Спросите у пользователя при регистрации еще и дату рождения в формате день.месяц.год. Занесите дату в базу данных. Выполните проверку даты на соответствие формату.
 </p>
 <p class="fw-bold">Решение:</p>
 <p class="fw-bold">Результат:</p>
+<a href="php_tasks/registr/valid_reg_6.php">Регистрация с валидацией 6</a>
 
 <p class="fw-bold mt-3">Задача 8</p>
 <p>
