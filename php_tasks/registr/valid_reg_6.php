@@ -142,6 +142,9 @@ function checkDate(){
 
 	$birthDate = $_POST['birthDate'];
 
+	$reg = '#/d#';
+	preg_match()
+
 	return ['test' => true, 'msg' => "дата корректна<br/>"]; // все проверки прошли успешно.
 }
 function addUserRegDataInDb(){
