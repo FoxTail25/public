@@ -35,7 +35,12 @@ if (!empty($_POST)) {
 	email:<?= (!empty($_POST) and !checkEmail()['test']) ? checkEmail()['msg'] : '' ?>
 	<input type="email" name="email" value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
 	BirthDate: <?= (!empty($_POST) and !check_Date()['test']) ? check_Date()['msg'] : '' ?>
-	<input  type="date" name="birthDate" value="<?= isset($_POST['birthDate']) ? $_POST['birthDate'] : '' ?>">
+	<input type="date" name="birthDate" value="<?= isset($_POST['birthDate']) ? $_POST['birthDate'] : '' ?>">
+	Country:
+	<select name="country" id="">
+		<option value="russia">Россия</option>
+		<option value="belarus">Беларусь</option>
+	</select>
 	<br />
 	<input type="submit">
 </form>
@@ -67,12 +72,12 @@ function checkLog()
 	if ($ciril_sym) {
 		return ['test' => false, 'msg' => "должны быть только латинские символы и цифры<br/>"];
 	}
-	
+
 	include('../../db/connect.php'); //Проверна на наличие такого логина в базе данных
 	$queryCheckLoginInDb = "SELECT * FROM user_auth WHERE login = '$login'";
 	$userInBd = mysqli_fetch_assoc(mysqli_query($db_pract_link, $queryCheckLoginInDb));
-	
-	if($userInBd) {
+
+	if ($userInBd) {
 		return ['test' => false, 'msg' => "уже есть в базе<br/>"];
 	}
 
@@ -128,19 +133,20 @@ function checkEmail()
 		if (empty($email) and $email == 0) {
 			return ['test' => false, 'msg' => " слишком короткий<br/>"];
 		}
-		return ['test' => false, 'msg' => " не заполнен<br/>"];	
+		return ['test' => false, 'msg' => " не заполнен<br/>"];
 	}
 
 	$domen = preg_match('#(\.ru|\.com)$#', $email);
-	if(!$domen) { // проверка на окончание почтового ящика доменом
+	if (!$domen) { // проверка на окончание почтового ящика доменом
 		return ['test' => false, 'msg' => " укажите домен (.ru или .com) <br/>"];
 	}
 
 	return ['test' => true, 'msg' => "email подходит<br/>"]; // все проверки прошли успешно.
 }
-function check_Date(){
+function check_Date()
+{
 
-	
+
 	$birthDate = $_POST['birthDate'];
 
 	if (empty($birthDate)) { // проверка на заполненность поля и 0
@@ -151,16 +157,17 @@ function check_Date(){
 	}
 
 	$reg = '#(?<year>\d+)-(?<month>\d+)-(?<day>\d+)#';
-	
+
 	preg_match($reg, $birthDate, $math);
-	if(!checkdate($math['month'], $math['day'], $math['year'])){
+	if (!checkdate($math['month'], $math['day'], $math['year'])) {
 
 		return ['test' => false, 'msg' => 'неправильно указана дата']; // все проверки прошли успешно.
 	}
 
 	return ['test' => true, 'msg' => "дата корректна<br/>"]; // все проверки прошли успешно.
 }
-function addUserRegDataInDb(){
+function addUserRegDataInDb()
+{
 	include('../../db/connect.php');
 	$login = $_POST['login'];
 	$password = $_POST['password'];
