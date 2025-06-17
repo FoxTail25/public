@@ -141,9 +141,14 @@
 		<?php //include './php/redirect.php'; 
 		?>
 	</div> -->
-	<h3 class="text-center redT m-2">Введение в аутентификацию на PHP</h3>
+	<!-- <h3 class="text-center redT m-2">Введение в аутентификацию на PHP</h3>
 	<div class="text-left ms-4 mb-4">
-		<?php include './php/auth.php'; 
+		<?php //include './php/auth.php'; 
+		?>
+	</div> -->
+	<h3 class="text-center redT m-2">Безопасность хранения пароля</h3>
+	<div class="text-left ms-4 mb-4">
+		<?php include './php/authSave.php'; 
 		?>
 	</div>
 
