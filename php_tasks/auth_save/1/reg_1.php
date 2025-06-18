@@ -1,9 +1,9 @@
 <?php
 session_start();
-if(!empty($_POST)) {
-	if(checkLogin()['test']) {
-		if(checkPassword()['test']) {
-			if(checkConfirmPass()['test']){
+if (!empty($_POST)) {
+	if (checkLogin()['test']) {
+		if (checkPassword()['test']) {
+			if (checkConfirmPass()['test']) {
 				addNewUserRegDataInBase();
 			}
 		}
@@ -12,22 +12,23 @@ if(!empty($_POST)) {
 ?>
 
 <form method="post" style="display: grid; width:300px;">
-	login: <?=(!empty($_POST) and !checkLogin()['test']) ? checkLogin()['msg']:'' ?>
+	login: <?= (!empty($_POST) and !checkLogin()['test']) ? checkLogin()['msg'] : '' ?>
 	<input type="text" name="login">
-	password:
+	password: <?= (!empty($_POST) and !checkPassword()['test']) ? checkPassword()['msg'] : '' ?>
 	<input type="password" name="password">
-	confirm password:
+	confirm password: <?= (!empty($_POST) and !checkConfirmPass()['test']) ? checkConfirmPass()['msg'] : '' ?>
 	<input type="password" name="confirm">
-	<br/>
+	<br />
 	<input type="submit">
 </form>
 <a href="../../../index.php#save_reg_1">на главную</a>
 
 <?php
-function checkLogin(){
+function checkLogin()
+{
 	$login = trim($_POST['login']);
-	if(empty($login)) {
-		if(empty($login) and strlen($login) == 1) {
+	if (empty($login)) {
+		if (empty($login) and strlen($login) == 1) {
 			return ['test' => false, 'msg' => 'Логин слишком короткий'];
 		}
 		return ['test' => false, 'msg' => 'Логин не заполнен'];
@@ -35,10 +36,11 @@ function checkLogin(){
 	return ['test' => true];
 };
 
-function checkPassword(){
+function checkPassword()
+{
 	$password = trim($_POST['password']);
-		if(empty($password)) {
-		if(empty($password) and strlen($password) == 1) {
+	if (empty($password)) {
+		if (empty($password) and strlen($password) == 1) {
 			return ['test' => false, 'msg' => 'Пароль слишком короткий'];
 		}
 		return ['test' => false, 'msg' => 'Пароль не заполнен'];
@@ -46,14 +48,24 @@ function checkPassword(){
 	return ['test' => true];
 }
 
-function checkConfirmPass(){
-		$confirm = trim($_POST['confirm']);
-		if($confirm !== $_POST['password']) {
-			return ['test' => false, 'msg' => 'Пароли не совпадают'];
-
+function checkConfirmPass()
+{
+	$confirm = trim($_POST['confirm']);
+	if ($confirm !== $_POST['password']) {
+		return ['test' => false, 'msg' => 'Пароли не совпадают'];
 	}
 	return ['test' => true];
 }
 
+function addNewUserRegDataInBase() {
 
+	include ('../../../db/connect_2.php');
+	$login = $_POST['login'];
+	$password = md5($_POST['password']);
+	$queryAddUser = "INSERT INTO user SET name = '$login', password = '$password'";
+	mysqli_query($db_pract_link, $queryAddUser);
+	unset($_POST);
+	$_SESSION['user'] = $login;
+	header('location:../../../index.php#save_reg_1');
+}
 ?>

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <h3 class="fw-bold mt-5">Хеширование пароля</h3>
 <p>
     Хранить пароль в открытом виде - неправильно. Хакер-злоумышленник может получить доступ к вашей базе данных и украсть пароли.
@@ -35,14 +36,28 @@
     ?>
     </pre>
 </code>
-<p class="fw-bold mt-3" id="save_reg_1">Задача</p>
+<p class="fw-bold mt-3">Задача</p>
 <p>Внесите изменения в регистрацию с учетом хеширования, зарегистрируйте пару новых пользователей, убедитесь, что в базу данных они добавились с хешированными паролями.</p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
+<p class="fw-bold" id="save_reg_1">Результат:</p>
+<p>Приветствую
+
+    <?php if (!empty($_SESSION['user'])) : ?>
+        <span><?= $_SESSION['user'] ?></span>
+    <?php else : ?>
+        <span>неизвестный</span>
+    <?php endif; ?>
+    !
+</p>
+<br />
 <a href="php_tasks/auth_save/1/reg_1.php">Регистрация</a>
-<br/>
-<br/>
-<a href="php_tasks/auth_save/1/auth_1.php">Вход</a>
+<br />
+<?php if (!empty($_SESSION['user'])) : ?>
+    <a href="php_tasks/auth_save/1/logoff_1.php">Выход</a>
+<?php else : ?>
+    <a href="php_tasks/auth_save/1/auth_1.php">Вход</a>
+<?php endif; ?>
+<br />
 
 <!-- 
     <p class="fw-bold mt-3">Задача</p>
