@@ -63,11 +63,11 @@ function addNewUserRegDataInBase() {
 	$login = $_POST['login'];
 	$salt = getSalt();
 	$password = md5($salt . $_POST['password']);
-	$queryAddUser = "INSERT INTO user SET name = '$login', password = '$password'";
+	$queryAddUser = "INSERT INTO user SET name = '$login', password = '$password', salt = '$salt'";
 	mysqli_query($db_pract_link, $queryAddUser);
 	unset($_POST);
 	$_SESSION['user_2'] = $login;
-	header('location:../../../index.php#save_reg_1');
+	header('location:../../../index.php#save_reg_2');
 }
 
 function getSalt(){

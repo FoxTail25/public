@@ -124,7 +124,7 @@
     Реализуйте описанную выше регистрацию с соленым паролем.
 </p>
 <p class="fw-bold">Решение:</p>
-<p class="fw-bold">Результат:</p>
+<p class="fw-bold" id="save_reg_2">Результат:</p>
 
 <p>Приветствую
 
@@ -138,7 +138,7 @@
 <br />
 <a href="php_tasks/auth_save/2/reg_2.php">Регистрация</a>
 <br />
-<?php if (!empty($_SESSION['user'])) : ?>
+<?php if (!empty($_SESSION['user_2'])) : ?>
     <a href="php_tasks/auth_save/2/logoff_2.php">Выход</a>
 <?php else : ?>
     <a href="php_tasks/auth_save/2/auth_2.php">Вход</a>
