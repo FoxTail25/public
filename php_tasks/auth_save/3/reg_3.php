@@ -21,7 +21,7 @@ if (!empty($_POST)) {
 	<br />
 	<input type="submit">
 </form>
-<a href="../../../index.php#save_reg_2">на главную</a>
+<a href="../../../index.php#save_reg_3">на главную</a>
 
 <?php
 function checkLogin()
@@ -61,22 +61,23 @@ function addNewUserRegDataInBase() {
 
 	include ('../../../db/connect_2.php');
 	$login = $_POST['login'];
-	$salt = getSalt();
-	$password = md5($salt . $_POST['password']);
-	$queryAddUser = "INSERT INTO user SET name = '$login', password = '$password', salt = '$salt'";
+	// $salt = getSalt();
+	// $password = md5($salt . $_POST['password']); - прошлое решение
+	$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+	$queryAddUser = "INSERT INTO user SET name = '$login', password = '$password'";
 	mysqli_query($db_pract_link, $queryAddUser);
 	unset($_POST);
-	$_SESSION['user_2'] = $login;
-	header('location:../../../index.php#save_reg_2');
+	$_SESSION['user_3'] = $login;
+	header('location:../../../index.php#save_reg_3');
 }
 
-function getSalt(){
-	$salt = '';
-	$saltLength = 8; // длина соли
+// function getSalt(){  - это больше не нуно.
+// 	$salt = '';
+// 	$saltLength = 8; // длина соли
 	
-	for($i = 0; $i < $saltLength; $i++) {
-		$salt .= chr(mt_rand(33, 126)); // символ из ASCII-table
-	}
-	return $salt;
-}
+// 	for($i = 0; $i < $saltLength; $i++) {
+// 		$salt .= chr(mt_rand(33, 126)); // символ из ASCII-table
+// 	}
+// 	return $salt;
+// }
 ?>
