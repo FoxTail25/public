@@ -311,6 +311,148 @@
 <p class="fw-bold mt-3" id="save_reg_3">Задача</p>
 <p>Переделайте вашу авторизацию и регистрацию на новые изученные функции.</p>
 <p class="fw-bold">Решение:</p>
+<code>
+    <pre>
+        //file: index.php
+
+        &ltp>Приветствую
+
+            &lt?php if (!empty($_SESSION['user_3'])) : ?>
+                &ltspan>&lt?= $_SESSION['user_3'] ?>&lt/span>
+            &lt?php else : ?>
+                &ltspan>неизвестный&lt/span>
+            &lt?php endif; ?>
+            !
+        &lt/p>
+        &ltbr />
+        &lta href="php_tasks/auth_save/3/reg_3.php">Регистрация&lt/a>
+        &ltbr />
+        &lt?php if (!empty($_SESSION['user_3'])) : ?>
+            &lta href="php_tasks/auth_save/3/logoff_3.php">Выход&lt/a>
+        &lt?php else : ?>
+            &lta href="php_tasks/auth_save/3/auth_3.php">Вход&lt/a>
+        &lt?php endif; ?>
+
+
+        //file: php_tasks/auth_save/3/reg_3.php
+
+        &lt?php
+        session_start();
+        if (!empty($_POST)) {
+            if (checkLogin()['test']) {
+                if (checkPassword()['test']) {
+                    if (checkConfirmPass()['test']) {
+                        addNewUserRegDataInBase();
+                    }
+                }
+            }
+        }
+        ?>
+
+        &ltform method="post" style="display: grid; width:300px;">
+            login: &lt?= (!empty($_POST) and !checkLogin()['test']) ? checkLogin()['msg'] : '' ?>
+            &ltinput type="text" name="login">
+            password: &lt?= (!empty($_POST) and !checkPassword()['test']) ? checkPassword()['msg'] : '' ?>
+            &ltinput type="password" name="password">
+            confirm password: &lt?= (!empty($_POST) and !checkConfirmPass()['test']) ? checkConfirmPass()['msg'] : '' ?>
+            &ltinput type="password" name="confirm">
+            &ltbr />
+            &ltinput type="submit">
+        &lt/form>
+        &lta href="../../../index.php#save_reg_3">на главную&lt/a>
+
+        &lt?php
+        function checkLogin()
+        {
+            $login = trim($_POST['login']);
+            if (empty($login)) {
+                if (empty($login) and strlen($login) == 1) {
+                    return ['test' => false, 'msg' => 'Логин слишком короткий'];
+                }
+                return ['test' => false, 'msg' => 'Логин не заполнен'];
+            }
+            return ['test' => true];
+        };
+
+        function checkPassword()
+        {
+            $password = trim($_POST['password']);
+            if (empty($password)) {
+                if (empty($password) and strlen($password) == 1) {
+                    return ['test' => false, 'msg' => 'Пароль слишком короткий'];
+                }
+                return ['test' => false, 'msg' => 'Пароль не заполнен'];
+            }
+            return ['test' => true];
+        }
+
+        function checkConfirmPass()
+        {
+            $confirm = trim($_POST['confirm']);
+            if ($confirm !== $_POST['password']) {
+                return ['test' => false, 'msg' => 'Пароли не совпадают'];
+            }
+            return ['test' => true];
+        }
+
+        function addNewUserRegDataInBase()
+        {
+
+            include('../../../db/connect_2.php');
+            $login = $_POST['login'];
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $queryAddUser = "INSERT INTO user SET name = '$login', password = '$password'";
+            mysqli_query($db_pract_link, $queryAddUser);
+            unset($_POST);
+            $_SESSION['user_3'] = $login;
+            header('location:../../../index.php#save_reg_3');
+        }
+        ?>
+
+
+        //file: php_tasks/auth_save/3/logoff_3.php
+
+        &lt?php
+        session_start();
+        unset($_SESSION['user_3']);
+        header('location:../../../index.php#save_reg_3');
+        ?>
+
+
+        //file: php_tasks/auth_save/3/auth_3.php
+
+        &lt?php
+        session_start();
+        if (!empty($_POST)) {
+            $login = $_POST['login'];
+            include('../../../db/connect_2.php');
+            $query_getLog = "SELECT * FROM user WHERE name = '$login'";
+            $user = mysqli_fetch_assoc(mysqli_query($db_pract_link, $query_getLog));
+            if ($user) {
+
+                if (password_verify($_POST['password'], $user['password'])) {
+                    $_SESSION['user_3'] = $user['name'];
+                    header('location:../../../index.php#save_reg_3');
+                    die();
+                }
+            }
+
+            echo '&ltspan style="color:red">неверая пара login | password&lt/span>';
+        }
+        ?>
+
+        &ltform method="post" style="display: grid; width:300px">
+            login:
+            &ltinput type="text" name="login">
+            password:
+            &ltinput type="password" name="password">
+            &ltbr />
+            &ltinput type="submit">
+        &lt/form>
+        &ltbr />
+        &lta href="../../../index.php#save_reg_3">На главную&lt/a>
+    </pre>
+</code>
 <p class="fw-bold">Результат:</p>
 
 <p>Приветствую
@@ -340,4 +482,12 @@
 
 <!-- 
 <h3 class="fw-bold mt-5">Практические задачи</h3>
- -->
+-->
+
+<h3 class="fw-bold mt-5">Реализация профиля на PHP</h3>
+
+<p>
+    Давайте теперь реализуем просмотр профиля пользователя. Под профилем понимается информация, которую этот пользователь указал при регистрации.<br/>
+    Сделаем так, чтобы можно было смотреть профиль любого из пользователей. Для этого сделаем страницу profile.php, в которую GET параметром будем передавать id пользователя, которого мы хотим посмотреть.<br/>
+    На странице профиля мы будем показывать не всю информацию, которую указал о себе пользователь. К примеру, пароль там показывать точно не стоит. Кроме того, скорее всего показ емейла также будет лишним, так как в этом случае спамеры могут собирать эти емейлы программами-парсерами и рассылать спам на них.<br/>
+</p>
