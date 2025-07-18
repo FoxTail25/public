@@ -1,12 +1,12 @@
 <?php
-function addBr($str)
-{
-	echo $str . '<br/>';
-};
-function returnB($str)
-{
-	return '<b>' . $str . '</b>';
-};
+// function addBr($str)
+// {
+// 	echo $str . '<br/>';
+// };
+// function returnB($str)
+// {
+// 	return '<b>' . $str . '</b>';
+// };
 // функция sqrt находит квадратный корень числа.
 
 addBr('функция '.returnB('sqrt') .' находит квадратный корень числа.');
